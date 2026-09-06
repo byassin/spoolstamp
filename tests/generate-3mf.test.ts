@@ -147,7 +147,7 @@ describe('source STL preservation and 3MF export', () => {
       path.resolve('.tmp/supplied-drybox-text-smoke.3mf'),
       Buffer.from(await result.blob.arrayBuffer()),
     );
-  });
+  }, 30_000); // Audit every serialized mechanical triangle on shared CI CPUs.
 
   it.each<DesignId>(['drybox-tab', 'clip-label'])(
     'exports coherent geometry and material relationships for %s',

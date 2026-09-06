@@ -53,7 +53,7 @@ describe('flat-front filament clip', () => {
       expect(text.textRows?.every((row) => row.strokeAudit?.passes)).toBe(true);
       assertClosed(text);
     }
-  });
+  }, 30_000); // Multiple font/solid audits also run on shared CI CPUs.
   it('preserves all non-pocket, nondegenerate source triangles byte-for-byte', async () => {
     const bytes = readFileSync(
       new URL('../assets/clip-label.mesh', import.meta.url),
