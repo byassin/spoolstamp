@@ -45,7 +45,7 @@ Open `http://localhost:3000`.
 
 ## Documentation
 
-[My AMS](docs/ams-integration.md) · [Bambu Studio](docs/local-studio-handoff.md) · [Development](CONTRIBUTING.md) · [Architecture](docs/architecture.md)
+[Hosting](docs/hosting.md) · [My AMS](docs/ams-integration.md) · [Bambu Studio](docs/local-studio-handoff.md) · [Development](CONTRIBUTING.md) · [Architecture](docs/architecture.md)
 
 ## License
 

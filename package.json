@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "vinext dev",
     "build": "vinext build",
+    "build:static": "node scripts/build-static.mjs",
     "start": "wrangler dev --config dist/server/wrangler.json",
     "sync:catalog": "node scripts/sync-catalog.mjs",
     "sync:studio-presets": "node scripts/sync-studio-presets.mjs",
