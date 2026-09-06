@@ -4,6 +4,8 @@
 
 Create 3D-printable filament labels in a few clicks. Pick a design, choose your filament, and preview your label before opening it in Bambu Studio.
 
+**[Open Spoolstamp →](https://spoolstamp.bourhan.org/)** — use it in your browser, no installation needed.
+
 ![Spoolstamp workspace with a hinged filament label](docs/images/workspace.png)
 
 ## Features
