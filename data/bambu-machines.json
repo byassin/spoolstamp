@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-04T16:31:38.721Z",
+  "source": {
+    "repository": "https://github.com/bambulab/BambuStudio",
+    "commit": "66e405477604cf9346ea7aa9e439a7854a01029b",
+    "profileIndex": "https://raw.githubusercontent.com/bambulab/BambuStudio/66e405477604cf9346ea7aa9e439a7854a01029b/resources/profiles/BBL.json",
+    "colorTable": "https://raw.githubusercontent.com/bambulab/BambuStudio/66e405477604cf9346ea7aa9e439a7854a01029b/resources/profiles/BBL/filament/filaments_color_codes.json",
+    "profileVersion": "02.08.00.05",
+    "colorTableSha256": "b600b1da4b275d93f06cfdd5cc715b5459691a47fade432998355cd908217a1d",
+    "license": "AGPL-3.0-only",
+    "licenseUrl": "https://github.com/bambulab/BambuStudio/blob/66e405477604cf9346ea7aa9e439a7854a01029b/LICENSE"
+  },
+  "machines": [
+    {
+      "id": "bambulabx1carbon",
+      "name": "X1 Carbon",
+      "fullName": "Bambu Lab X1 Carbon",
+      "profilePath": "machine/Bambu Lab X1 Carbon.json"
+    },
+    {
+      "id": "bambulabx1",
+      "name": "X1",
+      "fullName": "Bambu Lab X1",
+      "profilePath": "machine/Bambu Lab X1.json"
+    },
+    {
+      "id": "bambulabx1e",
+      "name": "X1E",
+      "fullName": "Bambu Lab X1E",
+      "profilePath": "machine/Bambu Lab X1E.json"
+    },
+    {
+      "id": "bambulabp1p",
+      "name": "P1P",
+      "fullName": "Bambu Lab P1P",
+      "profilePath": "machine/Bambu Lab P1P.json"
+    },
+    {
+      "id": "bambulabp1s",
+      "name": "P1S",
+      "fullName": "Bambu Lab P1S",
+      "profilePath": "machine/Bambu Lab P1S.json"
+    },
+    {
+      "id": "bambulaba1mini",
+      "name": "A1 mini",
+      "fullName": "Bambu Lab A1 mini",
+      "profilePath": "machine/Bambu Lab A1 mini.json"
+    },
+    {
+      "id": "bambulaba1",
+      "name": "A1",
+      "fullName": "Bambu Lab A1",
+      "profilePath": "machine/Bambu Lab A1.json"
+    },
+    {
+      "id": "bambulabh2d",
+      "name": "H2D",
+      "fullName": "Bambu Lab H2D",
+      "profilePath": "machine/Bambu Lab H2D.json"
+    },
+    {
+      "id": "bambulabh2dpro",
+      "name": "H2D Pro",
+      "fullName": "Bambu Lab H2D Pro",
+      "profilePath": "machine/Bambu Lab H2D Pro.json"
+    },
+    {
+      "id": "bambulabh2s",
+      "name": "H2S",
+      "fullName": "Bambu Lab H2S",
+      "profilePath": "machine/Bambu Lab H2S.json"
+    },
+    {
+      "id": "bambulabp2s",
+      "name": "P2S",
+      "fullName": "Bambu Lab P2S",
+      "profilePath": "machine/Bambu Lab P2S.json"
+    },
+    {
+      "id": "bambulabh2c",
+      "name": "H2C",
+      "fullName": "Bambu Lab H2C",
+      "profilePath": "machine/Bambu Lab H2C.json"
+    },
+    {
+      "id": "bambulabx2d",
+      "name": "X2D",
+      "fullName": "Bambu Lab X2D",
+      "profilePath": "machine/Bambu Lab X2D.json"
+    },
+    {
+      "id": "bambulaba2l",
+      "name": "A2L",
+      "fullName": "Bambu Lab A2L",
+      "profilePath": "machine/Bambu Lab A2L.json"
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "sourceFilename": "Filament+Dry+Box+Labeled+Tags+-+Bambu+Lab+-+PLA+Basic+1of2.stl",
+  "sourceSha256": "970ba1c28f13db9db89dcbfefedcdcfae9cab449b170773c2fba380536c89398",
+  "sourceTriangleCount": 245138,
+  "retainedTriangleCount": 226476,
+  "removedZeroThicknessTriangleCount": 6,
+  "removedOpposingFacePairs": [
+    [
+      81195,
+      88420
+    ],
+    [
+      117689,
+      124097
+    ],
+    [
+      117691,
+      124699
+    ]
+  ],
+  "removedLetteringTriangleCount": 18656,
+  "removedLetteringComponents": 66,
+  "assetSha256": "3601e0c19b0d0b14989560aed81e1b73058c4432fd9007f220bb519cf08e70f0",
+  "operation": "Retain the four original mechanical components with exact Float32 coordinates and winding of all retained triangles. Remove the separate lettering and three microscopic zero-thickness opposing face pairs from the source hook (six faces, zero net volume). No scaling, remeshing, Boolean operations, or hinge dimension changes.",
+  "textFaceZ": 3.2000732421875,
+  "parts": [
+    {
+      "name": "label-card",
+      "firstTriangle": 0,
+      "triangleCount": 52578,
+      "sourceTriangleCount": 52578,
+      "vertexCount": 26291,
+      "bounds": {
+        "min": [
+          0,
+          0,
+          0
+        ],
+        "max": [
+          60,
+          64.121337890625,
+          3.2001049518585205
+        ]
+      },
+      "triangleCoordinatesSha256": "91385ed29e4b0f7cb6468dc91d2e82f63f08e4b7b3e9f74cb3697c403b7c96f6"
+    },
+    {
+      "name": "side-entry-mount",
+      "firstTriangle": 52578,
+      "triangleCount": 108298,
+      "sourceTriangleCount": 108304,
+      "vertexCount": 54151,
+      "bounds": {
+        "min": [
+          0,
+          64.27876281738281,
+          0
+        ],
+        "max": [
+          60,
+          87.99998474121094,
+          3.2059578895568848
+        ]
+      },
+      "triangleCoordinatesSha256": "443c59592b0d3ef6cc2d2183de3f3eab1d566c0d82d775f14ded19c8397dd089"
+    },
+    {
+      "name": "hinge-link-left",
+      "firstTriangle": 193682,
+      "triangleCount": 32800,
+      "sourceTriangleCount": 32800,
+      "vertexCount": 16402,
+      "bounds": {
+        "min": [
+          12.149993896484375,
+          60.5,
+          0
+        ],
+        "max": [
+          25.149993896484375,
+          67.90000915527344,
+          3.200000047683716
+        ]
+      },
+      "triangleCoordinatesSha256": "92c231f3343bd427127e8a5cdcc123ab2e307b3623bfe55d59113d403f603829"
+    },
+    {
+      "name": "hinge-link-right",
+      "firstTriangle": 160882,
+      "triangleCount": 32800,
+      "sourceTriangleCount": 32800,
+      "vertexCount": 16402,
+      "bounds": {
+        "min": [
+          34.84999084472656,
+          60.5,
+          0
+        ],
+        "max": [
+          47.84999084472656,
+          67.90000915527344,
+          3.200000047683716
+        ]
+      },
+      "triangleCoordinatesSha256": "7915c383e7dd7a02f99622c4811b743e0921052c670f8bfc2c4f4fe6f6425f7d"
+    }
+  ]
+}

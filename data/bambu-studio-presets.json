@@ -1,0 +1,3380 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "repository": "https://github.com/bambulab/BambuStudio",
+    "commit": "66e405477604cf9346ea7aa9e439a7854a01029b",
+    "profileVersion": "02.08.00.05",
+    "license": "AGPL-3.0-only",
+    "inputsSha256": "28f6448f6931bd3c704fe4bbf66a6d373efc37fa500595edba1f3aba69ce97bb",
+    "inputFiles": 671
+  },
+  "printers": {
+    "Bambu Lab X1 Carbon": {
+      "printerPreset": "Bambu Lab X1 Carbon 0.4 nozzle",
+      "processPreset": "0.20mm Standard @BBL X1C",
+      "nozzleDiameter": "0.4",
+      "nozzleDiameters": [
+        "0.4"
+      ],
+      "extruderTypes": [
+        "Direct Drive"
+      ],
+      "printableArea": [
+        "0x0",
+        "256x0",
+        "256x256",
+        "0x256"
+      ],
+      "printableHeight": "250",
+      "bedExcludeArea": [
+        "0x0",
+        "18x0",
+        "18x28",
+        "0x28"
+      ],
+      "extruderPrintableAreas": [],
+      "wrappingExcludeArea": [],
+      "filaments": {
+        "Bambu ABS @base": {
+          "name": "Bambu ABS @BBL X1C",
+          "settingId": "GFSB00",
+          "isSupport": "0"
+        },
+        "Bambu ABS-GF @base": {
+          "name": "Bambu ABS-GF @BBL X1C",
+          "settingId": "GFSB50_00",
+          "isSupport": "0"
+        },
+        "Bambu ASA @base": {
+          "name": "Bambu ASA @BBL X1C 0.4 nozzle",
+          "settingId": "GFSB01_02",
+          "isSupport": "0"
+        },
+        "Bambu ASA-Aero @base": {
+          "name": "Bambu ASA-Aero @BBL X1C",
+          "settingId": "GFSB02_00",
+          "isSupport": "0"
+        },
+        "Bambu ASA-CF @base": {
+          "name": "Bambu ASA-CF @BBL X1C",
+          "settingId": "GFSB51_00",
+          "isSupport": "0"
+        },
+        "Bambu PA6-CF @base": {
+          "name": "Bambu PA6-CF @BBL X1C",
+          "settingId": "GFSN05_02",
+          "isSupport": "0"
+        },
+        "Bambu PA6-GF @base": {
+          "name": "Bambu PA6-GF @BBL X1C",
+          "settingId": "GFSN08_00",
+          "isSupport": "0"
+        },
+        "Bambu PAHT-CF @base": {
+          "name": "Bambu PAHT-CF @BBL X1C",
+          "settingId": "GFSN04",
+          "isSupport": "0"
+        },
+        "Bambu PC @base": {
+          "name": "Bambu PC @BBL X1C",
+          "settingId": "GFSC00",
+          "isSupport": "0"
+        },
+        "Bambu PC FR @base": {
+          "name": "Bambu PC FR @BBL X1C",
+          "settingId": "GFSC01_00",
+          "isSupport": "0"
+        },
+        "Bambu PET-CF @base": {
+          "name": "Bambu PET-CF @BBL X1C",
+          "settingId": "GFST01",
+          "isSupport": "0"
+        },
+        "Bambu PETG Basic @base": {
+          "name": "Bambu PETG Basic @BBL X1C",
+          "settingId": "GFSG00_01",
+          "isSupport": "0"
+        },
+        "Bambu PETG HF @base": {
+          "name": "Bambu PETG HF @BBL X1C",
+          "settingId": "GFSG02_00",
+          "isSupport": "0"
+        },
+        "Bambu PETG Matte @base": {
+          "name": "Bambu PETG Matte @BBL X1C",
+          "settingId": "GFSG03_44",
+          "isSupport": "0"
+        },
+        "Bambu PETG Translucent @base": {
+          "name": "Bambu PETG Translucent @BBL X1C",
+          "settingId": "GFSG01_00",
+          "isSupport": "0"
+        },
+        "Bambu PETG-CF @base": {
+          "name": "Bambu PETG-CF @BBL X1C 0.4 nozzle",
+          "settingId": "GFSG50_02",
+          "isSupport": "0"
+        },
+        "Bambu PLA Aero @base": {
+          "name": "Bambu PLA Aero @BBL X1C",
+          "settingId": "GFSA11_01",
+          "isSupport": "0"
+        },
+        "Bambu PLA Basic @base": {
+          "name": "Bambu PLA Basic @BBL X1C",
+          "settingId": "GFSA00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Dynamic @base": {
+          "name": "Bambu PLA Dynamic @BBL X1C",
+          "settingId": "GFSA13_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Galaxy @base": {
+          "name": "Bambu PLA Galaxy @BBL X1C",
+          "settingId": "GFSA15_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Glow @base": {
+          "name": "Bambu PLA Glow @BBL X1C",
+          "settingId": "GFSA12_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Lite @base": {
+          "name": "Bambu PLA Lite @BBL X1C",
+          "settingId": "GFSA18_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Marble @base": {
+          "name": "Bambu PLA Marble @BBL X1C",
+          "settingId": "GFSA07_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Matte @base": {
+          "name": "Bambu PLA Matte @BBL X1C",
+          "settingId": "GFSA01",
+          "isSupport": "0"
+        },
+        "Bambu PLA Metal @base": {
+          "name": "Bambu PLA Metal @BBL X1C",
+          "settingId": "GFSA02",
+          "isSupport": "0"
+        },
+        "Bambu PLA Pure @base": {
+          "name": "Bambu PLA Pure @BBL X1C",
+          "settingId": "GFSA19_32",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk @base": {
+          "name": "Bambu PLA Silk @BBL X1C",
+          "settingId": "GFSA05_01",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk+ @base": {
+          "name": "Bambu PLA Silk+ @BBL X1C",
+          "settingId": "GFSA06_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Sparkle @base": {
+          "name": "Bambu PLA Sparkle @BBL X1C",
+          "settingId": "GFSA08_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough @base": {
+          "name": "Bambu PLA Tough @BBL X1C",
+          "settingId": "GFSA09_02",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough+ @base": {
+          "name": "Bambu PLA Tough+ @BBL X1C",
+          "settingId": "GFSA10_32",
+          "isSupport": "0"
+        },
+        "Bambu PLA Translucent @base": {
+          "name": "Bambu PLA Translucent @BBL X1C",
+          "settingId": "GFSA17_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Wood @base": {
+          "name": "Bambu PLA Wood @BBL X1C",
+          "settingId": "GFSA16_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA-CF @base": {
+          "name": "Bambu PLA-CF @BBL X1C",
+          "settingId": "GFSA50_01",
+          "isSupport": "0"
+        },
+        "Bambu PPA-CF @base": {
+          "name": "Bambu PPA-CF @BBL X1C",
+          "settingId": "GFSN06_00",
+          "isSupport": "0"
+        },
+        "Bambu PVA @base": {
+          "name": "Bambu PVA @BBL X1C",
+          "settingId": "GFSS04_00",
+          "isSupport": "1"
+        },
+        "Bambu Support for ABS @base": {
+          "name": "Bambu Support for ABS @BBL X1C",
+          "settingId": "GFSS06_00",
+          "isSupport": "1"
+        },
+        "Bambu Support For PA/PET @base": {
+          "name": "Bambu Support For PA/PET @BBL X1C",
+          "settingId": "GFSS03_00",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA @base": {
+          "name": "Bambu Support For PLA @BBL X1C",
+          "settingId": "GFSS02_02",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA/PETG @base": {
+          "name": "Bambu Support For PLA/PETG @BBL X1C",
+          "settingId": "GFSS05_00",
+          "isSupport": "1"
+        },
+        "Bambu TPU 90A @base": {
+          "name": "Bambu TPU 90A @BBL X1C",
+          "settingId": "GFSU03_00",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A @base": {
+          "name": "Bambu TPU 95A @BBL X1C",
+          "settingId": "GFSU00",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A HF @base": {
+          "name": "Bambu TPU 95A HF @BBL X1C",
+          "settingId": "GFSU00_00",
+          "isSupport": "0"
+        },
+        "Bambu TPU for AMS @base": {
+          "name": "Bambu TPU for AMS @BBL X1C",
+          "settingId": "GFSU02_00",
+          "isSupport": "0"
+        }
+      }
+    },
+    "Bambu Lab X1": {
+      "printerPreset": "Bambu Lab X1 0.4 nozzle",
+      "processPreset": "0.20mm Standard @BBL X1C",
+      "nozzleDiameter": "0.4",
+      "nozzleDiameters": [
+        "0.4"
+      ],
+      "extruderTypes": [
+        "Direct Drive"
+      ],
+      "printableArea": [
+        "0x0",
+        "256x0",
+        "256x256",
+        "0x256"
+      ],
+      "printableHeight": "250",
+      "bedExcludeArea": [
+        "0x0",
+        "18x0",
+        "18x28",
+        "0x28"
+      ],
+      "extruderPrintableAreas": [],
+      "wrappingExcludeArea": [],
+      "filaments": {
+        "Bambu ABS @base": {
+          "name": "Bambu ABS @BBL X1C",
+          "settingId": "GFSB00",
+          "isSupport": "0"
+        },
+        "Bambu ABS-GF @base": {
+          "name": "Bambu ABS-GF @BBL X1C",
+          "settingId": "GFSB50_00",
+          "isSupport": "0"
+        },
+        "Bambu ASA @base": {
+          "name": "Bambu ASA @BBL X1C 0.4 nozzle",
+          "settingId": "GFSB01_02",
+          "isSupport": "0"
+        },
+        "Bambu ASA-Aero @base": {
+          "name": "Bambu ASA-Aero @BBL X1C",
+          "settingId": "GFSB02_00",
+          "isSupport": "0"
+        },
+        "Bambu ASA-CF @base": {
+          "name": "Bambu ASA-CF @BBL X1C",
+          "settingId": "GFSB51_00",
+          "isSupport": "0"
+        },
+        "Bambu PA6-CF @base": {
+          "name": "Bambu PA6-CF @BBL X1C",
+          "settingId": "GFSN05_02",
+          "isSupport": "0"
+        },
+        "Bambu PA6-GF @base": {
+          "name": "Bambu PA6-GF @BBL X1C",
+          "settingId": "GFSN08_00",
+          "isSupport": "0"
+        },
+        "Bambu PAHT-CF @base": {
+          "name": "Bambu PAHT-CF @BBL X1C",
+          "settingId": "GFSN04",
+          "isSupport": "0"
+        },
+        "Bambu PC @base": {
+          "name": "Bambu PC @BBL X1C",
+          "settingId": "GFSC00",
+          "isSupport": "0"
+        },
+        "Bambu PC FR @base": {
+          "name": "Bambu PC FR @BBL X1C",
+          "settingId": "GFSC01_00",
+          "isSupport": "0"
+        },
+        "Bambu PET-CF @base": {
+          "name": "Bambu PET-CF @BBL X1C",
+          "settingId": "GFST01",
+          "isSupport": "0"
+        },
+        "Bambu PETG Basic @base": {
+          "name": "Bambu PETG Basic @BBL X1C",
+          "settingId": "GFSG00_01",
+          "isSupport": "0"
+        },
+        "Bambu PETG HF @base": {
+          "name": "Bambu PETG HF @BBL X1C",
+          "settingId": "GFSG02_00",
+          "isSupport": "0"
+        },
+        "Bambu PETG Matte @base": {
+          "name": "Bambu PETG Matte @BBL X1C",
+          "settingId": "GFSG03_44",
+          "isSupport": "0"
+        },
+        "Bambu PETG Translucent @base": {
+          "name": "Bambu PETG Translucent @BBL X1C",
+          "settingId": "GFSG01_00",
+          "isSupport": "0"
+        },
+        "Bambu PETG-CF @base": {
+          "name": "Bambu PETG-CF @BBL X1C 0.4 nozzle",
+          "settingId": "GFSG50_02",
+          "isSupport": "0"
+        },
+        "Bambu PLA Aero @base": {
+          "name": "Bambu PLA Aero @BBL X1",
+          "settingId": "GFSA11_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Basic @base": {
+          "name": "Bambu PLA Basic @BBL X1",
+          "settingId": "GFSA04",
+          "isSupport": "0"
+        },
+        "Bambu PLA Dynamic @base": {
+          "name": "Bambu PLA Dynamic @BBL X1C",
+          "settingId": "GFSA13_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Galaxy @base": {
+          "name": "Bambu PLA Galaxy @BBL X1C",
+          "settingId": "GFSA15_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Glow @base": {
+          "name": "Bambu PLA Glow @BBL X1",
+          "settingId": "GFSA12_08",
+          "isSupport": "0"
+        },
+        "Bambu PLA Lite @base": {
+          "name": "Bambu PLA Lite @BBL X1C",
+          "settingId": "GFSA18_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Marble @base": {
+          "name": "Bambu PLA Marble @BBL X1",
+          "settingId": "GFSA07_01",
+          "isSupport": "0"
+        },
+        "Bambu PLA Matte @base": {
+          "name": "Bambu PLA Matte @BBL X1",
+          "settingId": "GFSA05",
+          "isSupport": "0"
+        },
+        "Bambu PLA Metal @base": {
+          "name": "Bambu PLA Metal @BBL X1",
+          "settingId": "GFSA02_02",
+          "isSupport": "0"
+        },
+        "Bambu PLA Pure @base": {
+          "name": "Bambu PLA Pure @BBL X1C",
+          "settingId": "GFSA19_32",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk @base": {
+          "name": "Bambu PLA Silk @BBL X1",
+          "settingId": "GFSA05_02",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk+ @base": {
+          "name": "Bambu PLA Silk+ @BBL X1",
+          "settingId": "GFSA06_02",
+          "isSupport": "0"
+        },
+        "Bambu PLA Sparkle @base": {
+          "name": "Bambu PLA Sparkle @BBL X1",
+          "settingId": "GFSA08_01",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough @base": {
+          "name": "Bambu PLA Tough @BBL X1",
+          "settingId": "GFSA09_01",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough+ @base": {
+          "name": "Bambu PLA Tough+ @BBL X1",
+          "settingId": "GFSA10_29",
+          "isSupport": "0"
+        },
+        "Bambu PLA Translucent @base": {
+          "name": "Bambu PLA Translucent @BBL X1C",
+          "settingId": "GFSA17_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Wood @base": {
+          "name": "Bambu PLA Wood @BBL X1",
+          "settingId": "GFSA16_02",
+          "isSupport": "0"
+        },
+        "Bambu PLA-CF @base": {
+          "name": "Bambu PLA-CF @BBL X1C",
+          "settingId": "GFSA50_01",
+          "isSupport": "0"
+        },
+        "Bambu PPA-CF @base": {
+          "name": "Bambu PPA-CF @BBL X1C",
+          "settingId": "GFSN06_00",
+          "isSupport": "0"
+        },
+        "Bambu PVA @base": {
+          "name": "Bambu PVA @BBL X1C",
+          "settingId": "GFSS04_00",
+          "isSupport": "1"
+        },
+        "Bambu Support for ABS @base": {
+          "name": "Bambu Support for ABS @BBL X1C",
+          "settingId": "GFSS06_00",
+          "isSupport": "1"
+        },
+        "Bambu Support For PA/PET @base": {
+          "name": "Bambu Support For PA/PET @BBL X1C",
+          "settingId": "GFSS03_00",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA @base": {
+          "name": "Bambu Support For PLA @BBL X1C",
+          "settingId": "GFSS02_02",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA/PETG @base": {
+          "name": "Bambu Support For PLA/PETG @BBL X1C",
+          "settingId": "GFSS05_00",
+          "isSupport": "1"
+        },
+        "Bambu TPU 90A @base": {
+          "name": "Bambu TPU 90A @BBL X1C",
+          "settingId": "GFSU03_00",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A @base": {
+          "name": "Bambu TPU 95A @BBL X1",
+          "settingId": "GFSU01",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A HF @base": {
+          "name": "Bambu TPU 95A HF @BBL X1",
+          "settingId": "GFSU00_01",
+          "isSupport": "0"
+        },
+        "Bambu TPU for AMS @base": {
+          "name": "Bambu TPU for AMS @BBL P1P",
+          "settingId": "GFSU02_01",
+          "isSupport": "0"
+        }
+      }
+    },
+    "Bambu Lab X1E": {
+      "printerPreset": "Bambu Lab X1E 0.4 nozzle",
+      "processPreset": "0.20mm Standard @BBL X1C",
+      "nozzleDiameter": "0.4",
+      "nozzleDiameters": [
+        "0.4"
+      ],
+      "extruderTypes": [
+        "Direct Drive"
+      ],
+      "printableArea": [
+        "0x0",
+        "256x0",
+        "256x256",
+        "0x256"
+      ],
+      "printableHeight": "250",
+      "bedExcludeArea": [
+        "0x0",
+        "18x0",
+        "18x28",
+        "0x28"
+      ],
+      "extruderPrintableAreas": [],
+      "wrappingExcludeArea": [],
+      "filaments": {
+        "Bambu ABS @base": {
+          "name": "Bambu ABS @BBL X1E",
+          "settingId": "GFSB00_04",
+          "isSupport": "0"
+        },
+        "Bambu ABS-GF @base": {
+          "name": "Bambu ABS-GF @BBL X1C",
+          "settingId": "GFSB50_00",
+          "isSupport": "0"
+        },
+        "Bambu ASA @base": {
+          "name": "Bambu ASA @BBL X1E 0.4 nozzle",
+          "settingId": "GFSB01_07",
+          "isSupport": "0"
+        },
+        "Bambu ASA-Aero @base": {
+          "name": "Bambu ASA-Aero @BBL X1C",
+          "settingId": "GFSB02_00",
+          "isSupport": "0"
+        },
+        "Bambu ASA-CF @base": {
+          "name": "Bambu ASA-CF @BBL X1C",
+          "settingId": "GFSB51_00",
+          "isSupport": "0"
+        },
+        "Bambu PA6-CF @base": {
+          "name": "Bambu PA6-CF @BBL X1E",
+          "settingId": "GFSN05_03",
+          "isSupport": "0"
+        },
+        "Bambu PA6-GF @base": {
+          "name": "Bambu PA6-GF @BBL X1C",
+          "settingId": "GFSN08_00",
+          "isSupport": "0"
+        },
+        "Bambu PAHT-CF @base": {
+          "name": "Bambu PAHT-CF @BBL X1C",
+          "settingId": "GFSN04",
+          "isSupport": "0"
+        },
+        "Bambu PC @base": {
+          "name": "Bambu PC @BBL X1E",
+          "settingId": "GFSC00_12",
+          "isSupport": "0"
+        },
+        "Bambu PC FR @base": {
+          "name": "Bambu PC FR @BBL X1E",
+          "settingId": "GFSC01_10",
+          "isSupport": "0"
+        },
+        "Bambu PET-CF @base": {
+          "name": "Bambu PET-CF @BBL X1E",
+          "settingId": "GFST01_00",
+          "isSupport": "0"
+        },
+        "Bambu PETG Basic @base": {
+          "name": "Bambu PETG Basic @BBL X1C",
+          "settingId": "GFSG00_01",
+          "isSupport": "0"
+        },
+        "Bambu PETG HF @base": {
+          "name": "Bambu PETG HF @BBL X1C",
+          "settingId": "GFSG02_00",
+          "isSupport": "0"
+        },
+        "Bambu PETG Matte @base": {
+          "name": "Bambu PETG Matte @BBL X1C",
+          "settingId": "GFSG03_44",
+          "isSupport": "0"
+        },
+        "Bambu PETG Translucent @base": {
+          "name": "Bambu PETG Translucent @BBL X1C",
+          "settingId": "GFSG01_00",
+          "isSupport": "0"
+        },
+        "Bambu PETG-CF @base": {
+          "name": "Bambu PETG-CF @BBL X1C 0.4 nozzle",
+          "settingId": "GFSG50_02",
+          "isSupport": "0"
+        },
+        "Bambu PLA Aero @base": {
+          "name": "Bambu PLA Aero @BBL X1C",
+          "settingId": "GFSA11_01",
+          "isSupport": "0"
+        },
+        "Bambu PLA Basic @base": {
+          "name": "Bambu PLA Basic @BBL X1C",
+          "settingId": "GFSA00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Dynamic @base": {
+          "name": "Bambu PLA Dynamic @BBL X1C",
+          "settingId": "GFSA13_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Galaxy @base": {
+          "name": "Bambu PLA Galaxy @BBL X1C",
+          "settingId": "GFSA15_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Glow @base": {
+          "name": "Bambu PLA Glow @BBL X1E",
+          "settingId": "GFSA12_04",
+          "isSupport": "0"
+        },
+        "Bambu PLA Lite @base": {
+          "name": "Bambu PLA Lite @BBL X1C",
+          "settingId": "GFSA18_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Marble @base": {
+          "name": "Bambu PLA Marble @BBL X1C",
+          "settingId": "GFSA07_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Matte @base": {
+          "name": "Bambu PLA Matte @BBL X1C",
+          "settingId": "GFSA01",
+          "isSupport": "0"
+        },
+        "Bambu PLA Metal @base": {
+          "name": "Bambu PLA Metal @BBL X1C",
+          "settingId": "GFSA02",
+          "isSupport": "0"
+        },
+        "Bambu PLA Pure @base": {
+          "name": "Bambu PLA Pure @BBL X1C",
+          "settingId": "GFSA19_32",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk @base": {
+          "name": "Bambu PLA Silk @BBL X1C",
+          "settingId": "GFSA05_01",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk+ @base": {
+          "name": "Bambu PLA Silk+ @BBL X1C",
+          "settingId": "GFSA06_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Sparkle @base": {
+          "name": "Bambu PLA Sparkle @BBL X1C",
+          "settingId": "GFSA08_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough @base": {
+          "name": "Bambu PLA Tough @BBL X1C",
+          "settingId": "GFSA09_02",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough+ @base": {
+          "name": "Bambu PLA Tough+ @BBL X1C",
+          "settingId": "GFSA10_32",
+          "isSupport": "0"
+        },
+        "Bambu PLA Translucent @base": {
+          "name": "Bambu PLA Translucent @BBL X1C",
+          "settingId": "GFSA17_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Wood @base": {
+          "name": "Bambu PLA Wood @BBL X1C",
+          "settingId": "GFSA16_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA-CF @base": {
+          "name": "Bambu PLA-CF @BBL X1C",
+          "settingId": "GFSA50_01",
+          "isSupport": "0"
+        },
+        "Bambu PPA-CF @base": {
+          "name": "Bambu PPA-CF @BBL X1E",
+          "settingId": "GFSN06_01",
+          "isSupport": "0"
+        },
+        "Bambu PPS-CF @base": {
+          "name": "Bambu PPS-CF @BBL X1E",
+          "settingId": "GFST02_00",
+          "isSupport": "0"
+        },
+        "Bambu PVA @base": {
+          "name": "Bambu PVA @BBL X1C",
+          "settingId": "GFSS04_00",
+          "isSupport": "1"
+        },
+        "Bambu Support for ABS @base": {
+          "name": "Bambu Support for ABS @BBL X1C",
+          "settingId": "GFSS06_00",
+          "isSupport": "1"
+        },
+        "Bambu Support For PA/PET @base": {
+          "name": "Bambu Support For PA/PET @BBL X1C",
+          "settingId": "GFSS03_00",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA @base": {
+          "name": "Bambu Support For PLA @BBL X1C",
+          "settingId": "GFSS02_02",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA/PETG @base": {
+          "name": "Bambu Support For PLA/PETG @BBL X1C",
+          "settingId": "GFSS05_00",
+          "isSupport": "1"
+        },
+        "Bambu TPU 90A @base": {
+          "name": "Bambu TPU 90A @BBL X1C",
+          "settingId": "GFSU03_00",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A @base": {
+          "name": "Bambu TPU 95A @BBL X1C",
+          "settingId": "GFSU00",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A HF @base": {
+          "name": "Bambu TPU 95A HF @BBL X1E",
+          "settingId": "GFSU00_04",
+          "isSupport": "0"
+        },
+        "Bambu TPU for AMS @base": {
+          "name": "Bambu TPU for AMS @BBL X1C",
+          "settingId": "GFSU02_00",
+          "isSupport": "0"
+        }
+      }
+    },
+    "Bambu Lab P1P": {
+      "printerPreset": "Bambu Lab P1P 0.4 nozzle",
+      "processPreset": "0.20mm Standard @BBL P1P",
+      "nozzleDiameter": "0.4",
+      "nozzleDiameters": [
+        "0.4"
+      ],
+      "extruderTypes": [
+        "Direct Drive"
+      ],
+      "printableArea": [
+        "0x0",
+        "256x0",
+        "256x256",
+        "0x256"
+      ],
+      "printableHeight": "250",
+      "bedExcludeArea": [
+        "0x0",
+        "18x0",
+        "18x28",
+        "0x28"
+      ],
+      "extruderPrintableAreas": [],
+      "wrappingExcludeArea": [],
+      "filaments": {
+        "Bambu ABS @base": {
+          "name": "Bambu ABS @BBL P1P",
+          "settingId": "GFSB00_03",
+          "isSupport": "0"
+        },
+        "Bambu ABS-GF @base": {
+          "name": "Bambu ABS-GF @BBL P1P",
+          "settingId": "GFSB50_01",
+          "isSupport": "0"
+        },
+        "Bambu ASA @base": {
+          "name": "Bambu ASA @BBL X1C 0.4 nozzle",
+          "settingId": "GFSB01_02",
+          "isSupport": "0"
+        },
+        "Bambu ASA-Aero @base": {
+          "name": "Bambu ASA-Aero @BBL P1P",
+          "settingId": "GFSB02_01",
+          "isSupport": "0"
+        },
+        "Bambu ASA-CF @base": {
+          "name": "Bambu ASA-CF @BBL P1P",
+          "settingId": "GFSB51_02",
+          "isSupport": "0"
+        },
+        "Bambu PA6-CF @base": {
+          "name": "Bambu PA6-CF @BBL X1C",
+          "settingId": "GFSN05_02",
+          "isSupport": "0"
+        },
+        "Bambu PA6-GF @base": {
+          "name": "Bambu PA6-GF @BBL P1P",
+          "settingId": "GFSN08_01",
+          "isSupport": "0"
+        },
+        "Bambu PAHT-CF @base": {
+          "name": "Bambu PAHT-CF @BBL P1P",
+          "settingId": "GFSN04_10",
+          "isSupport": "0"
+        },
+        "Bambu PC @base": {
+          "name": "Bambu PC @BBL P1P",
+          "settingId": "GFSC00_04",
+          "isSupport": "0"
+        },
+        "Bambu PC FR @base": {
+          "name": "Bambu PC FR @BBL P1P",
+          "settingId": "GFSC01_08",
+          "isSupport": "0"
+        },
+        "Bambu PET-CF @base": {
+          "name": "Bambu PET-CF @BBL P1P",
+          "settingId": "GFST01_10",
+          "isSupport": "0"
+        },
+        "Bambu PETG Basic @base": {
+          "name": "Bambu PETG Basic @BBL X1C",
+          "settingId": "GFSG00_01",
+          "isSupport": "0"
+        },
+        "Bambu PETG HF @base": {
+          "name": "Bambu PETG HF @BBL P1P 0.4 nozzle",
+          "settingId": "GFSG02_35",
+          "isSupport": "0"
+        },
+        "Bambu PETG Matte @base": {
+          "name": "Bambu PETG Matte @BBL P1P 0.4 nozzle",
+          "settingId": "GFSG03_50",
+          "isSupport": "0"
+        },
+        "Bambu PETG Translucent @base": {
+          "name": "Bambu PETG Translucent @BBL X1C",
+          "settingId": "GFSG01_00",
+          "isSupport": "0"
+        },
+        "Bambu PETG-CF @base": {
+          "name": "Bambu PETG-CF @BBL P1P 0.4 nozzle",
+          "settingId": "GFSG50_03",
+          "isSupport": "0"
+        },
+        "Bambu PLA Aero @base": {
+          "name": "Bambu PLA Aero @BBL P1P",
+          "settingId": "GFSA11_02",
+          "isSupport": "0"
+        },
+        "Bambu PLA Basic @base": {
+          "name": "Bambu PLA Basic @BBL P1P",
+          "settingId": "GFSA04_10",
+          "isSupport": "0"
+        },
+        "Bambu PLA Dynamic @base": {
+          "name": "Bambu PLA Dynamic @BBL P1P",
+          "settingId": "GFSA13_03",
+          "isSupport": "0"
+        },
+        "Bambu PLA Galaxy @base": {
+          "name": "Bambu PLA Galaxy @BBL P1P",
+          "settingId": "GFSA15_03",
+          "isSupport": "0"
+        },
+        "Bambu PLA Glow @base": {
+          "name": "Bambu PLA Glow @BBL P1P",
+          "settingId": "GFSA12_02",
+          "isSupport": "0"
+        },
+        "Bambu PLA Lite @base": {
+          "name": "Bambu PLA Lite @BBL P1P",
+          "settingId": "GFSA18_03",
+          "isSupport": "0"
+        },
+        "Bambu PLA Marble @base": {
+          "name": "Bambu PLA Marble @BBL P1P",
+          "settingId": "GFSA07_10",
+          "isSupport": "0"
+        },
+        "Bambu PLA Matte @base": {
+          "name": "Bambu PLA Matte @BBL P1P",
+          "settingId": "GFSA05_10",
+          "isSupport": "0"
+        },
+        "Bambu PLA Metal @base": {
+          "name": "Bambu PLA Metal @BBL P1P",
+          "settingId": "GFSA02_10",
+          "isSupport": "0"
+        },
+        "Bambu PLA Pure @base": {
+          "name": "Bambu PLA Pure @BBL P1P",
+          "settingId": "GFSA19_25",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk @base": {
+          "name": "Bambu PLA Silk @BBL P1P",
+          "settingId": "GFSA05_12",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk+ @base": {
+          "name": "Bambu PLA Silk+ @BBL P1P",
+          "settingId": "GFSA06_03",
+          "isSupport": "0"
+        },
+        "Bambu PLA Sparkle @base": {
+          "name": "Bambu PLA Sparkle @BBL P1P",
+          "settingId": "GFSA08_10",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough @base": {
+          "name": "Bambu PLA Tough @BBL P1P",
+          "settingId": "GFSA09_11",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough+ @base": {
+          "name": "Bambu PLA Tough+ @BBL P1P",
+          "settingId": "GFSA10_34",
+          "isSupport": "0"
+        },
+        "Bambu PLA Translucent @base": {
+          "name": "Bambu PLA Translucent @BBL P1P",
+          "settingId": "GFSA17_03",
+          "isSupport": "0"
+        },
+        "Bambu PLA Wood @base": {
+          "name": "Bambu PLA Wood @BBL P1P",
+          "settingId": "GFSA16_03",
+          "isSupport": "0"
+        },
+        "Bambu PLA-CF @base": {
+          "name": "Bambu PLA-CF @BBL P1P",
+          "settingId": "GFSA50_10",
+          "isSupport": "0"
+        },
+        "Bambu PPA-CF @base": {
+          "name": "Bambu PPA-CF @BBL X1C",
+          "settingId": "GFSN06_00",
+          "isSupport": "0"
+        },
+        "Bambu PVA @base": {
+          "name": "Bambu PVA @BBL P1P",
+          "settingId": "GFSS04_02",
+          "isSupport": "1"
+        },
+        "Bambu Support for ABS @base": {
+          "name": "Bambu Support for ABS @BBL X1C",
+          "settingId": "GFSS06_00",
+          "isSupport": "1"
+        },
+        "Bambu Support For PA/PET @base": {
+          "name": "Bambu Support For PA/PET @BBL P1P",
+          "settingId": "GFSS03_01",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA @base": {
+          "name": "Bambu Support For PLA @BBL P1P",
+          "settingId": "GFSS02_12",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA/PETG @base": {
+          "name": "Bambu Support For PLA/PETG @BBL P1P",
+          "settingId": "GFSS05_02",
+          "isSupport": "1"
+        },
+        "Bambu TPU 90A @base": {
+          "name": "Bambu TPU 90A @BBL P1P",
+          "settingId": "GFSU03_01",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A @base": {
+          "name": "Bambu TPU 95A @BBL P1P",
+          "settingId": "GFSU01_10",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A HF @base": {
+          "name": "Bambu TPU 95A HF @BBL P1P",
+          "settingId": "GFSU00_02",
+          "isSupport": "0"
+        },
+        "Bambu TPU for AMS @base": {
+          "name": "Bambu TPU for AMS @BBL P1P",
+          "settingId": "GFSU02_01",
+          "isSupport": "0"
+        }
+      }
+    },
+    "Bambu Lab P1S": {
+      "printerPreset": "Bambu Lab P1S 0.4 nozzle",
+      "processPreset": "0.20mm Standard @BBL X1C",
+      "nozzleDiameter": "0.4",
+      "nozzleDiameters": [
+        "0.4"
+      ],
+      "extruderTypes": [
+        "Direct Drive"
+      ],
+      "printableArea": [
+        "0x0",
+        "256x0",
+        "256x256",
+        "0x256"
+      ],
+      "printableHeight": "250",
+      "bedExcludeArea": [
+        "0x0",
+        "18x0",
+        "18x28",
+        "0x28"
+      ],
+      "extruderPrintableAreas": [],
+      "wrappingExcludeArea": [],
+      "filaments": {
+        "Bambu ABS @base": {
+          "name": "Bambu ABS @BBL P1S 0.4 nozzle",
+          "settingId": "GFSB00_38",
+          "isSupport": "0"
+        },
+        "Bambu ABS-GF @base": {
+          "name": "Bambu ABS-GF @BBL X1C",
+          "settingId": "GFSB50_00",
+          "isSupport": "0"
+        },
+        "Bambu ASA @base": {
+          "name": "Bambu ASA @BBL X1C 0.4 nozzle",
+          "settingId": "GFSB01_02",
+          "isSupport": "0"
+        },
+        "Bambu ASA-Aero @base": {
+          "name": "Bambu ASA-Aero @BBL X1C",
+          "settingId": "GFSB02_00",
+          "isSupport": "0"
+        },
+        "Bambu ASA-CF @base": {
+          "name": "Bambu ASA-CF @BBL X1C",
+          "settingId": "GFSB51_00",
+          "isSupport": "0"
+        },
+        "Bambu PA6-CF @base": {
+          "name": "Bambu PA6-CF @BBL X1C",
+          "settingId": "GFSN05_02",
+          "isSupport": "0"
+        },
+        "Bambu PA6-GF @base": {
+          "name": "Bambu PA6-GF @BBL X1C",
+          "settingId": "GFSN08_00",
+          "isSupport": "0"
+        },
+        "Bambu PAHT-CF @base": {
+          "name": "Bambu PAHT-CF @BBL X1C",
+          "settingId": "GFSN04",
+          "isSupport": "0"
+        },
+        "Bambu PC @base": {
+          "name": "Bambu PC @BBL P1S",
+          "settingId": "GFSC00_05",
+          "isSupport": "0"
+        },
+        "Bambu PC FR @base": {
+          "name": "Bambu PC FR @BBL P1S",
+          "settingId": "GFSC01_04",
+          "isSupport": "0"
+        },
+        "Bambu PET-CF @base": {
+          "name": "Bambu PET-CF @BBL X1C",
+          "settingId": "GFST01",
+          "isSupport": "0"
+        },
+        "Bambu PETG Basic @base": {
+          "name": "Bambu PETG Basic @BBL X1C",
+          "settingId": "GFSG00_01",
+          "isSupport": "0"
+        },
+        "Bambu PETG HF @base": {
+          "name": "Bambu PETG HF @BBL P1S 0.4 nozzle",
+          "settingId": "GFSG02_36",
+          "isSupport": "0"
+        },
+        "Bambu PETG Matte @base": {
+          "name": "Bambu PETG Matte @BBL P1P 0.4 nozzle",
+          "settingId": "GFSG03_50",
+          "isSupport": "0"
+        },
+        "Bambu PETG Translucent @base": {
+          "name": "Bambu PETG Translucent @BBL X1C",
+          "settingId": "GFSG01_00",
+          "isSupport": "0"
+        },
+        "Bambu PETG-CF @base": {
+          "name": "Bambu PETG-CF @BBL X1C 0.4 nozzle",
+          "settingId": "GFSG50_02",
+          "isSupport": "0"
+        },
+        "Bambu PLA Aero @base": {
+          "name": "Bambu PLA Aero @BBL X1C",
+          "settingId": "GFSA11_01",
+          "isSupport": "0"
+        },
+        "Bambu PLA Basic @base": {
+          "name": "Bambu PLA Basic @BBL P1S 0.4 nozzle",
+          "settingId": "GFSA00_34",
+          "isSupport": "0"
+        },
+        "Bambu PLA Dynamic @base": {
+          "name": "Bambu PLA Dynamic @BBL X1C",
+          "settingId": "GFSA13_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Galaxy @base": {
+          "name": "Bambu PLA Galaxy @BBL X1C",
+          "settingId": "GFSA15_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Glow @base": {
+          "name": "Bambu PLA Glow @BBL X1C",
+          "settingId": "GFSA12_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Lite @base": {
+          "name": "Bambu PLA Lite @BBL X1C",
+          "settingId": "GFSA18_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Marble @base": {
+          "name": "Bambu PLA Marble @BBL X1C",
+          "settingId": "GFSA07_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Matte @base": {
+          "name": "Bambu PLA Matte @BBL P1S 0.4 nozzle",
+          "settingId": "GFSA01_34",
+          "isSupport": "0"
+        },
+        "Bambu PLA Metal @base": {
+          "name": "Bambu PLA Metal @BBL X1C",
+          "settingId": "GFSA02",
+          "isSupport": "0"
+        },
+        "Bambu PLA Pure @base": {
+          "name": "Bambu PLA Pure @BBL X1C",
+          "settingId": "GFSA19_32",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk @base": {
+          "name": "Bambu PLA Silk @BBL X1C",
+          "settingId": "GFSA05_01",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk+ @base": {
+          "name": "Bambu PLA Silk+ @BBL P1S 0.4 nozzle",
+          "settingId": "GFSA06_29",
+          "isSupport": "0"
+        },
+        "Bambu PLA Sparkle @base": {
+          "name": "Bambu PLA Sparkle @BBL X1C",
+          "settingId": "GFSA08_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough @base": {
+          "name": "Bambu PLA Tough @BBL X1C",
+          "settingId": "GFSA09_02",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough+ @base": {
+          "name": "Bambu PLA Tough+ @BBL X1C",
+          "settingId": "GFSA10_32",
+          "isSupport": "0"
+        },
+        "Bambu PLA Translucent @base": {
+          "name": "Bambu PLA Translucent @BBL X1C",
+          "settingId": "GFSA17_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Wood @base": {
+          "name": "Bambu PLA Wood @BBL X1C",
+          "settingId": "GFSA16_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA-CF @base": {
+          "name": "Bambu PLA-CF @BBL X1C",
+          "settingId": "GFSA50_01",
+          "isSupport": "0"
+        },
+        "Bambu PPA-CF @base": {
+          "name": "Bambu PPA-CF @BBL X1C",
+          "settingId": "GFSN06_00",
+          "isSupport": "0"
+        },
+        "Bambu PVA @base": {
+          "name": "Bambu PVA @BBL X1C",
+          "settingId": "GFSS04_00",
+          "isSupport": "1"
+        },
+        "Bambu Support for ABS @base": {
+          "name": "Bambu Support for ABS @BBL X1C",
+          "settingId": "GFSS06_00",
+          "isSupport": "1"
+        },
+        "Bambu Support For PA/PET @base": {
+          "name": "Bambu Support For PA/PET @BBL X1C",
+          "settingId": "GFSS03_00",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA @base": {
+          "name": "Bambu Support For PLA @BBL X1C",
+          "settingId": "GFSS02_02",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA/PETG @base": {
+          "name": "Bambu Support For PLA/PETG @BBL X1C",
+          "settingId": "GFSS05_00",
+          "isSupport": "1"
+        },
+        "Bambu TPU 90A @base": {
+          "name": "Bambu TPU 90A @BBL X1C",
+          "settingId": "GFSU03_00",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A @base": {
+          "name": "Bambu TPU 95A @BBL X1C",
+          "settingId": "GFSU00",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A HF @base": {
+          "name": "Bambu TPU 95A HF @BBL P1S",
+          "settingId": "GFSU00_03",
+          "isSupport": "0"
+        },
+        "Bambu TPU for AMS @base": {
+          "name": "Bambu TPU for AMS @BBL X1C",
+          "settingId": "GFSU02_00",
+          "isSupport": "0"
+        }
+      }
+    },
+    "Bambu Lab A1 mini": {
+      "printerPreset": "Bambu Lab A1 mini 0.4 nozzle",
+      "processPreset": "0.20mm Standard @BBL A1M",
+      "nozzleDiameter": "0.4",
+      "nozzleDiameters": [
+        "0.4"
+      ],
+      "extruderTypes": [
+        "Direct Drive"
+      ],
+      "printableArea": [
+        "0x0",
+        "180x0",
+        "180x180",
+        "0x180"
+      ],
+      "printableHeight": "180",
+      "bedExcludeArea": [],
+      "extruderPrintableAreas": [],
+      "wrappingExcludeArea": [],
+      "filaments": {
+        "Bambu PETG Basic @base": {
+          "name": "Bambu PETG Basic @BBL A1M 0.4 nozzle",
+          "settingId": "GFSG00_03",
+          "isSupport": "0"
+        },
+        "Bambu PETG HF @base": {
+          "name": "Bambu PETG HF @BBL A1M",
+          "settingId": "GFSG02_06",
+          "isSupport": "0"
+        },
+        "Bambu PETG Matte @base": {
+          "name": "Bambu PETG Matte @BBL A1M 0.4 nozzle",
+          "settingId": "GFSG03_04",
+          "isSupport": "0"
+        },
+        "Bambu PETG Translucent @base": {
+          "name": "Bambu PETG Translucent @BBL A1M",
+          "settingId": "GFSG01_02",
+          "isSupport": "0"
+        },
+        "Bambu PETG-CF @base": {
+          "name": "Bambu PETG-CF @BBL A1M 0.4 nozzle",
+          "settingId": "GFSG50_04",
+          "isSupport": "0"
+        },
+        "Bambu PLA Aero @base": {
+          "name": "Bambu PLA Aero @BBL A1M",
+          "settingId": "GFSA11_03",
+          "isSupport": "0"
+        },
+        "Bambu PLA Basic @base": {
+          "name": "Bambu PLA Basic @BBL A1M",
+          "settingId": "GFSA00_02",
+          "isSupport": "0"
+        },
+        "Bambu PLA Dynamic @base": {
+          "name": "Bambu PLA Dynamic @BBL A1M",
+          "settingId": "GFSA13_08",
+          "isSupport": "0"
+        },
+        "Bambu PLA Galaxy @base": {
+          "name": "Bambu PLA Galaxy @BBL A1M",
+          "settingId": "GFSA15_07",
+          "isSupport": "0"
+        },
+        "Bambu PLA Glow @base": {
+          "name": "Bambu PLA Glow @BBL A1M",
+          "settingId": "GFSA12_16",
+          "isSupport": "0"
+        },
+        "Bambu PLA Lite @base": {
+          "name": "Bambu PLA Lite @BBL A1M",
+          "settingId": "GFSA18_07",
+          "isSupport": "0"
+        },
+        "Bambu PLA Marble @base": {
+          "name": "Bambu PLA Marble @BBL A1M",
+          "settingId": "GFSA07_02",
+          "isSupport": "0"
+        },
+        "Bambu PLA Matte @base": {
+          "name": "Bambu PLA Matte @BBL A1M",
+          "settingId": "GFSA01_02",
+          "isSupport": "0"
+        },
+        "Bambu PLA Metal @base": {
+          "name": "Bambu PLA Metal @BBL A1M",
+          "settingId": "GFSA02_00",
+          "isSupport": "0"
+        },
+        "Bambu PLA Pure @base": {
+          "name": "Bambu PLA Pure @BBL A1M",
+          "settingId": "GFSA19_05",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk @base": {
+          "name": "Bambu PLA Silk @BBL A1M",
+          "settingId": "GFSA05_03",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk+ @base": {
+          "name": "Bambu PLA Silk+ @BBL A1M",
+          "settingId": "GFSA06_07",
+          "isSupport": "0"
+        },
+        "Bambu PLA Sparkle @base": {
+          "name": "Bambu PLA Sparkle @BBL A1M",
+          "settingId": "GFSA08_02",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough @base": {
+          "name": "Bambu PLA Tough @BBL A1M",
+          "settingId": "GFSA09_03",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough+ @base": {
+          "name": "Bambu PLA Tough+ @BBL A1M",
+          "settingId": "GFSA10_03",
+          "isSupport": "0"
+        },
+        "Bambu PLA Translucent @base": {
+          "name": "Bambu PLA Translucent @BBL A1M",
+          "settingId": "GFSA17_09",
+          "isSupport": "0"
+        },
+        "Bambu PLA Wood @base": {
+          "name": "Bambu PLA Wood @BBL A1M",
+          "settingId": "GFSA16_05",
+          "isSupport": "0"
+        },
+        "Bambu PLA-CF @base": {
+          "name": "Bambu PLA-CF @BBL A1M",
+          "settingId": "GFSA50_00",
+          "isSupport": "0"
+        },
+        "Bambu PVA @base": {
+          "name": "Bambu PVA @BBL A1M",
+          "settingId": "GFSS04_06",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA @base": {
+          "name": "Bambu Support For PLA @BBL A1M",
+          "settingId": "GFSS02_00",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA/PETG @base": {
+          "name": "Bambu Support For PLA/PETG @BBL A1M",
+          "settingId": "GFSS05_04",
+          "isSupport": "1"
+        },
+        "Bambu TPU 90A @base": {
+          "name": "Bambu TPU 90A @BBL A1M",
+          "settingId": "GFSU03_05",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A @base": {
+          "name": "Bambu TPU 95A @BBL A1M",
+          "settingId": "GFSU01_00",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A HF @base": {
+          "name": "Bambu TPU 95A HF @BBL A1M",
+          "settingId": "GFSU00_05",
+          "isSupport": "0"
+        },
+        "Bambu TPU for AMS @base": {
+          "name": "Bambu TPU for AMS @BBL A1M",
+          "settingId": "GFSU02_03",
+          "isSupport": "0"
+        }
+      }
+    },
+    "Bambu Lab A1": {
+      "printerPreset": "Bambu Lab A1 0.4 nozzle",
+      "processPreset": "0.20mm Standard @BBL A1",
+      "nozzleDiameter": "0.4",
+      "nozzleDiameters": [
+        "0.4"
+      ],
+      "extruderTypes": [
+        "Direct Drive"
+      ],
+      "printableArea": [
+        "0x0",
+        "256x0",
+        "256x256",
+        "0x256"
+      ],
+      "printableHeight": "256",
+      "bedExcludeArea": [],
+      "extruderPrintableAreas": [],
+      "wrappingExcludeArea": [],
+      "filaments": {
+        "Bambu ABS @base": {
+          "name": "Bambu ABS @BBL A1",
+          "settingId": "GFSB00_07",
+          "isSupport": "0"
+        },
+        "Bambu ABS-GF @base": {
+          "name": "Bambu ABS-GF @BBL A1",
+          "settingId": "GFSB50_02",
+          "isSupport": "0"
+        },
+        "Bambu ASA @base": {
+          "name": "Bambu ASA @BBL A1 0.4 nozzle",
+          "settingId": "GFSB01_09",
+          "isSupport": "0"
+        },
+        "Bambu ASA-Aero @base": {
+          "name": "Bambu ASA-Aero @BBL A1",
+          "settingId": "GFSB02_02",
+          "isSupport": "0"
+        },
+        "Bambu ASA-CF @base": {
+          "name": "Bambu ASA-CF @BBL A1",
+          "settingId": "GFSB51_04",
+          "isSupport": "0"
+        },
+        "Bambu PA6-CF @base": {
+          "name": "Bambu PA6-CF @BBL A1",
+          "settingId": "GFSN05_00",
+          "isSupport": "0"
+        },
+        "Bambu PA6-GF @base": {
+          "name": "Bambu PA6-GF @BBL A1",
+          "settingId": "GFSN08_02",
+          "isSupport": "0"
+        },
+        "Bambu PAHT-CF @base": {
+          "name": "Bambu PAHT-CF @BBL A1",
+          "settingId": "GFSN04_00",
+          "isSupport": "0"
+        },
+        "Bambu PC @base": {
+          "name": "Bambu PC @BBL A1",
+          "settingId": "GFSC00_14",
+          "isSupport": "0"
+        },
+        "Bambu PC FR @base": {
+          "name": "Bambu PC FR @BBL A1",
+          "settingId": "GFSC01_14",
+          "isSupport": "0"
+        },
+        "Bambu PET-CF @base": {
+          "name": "Bambu PET-CF @BBL A1",
+          "settingId": "GFST01_01",
+          "isSupport": "0"
+        },
+        "Bambu PETG Basic @base": {
+          "name": "Bambu PETG Basic @BBL A1",
+          "settingId": "GFSG00_06",
+          "isSupport": "0"
+        },
+        "Bambu PETG HF @base": {
+          "name": "Bambu PETG HF @BBL A1",
+          "settingId": "GFSG02_03",
+          "isSupport": "0"
+        },
+        "Bambu PETG Matte @base": {
+          "name": "Bambu PETG Matte @BBL A1",
+          "settingId": "GFSG03_02",
+          "isSupport": "0"
+        },
+        "Bambu PETG Translucent @base": {
+          "name": "Bambu PETG Translucent @BBL A1",
+          "settingId": "GFSG01_05",
+          "isSupport": "0"
+        },
+        "Bambu PETG-CF @base": {
+          "name": "Bambu PETG-CF @BBL A1 0.4 nozzle",
+          "settingId": "GFSG50_05",
+          "isSupport": "0"
+        },
+        "Bambu PLA Aero @base": {
+          "name": "Bambu PLA Aero @BBL A1",
+          "settingId": "GFSA11_04",
+          "isSupport": "0"
+        },
+        "Bambu PLA Basic @base": {
+          "name": "Bambu PLA Basic @BBL A1",
+          "settingId": "GFSA00_04",
+          "isSupport": "0"
+        },
+        "Bambu PLA Dynamic @base": {
+          "name": "Bambu PLA Dynamic @BBL A1",
+          "settingId": "GFSA13_05",
+          "isSupport": "0"
+        },
+        "Bambu PLA Galaxy @base": {
+          "name": "Bambu PLA Galaxy @BBL A1",
+          "settingId": "GFSA15_05",
+          "isSupport": "0"
+        },
+        "Bambu PLA Glow @base": {
+          "name": "Bambu PLA Glow @BBL A1",
+          "settingId": "GFSA12_11",
+          "isSupport": "0"
+        },
+        "Bambu PLA Lite @base": {
+          "name": "Bambu PLA Lite @BBL A1",
+          "settingId": "GFSA18_05",
+          "isSupport": "0"
+        },
+        "Bambu PLA Marble @base": {
+          "name": "Bambu PLA Marble @BBL A1",
+          "settingId": "GFSA07_03",
+          "isSupport": "0"
+        },
+        "Bambu PLA Matte @base": {
+          "name": "Bambu PLA Matte @BBL A1",
+          "settingId": "GFSA01_04",
+          "isSupport": "0"
+        },
+        "Bambu PLA Metal @base": {
+          "name": "Bambu PLA Metal @BBL A1",
+          "settingId": "GFSA02_04",
+          "isSupport": "0"
+        },
+        "Bambu PLA Pure @base": {
+          "name": "Bambu PLA Pure @BBL A1",
+          "settingId": "GFSA19_02",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk @base": {
+          "name": "Bambu PLA Silk @BBL A1",
+          "settingId": "GFSA05_05",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk+ @base": {
+          "name": "Bambu PLA Silk+ @BBL A1",
+          "settingId": "GFSA06_05",
+          "isSupport": "0"
+        },
+        "Bambu PLA Sparkle @base": {
+          "name": "Bambu PLA Sparkle @BBL A1",
+          "settingId": "GFSA08_03",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough @base": {
+          "name": "Bambu PLA Tough @BBL A1",
+          "settingId": "GFSA09_05",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough+ @base": {
+          "name": "Bambu PLA Tough+ @BBL A1",
+          "settingId": "GFSA10_01",
+          "isSupport": "0"
+        },
+        "Bambu PLA Translucent @base": {
+          "name": "Bambu PLA Translucent @BBL A1",
+          "settingId": "GFSA17_06",
+          "isSupport": "0"
+        },
+        "Bambu PLA Wood @base": {
+          "name": "Bambu PLA Wood @BBL A1",
+          "settingId": "GFSA16_04",
+          "isSupport": "0"
+        },
+        "Bambu PLA-CF @base": {
+          "name": "Bambu PLA-CF @BBL A1",
+          "settingId": "GFSA50_04",
+          "isSupport": "0"
+        },
+        "Bambu PVA @base": {
+          "name": "Bambu PVA @BBL A1",
+          "settingId": "GFSS04_04",
+          "isSupport": "1"
+        },
+        "Bambu Support for ABS @base": {
+          "name": "Bambu Support for ABS @BBL A1",
+          "settingId": "GFSS06_01",
+          "isSupport": "1"
+        },
+        "Bambu Support For PA/PET @base": {
+          "name": "Bambu Support For PA/PET @BBL A1",
+          "settingId": "GFSS03_02",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA @base": {
+          "name": "Bambu Support For PLA @BBL A1",
+          "settingId": "GFSS02_04",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA/PETG @base": {
+          "name": "Bambu Support For PLA/PETG @BBL A1",
+          "settingId": "GFSS05_06",
+          "isSupport": "1"
+        },
+        "Bambu TPU 90A @base": {
+          "name": "Bambu TPU 90A @BBL A1",
+          "settingId": "GFSU03_04",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A @base": {
+          "name": "Bambu TPU 95A @BBL A1",
+          "settingId": "GFSU01_01",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A HF @base": {
+          "name": "Bambu TPU 95A HF @BBL A1",
+          "settingId": "GFSU00_06",
+          "isSupport": "0"
+        },
+        "Bambu TPU for AMS @base": {
+          "name": "Bambu TPU for AMS @BBL A1",
+          "settingId": "GFSU02_02",
+          "isSupport": "0"
+        }
+      }
+    },
+    "Bambu Lab H2D": {
+      "printerPreset": "Bambu Lab H2D 0.4 nozzle",
+      "processPreset": "0.20mm Standard @BBL H2D",
+      "nozzleDiameter": "0.4",
+      "nozzleDiameters": [
+        "0.4",
+        "0.4"
+      ],
+      "extruderTypes": [
+        "Direct Drive",
+        "Direct Drive"
+      ],
+      "printableArea": [
+        "0x0",
+        "350x0",
+        "350x320",
+        "0x320"
+      ],
+      "printableHeight": "325",
+      "bedExcludeArea": [],
+      "extruderPrintableAreas": [
+        "0x0,325x0,325x320,0x320",
+        "25x0,350x0,350x320,25x320"
+      ],
+      "wrappingExcludeArea": [
+        "145x310",
+        "256x310",
+        "256x326",
+        "145x326"
+      ],
+      "filaments": {
+        "Bambu ABS @base": {
+          "name": "Bambu ABS @BBL H2D",
+          "settingId": "GFSB00_11",
+          "isSupport": "0"
+        },
+        "Bambu ABS-GF @base": {
+          "name": "Bambu ABS-GF @BBL H2D",
+          "settingId": "GFSB50_03",
+          "isSupport": "0"
+        },
+        "Bambu ASA @base": {
+          "name": "Bambu ASA @BBL H2D 0.4 nozzle",
+          "settingId": "GFSB01_13",
+          "isSupport": "0"
+        },
+        "Bambu ASA-Aero @base": {
+          "name": "Bambu ASA-Aero @BBL H2D",
+          "settingId": "GFSB02_03",
+          "isSupport": "0"
+        },
+        "Bambu ASA-CF @base": {
+          "name": "Bambu ASA-CF @BBL H2D 0.4 nozzle",
+          "settingId": "GFSB51_06",
+          "isSupport": "0"
+        },
+        "Bambu PA6-CF @base": {
+          "name": "Bambu PA6-CF @BBL H2D",
+          "settingId": "GFSN05_04",
+          "isSupport": "0"
+        },
+        "Bambu PA6-GF @base": {
+          "name": "Bambu PA6-GF @BBL H2D",
+          "settingId": "GFSN08_03",
+          "isSupport": "0"
+        },
+        "Bambu PAHT-CF @base": {
+          "name": "Bambu PAHT-CF @BBL H2D",
+          "settingId": "GFSN04_01",
+          "isSupport": "0"
+        },
+        "Bambu PC @base": {
+          "name": "Bambu PC @BBL H2D 0.4 nozzle",
+          "settingId": "GFSC00_15",
+          "isSupport": "0"
+        },
+        "Bambu PC FR @base": {
+          "name": "Bambu PC FR @BBL H2D 0.4 nozzle",
+          "settingId": "GFSC01_16",
+          "isSupport": "0"
+        },
+        "Bambu PET-CF @base": {
+          "name": "Bambu PET-CF @BBL H2D",
+          "settingId": "GFST01_02",
+          "isSupport": "0"
+        },
+        "Bambu PETG Basic @base": {
+          "name": "Bambu PETG Basic @BBL H2D 0.4 nozzle",
+          "settingId": "GFSG00_09",
+          "isSupport": "0"
+        },
+        "Bambu PETG HF @base": {
+          "name": "Bambu PETG HF @BBL H2D 0.4 nozzle",
+          "settingId": "GFSG02_09",
+          "isSupport": "0"
+        },
+        "Bambu PETG Matte @base": {
+          "name": "Bambu PETG Matte @BBL H2D 0.4 nozzle",
+          "settingId": "GFSG03_15",
+          "isSupport": "0"
+        },
+        "Bambu PETG Translucent @base": {
+          "name": "Bambu PETG Translucent @BBL H2D 0.4 nozzle",
+          "settingId": "GFSG01_06",
+          "isSupport": "0"
+        },
+        "Bambu PETG-CF @base": {
+          "name": "Bambu PETG-CF @BBL H2D 0.4 nozzle",
+          "settingId": "GFSG50_08",
+          "isSupport": "0"
+        },
+        "Bambu PLA Aero @base": {
+          "name": "Bambu PLA Aero @BBL H2D",
+          "settingId": "GFSA11_05",
+          "isSupport": "0"
+        },
+        "Bambu PLA Basic @base": {
+          "name": "Bambu PLA Basic @BBL H2D",
+          "settingId": "GFSA00_12",
+          "isSupport": "0"
+        },
+        "Bambu PLA Dynamic @base": {
+          "name": "Bambu PLA Dynamic @BBL H2D",
+          "settingId": "GFSA13_09",
+          "isSupport": "0"
+        },
+        "Bambu PLA Galaxy @base": {
+          "name": "Bambu PLA Galaxy @BBL H2D",
+          "settingId": "GFSA15_09",
+          "isSupport": "0"
+        },
+        "Bambu PLA Glow @base": {
+          "name": "Bambu PLA Glow @BBL H2D",
+          "settingId": "GFSA12_06",
+          "isSupport": "0"
+        },
+        "Bambu PLA Lite @base": {
+          "name": "Bambu PLA Lite @BBL H2D",
+          "settingId": "GFSA18_09",
+          "isSupport": "0"
+        },
+        "Bambu PLA Marble @base": {
+          "name": "Bambu PLA Marble @BBL H2D",
+          "settingId": "GFSA07_04",
+          "isSupport": "0"
+        },
+        "Bambu PLA Matte @base": {
+          "name": "Bambu PLA Matte @BBL H2D",
+          "settingId": "GFSA01_05",
+          "isSupport": "0"
+        },
+        "Bambu PLA Metal @base": {
+          "name": "Bambu PLA Metal @BBL H2D",
+          "settingId": "GFSA02_07",
+          "isSupport": "0"
+        },
+        "Bambu PLA Pure @base": {
+          "name": "Bambu PLA Pure @BBL H2D",
+          "settingId": "GFSA19_13",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk @base": {
+          "name": "Bambu PLA Silk @BBL H2D",
+          "settingId": "GFSA05_16",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk+ @base": {
+          "name": "Bambu PLA Silk+ @BBL H2D",
+          "settingId": "GFSA06_09",
+          "isSupport": "0"
+        },
+        "Bambu PLA Sparkle @base": {
+          "name": "Bambu PLA Sparkle @BBL H2D",
+          "settingId": "GFSA08_04",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough @base": {
+          "name": "Bambu PLA Tough @BBL H2D",
+          "settingId": "GFSA09_06",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough+ @base": {
+          "name": "Bambu PLA Tough+ @BBL H2D",
+          "settingId": "GFSA10_07",
+          "isSupport": "0"
+        },
+        "Bambu PLA Translucent @base": {
+          "name": "Bambu PLA Translucent @BBL H2D",
+          "settingId": "GFSA17_12",
+          "isSupport": "0"
+        },
+        "Bambu PLA Wood @base": {
+          "name": "Bambu PLA Wood @BBL H2D",
+          "settingId": "GFSA16_06",
+          "isSupport": "0"
+        },
+        "Bambu PLA-CF @base": {
+          "name": "Bambu PLA-CF @BBL H2D 0.4 nozzle",
+          "settingId": "GFSA50_08",
+          "isSupport": "0"
+        },
+        "Bambu PPA-CF @base": {
+          "name": "Bambu PPA-CF @BBL H2D",
+          "settingId": "GFSN06_02",
+          "isSupport": "0"
+        },
+        "Bambu PPS-CF @base": {
+          "name": "Bambu PPS-CF @BBL H2D",
+          "settingId": "GFST02_01",
+          "isSupport": "0"
+        },
+        "Bambu PVA @base": {
+          "name": "Bambu PVA @BBL H2D",
+          "settingId": "GFSS04_10",
+          "isSupport": "1"
+        },
+        "Bambu Support for ABS @base": {
+          "name": "Bambu Support for ABS @BBL H2D",
+          "settingId": "GFSS06_02",
+          "isSupport": "1"
+        },
+        "Bambu Support For PA/PET @base": {
+          "name": "Bambu Support For PA/PET @BBL H2D",
+          "settingId": "GFSS03_03",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA @base": {
+          "name": "Bambu Support For PLA @BBL H2D",
+          "settingId": "GFSS02_07",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA/PETG @base": {
+          "name": "Bambu Support For PLA/PETG @BBL H2D",
+          "settingId": "GFSS05_08",
+          "isSupport": "1"
+        },
+        "Bambu TPU 85A @base": {
+          "name": "Bambu TPU 85A @BBL H2D 0.4 nozzle",
+          "settingId": "GFSU04_17",
+          "isSupport": "0"
+        },
+        "Bambu TPU 90A @base": {
+          "name": "Bambu TPU 90A @BBL H2D",
+          "settingId": "GFSU03_02",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A @base": {
+          "name": "Bambu TPU 95A @BBL H2D",
+          "settingId": "GFSU01_03",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A HF @base": {
+          "name": "Bambu TPU 95A HF @BBL H2D 0.4 nozzle",
+          "settingId": "GFSU00_20",
+          "isSupport": "0"
+        },
+        "Bambu TPU for AMS @base": {
+          "name": "Bambu TPU for AMS @BBL H2D",
+          "settingId": "GFSU02_04",
+          "isSupport": "0"
+        }
+      }
+    },
+    "Bambu Lab H2D Pro": {
+      "printerPreset": "Bambu Lab H2D Pro 0.4 nozzle",
+      "processPreset": "0.20mm Standard @BBL H2DP",
+      "nozzleDiameter": "0.4",
+      "nozzleDiameters": [
+        "0.4",
+        "0.4"
+      ],
+      "extruderTypes": [
+        "Direct Drive",
+        "Direct Drive"
+      ],
+      "printableArea": [
+        "0x0",
+        "350x0",
+        "350x320",
+        "0x320"
+      ],
+      "printableHeight": "325",
+      "bedExcludeArea": [],
+      "extruderPrintableAreas": [
+        "0x0,325x0,325x320,0x320",
+        "25x0,350x0,350x320,25x320"
+      ],
+      "wrappingExcludeArea": [
+        "145x310",
+        "256x310",
+        "256x326",
+        "145x326"
+      ],
+      "filaments": {
+        "Bambu ABS @base": {
+          "name": "Bambu ABS @BBL H2DP",
+          "settingId": "GFSB00_16",
+          "isSupport": "0"
+        },
+        "Bambu ABS-GF @base": {
+          "name": "Bambu ABS-GF @BBL H2DP",
+          "settingId": "GFSB50_05",
+          "isSupport": "0"
+        },
+        "Bambu ASA @base": {
+          "name": "Bambu ASA @BBL H2DP 0.4 nozzle",
+          "settingId": "GFSB01_19",
+          "isSupport": "0"
+        },
+        "Bambu ASA-Aero @base": {
+          "name": "Bambu ASA-Aero @BBL H2DP",
+          "settingId": "GFSB02_05",
+          "isSupport": "0"
+        },
+        "Bambu ASA-CF @base": {
+          "name": "Bambu ASA-CF @BBL H2DP 0.4 nozzle",
+          "settingId": "GFSB51_10",
+          "isSupport": "0"
+        },
+        "Bambu PA6-CF @base": {
+          "name": "Bambu PA6-CF @BBL H2DP",
+          "settingId": "GFSN05_06",
+          "isSupport": "0"
+        },
+        "Bambu PA6-GF @base": {
+          "name": "Bambu PA6-GF @BBL H2DP",
+          "settingId": "GFSN08_05",
+          "isSupport": "0"
+        },
+        "Bambu PAHT-CF @base": {
+          "name": "Bambu PAHT-CF @BBL H2DP",
+          "settingId": "GFSN04_03",
+          "isSupport": "0"
+        },
+        "Bambu PC @base": {
+          "name": "Bambu PC @BBL H2DP 0.4 nozzle",
+          "settingId": "GFSC00_27",
+          "isSupport": "0"
+        },
+        "Bambu PC FR @base": {
+          "name": "Bambu PC FR @BBL H2DP 0.4 nozzle",
+          "settingId": "GFSC01_24",
+          "isSupport": "0"
+        },
+        "Bambu PET-CF @base": {
+          "name": "Bambu PET-CF @BBL H2DP",
+          "settingId": "GFST01_05",
+          "isSupport": "0"
+        },
+        "Bambu PETG Basic @base": {
+          "name": "Bambu PETG Basic @BBL H2DP 0.4 nozzle",
+          "settingId": "GFSG00_19",
+          "isSupport": "0"
+        },
+        "Bambu PETG HF @base": {
+          "name": "Bambu PETG HF @BBL H2DP 0.4 nozzle",
+          "settingId": "GFSG02_19",
+          "isSupport": "0"
+        },
+        "Bambu PETG Matte @base": {
+          "name": "Bambu PETG Matte @BBL H2DP 0.4 nozzle",
+          "settingId": "GFSG03_19",
+          "isSupport": "0"
+        },
+        "Bambu PETG Translucent @base": {
+          "name": "Bambu PETG Translucent @BBL H2DP 0.4 nozzle",
+          "settingId": "GFSG01_16",
+          "isSupport": "0"
+        },
+        "Bambu PETG-CF @base": {
+          "name": "Bambu PETG-CF @BBL H2DP 0.4 nozzle",
+          "settingId": "GFSG50_15",
+          "isSupport": "0"
+        },
+        "Bambu PLA Aero @base": {
+          "name": "Bambu PLA Aero @BBL H2DP",
+          "settingId": "GFSA11_08",
+          "isSupport": "0"
+        },
+        "Bambu PLA Basic @base": {
+          "name": "Bambu PLA Basic @BBL H2DP",
+          "settingId": "GFSA00_17",
+          "isSupport": "0"
+        },
+        "Bambu PLA Dynamic @base": {
+          "name": "Bambu PLA Dynamic @BBL H2DP",
+          "settingId": "GFSA13_17",
+          "isSupport": "0"
+        },
+        "Bambu PLA Galaxy @base": {
+          "name": "Bambu PLA Galaxy @BBL H2DP",
+          "settingId": "GFSA15_17",
+          "isSupport": "0"
+        },
+        "Bambu PLA Glow @base": {
+          "name": "Bambu PLA Glow @BBL H2DP",
+          "settingId": "GFSA12_18",
+          "isSupport": "0"
+        },
+        "Bambu PLA Lite @base": {
+          "name": "Bambu PLA Lite @BBL H2DP 0.4 nozzle",
+          "settingId": "GFSA18_27",
+          "isSupport": "0"
+        },
+        "Bambu PLA Marble @base": {
+          "name": "Bambu PLA Marble @BBL H2DP",
+          "settingId": "GFSA07_07",
+          "isSupport": "0"
+        },
+        "Bambu PLA Matte @base": {
+          "name": "Bambu PLA Matte @BBL H2DP",
+          "settingId": "GFSA01_17",
+          "isSupport": "0"
+        },
+        "Bambu PLA Metal @base": {
+          "name": "Bambu PLA Metal @BBL H2DP",
+          "settingId": "GFSA02_15",
+          "isSupport": "0"
+        },
+        "Bambu PLA Pure @base": {
+          "name": "Bambu PLA Pure @BBL H2DP",
+          "settingId": "GFSA19_16",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk @base": {
+          "name": "Bambu PLA Silk @BBL H2DP",
+          "settingId": "GFSA05_19",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk+ @base": {
+          "name": "Bambu PLA Silk+ @BBL H2DP",
+          "settingId": "GFSA06_13",
+          "isSupport": "0"
+        },
+        "Bambu PLA Sparkle @base": {
+          "name": "Bambu PLA Sparkle @BBL H2DP",
+          "settingId": "GFSA08_07",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough @base": {
+          "name": "Bambu PLA Tough @BBL H2DP",
+          "settingId": "GFSA09_15",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough+ @base": {
+          "name": "Bambu PLA Tough+ @BBL H2DP",
+          "settingId": "GFSA10_11",
+          "isSupport": "0"
+        },
+        "Bambu PLA Translucent @base": {
+          "name": "Bambu PLA Translucent @BBL H2DP",
+          "settingId": "GFSA17_31",
+          "isSupport": "0"
+        },
+        "Bambu PLA Wood @base": {
+          "name": "Bambu PLA Wood @BBL H2DP",
+          "settingId": "GFSA16_10",
+          "isSupport": "0"
+        },
+        "Bambu PLA-CF @base": {
+          "name": "Bambu PLA-CF @BBL H2DP 0.4 nozzle",
+          "settingId": "GFSA50_14",
+          "isSupport": "0"
+        },
+        "Bambu PPA-CF @base": {
+          "name": "Bambu PPA-CF @BBL H2DP",
+          "settingId": "GFSN06_04",
+          "isSupport": "0"
+        },
+        "Bambu PPS-CF @base": {
+          "name": "Bambu PPS-CF @BBL H2DP",
+          "settingId": "GFST02_02",
+          "isSupport": "0"
+        },
+        "Bambu PVA @base": {
+          "name": "Bambu PVA @BBL H2DP",
+          "settingId": "GFSS04_14",
+          "isSupport": "1"
+        },
+        "Bambu Support for ABS @base": {
+          "name": "Bambu Support for ABS @BBL H2DP",
+          "settingId": "GFSS06_04",
+          "isSupport": "1"
+        },
+        "Bambu Support For PA/PET @base": {
+          "name": "Bambu Support For PA/PET @BBL H2DP",
+          "settingId": "GFSS03_05",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA @base": {
+          "name": "Bambu Support For PLA @BBL H2DP",
+          "settingId": "GFSS02_18",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA/PETG @base": {
+          "name": "Bambu Support For PLA/PETG @BBL H2DP",
+          "settingId": "GFSS05_12",
+          "isSupport": "1"
+        },
+        "Bambu TPU 85A @base": {
+          "name": "Bambu TPU 85A @BBL H2DP 0.4 nozzle",
+          "settingId": "GFSU04_20",
+          "isSupport": "0"
+        },
+        "Bambu TPU 90A @base": {
+          "name": "Bambu TPU 90A @BBL H2DP",
+          "settingId": "GFSU03_03",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A @base": {
+          "name": "Bambu TPU 95A @BBL H2DP",
+          "settingId": "GFSU01_06",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A HF @base": {
+          "name": "Bambu TPU 95A HF @BBL H2DP 0.4 nozzle",
+          "settingId": "GFSU00_21",
+          "isSupport": "0"
+        },
+        "Bambu TPU for AMS @base": {
+          "name": "Bambu TPU for AMS @BBL H2DP",
+          "settingId": "GFSU02_06",
+          "isSupport": "0"
+        }
+      }
+    },
+    "Bambu Lab H2S": {
+      "printerPreset": "Bambu Lab H2S 0.4 nozzle",
+      "processPreset": "0.20mm Standard @BBL H2S",
+      "nozzleDiameter": "0.4",
+      "nozzleDiameters": [
+        "0.4"
+      ],
+      "extruderTypes": [
+        "Direct Drive"
+      ],
+      "printableArea": [
+        "0x0",
+        "340x0",
+        "340x320",
+        "0x320"
+      ],
+      "printableHeight": "340",
+      "bedExcludeArea": [],
+      "extruderPrintableAreas": [],
+      "wrappingExcludeArea": [
+        "172.3x302",
+        "232.5x302",
+        "232.5x322",
+        "172.3x322"
+      ],
+      "filaments": {
+        "Bambu ABS @base": {
+          "name": "Bambu ABS @BBL H2S",
+          "settingId": "GFSB00_24",
+          "isSupport": "0"
+        },
+        "Bambu ABS-GF @base": {
+          "name": "Bambu ABS-GF @BBL H2S",
+          "settingId": "GFSB50_10",
+          "isSupport": "0"
+        },
+        "Bambu ASA @base": {
+          "name": "Bambu ASA @BBL H2S",
+          "settingId": "GFSB01_26",
+          "isSupport": "0"
+        },
+        "Bambu ASA-Aero @base": {
+          "name": "Bambu ASA-Aero @BBL H2S",
+          "settingId": "GFSB02_10",
+          "isSupport": "0"
+        },
+        "Bambu ASA-CF @base": {
+          "name": "Bambu ASA-CF @BBL H2S",
+          "settingId": "GFSB51_16",
+          "isSupport": "0"
+        },
+        "Bambu PA6-CF @base": {
+          "name": "Bambu PA6-CF @BBL H2S",
+          "settingId": "GFSN05_10",
+          "isSupport": "0"
+        },
+        "Bambu PA6-GF @base": {
+          "name": "Bambu PA6-GF @BBL H2S",
+          "settingId": "GFSN08_10",
+          "isSupport": "0"
+        },
+        "Bambu PAHT-CF @base": {
+          "name": "Bambu PAHT-CF @BBL H2S",
+          "settingId": "GFSN04_08",
+          "isSupport": "0"
+        },
+        "Bambu PC @base": {
+          "name": "Bambu PC @BBL H2S",
+          "settingId": "GFSC00_16",
+          "isSupport": "0"
+        },
+        "Bambu PC FR @base": {
+          "name": "Bambu PC FR @BBL H2S",
+          "settingId": "GFSC01_34",
+          "isSupport": "0"
+        },
+        "Bambu PET-CF @base": {
+          "name": "Bambu PET-CF @BBL H2S",
+          "settingId": "GFST01_04",
+          "isSupport": "0"
+        },
+        "Bambu PETG Basic @base": {
+          "name": "Bambu PETG Basic @BBL H2S",
+          "settingId": "GFSG00_10",
+          "isSupport": "0"
+        },
+        "Bambu PETG HF @base": {
+          "name": "Bambu PETG HF @BBL H2S",
+          "settingId": "GFSG02_10",
+          "isSupport": "0"
+        },
+        "Bambu PETG Matte @base": {
+          "name": "Bambu PETG Matte @BBL H2S",
+          "settingId": "GFSG03_25",
+          "isSupport": "0"
+        },
+        "Bambu PETG Translucent @base": {
+          "name": "Bambu PETG Translucent @BBL H2S",
+          "settingId": "GFSG01_08",
+          "isSupport": "0"
+        },
+        "Bambu PETG-CF @base": {
+          "name": "Bambu PETG-CF @BBL H2S",
+          "settingId": "GFSG50_09",
+          "isSupport": "0"
+        },
+        "Bambu PLA Aero @base": {
+          "name": "Bambu PLA Aero @BBL H2S",
+          "settingId": "GFSA11_07",
+          "isSupport": "0"
+        },
+        "Bambu PLA Basic @base": {
+          "name": "Bambu PLA Basic @BBL H2S",
+          "settingId": "GFSA00_05",
+          "isSupport": "0"
+        },
+        "Bambu PLA Dynamic @base": {
+          "name": "Bambu PLA Dynamic @BBL H2S",
+          "settingId": "GFSA13_11",
+          "isSupport": "0"
+        },
+        "Bambu PLA Galaxy @base": {
+          "name": "Bambu PLA Galaxy @BBL H2S",
+          "settingId": "GFSA15_11",
+          "isSupport": "0"
+        },
+        "Bambu PLA Glow @base": {
+          "name": "Bambu PLA Glow @BBL H2S",
+          "settingId": "GFSA12_12",
+          "isSupport": "0"
+        },
+        "Bambu PLA Lite @base": {
+          "name": "Bambu PLA Lite @BBL H2S",
+          "settingId": "GFSA18_18",
+          "isSupport": "0"
+        },
+        "Bambu PLA Marble @base": {
+          "name": "Bambu PLA Marble @BBL H2S",
+          "settingId": "GFSA07_06",
+          "isSupport": "0"
+        },
+        "Bambu PLA Matte @base": {
+          "name": "Bambu PLA Matte @BBL H2S",
+          "settingId": "GFSA01_07",
+          "isSupport": "0"
+        },
+        "Bambu PLA Metal @base": {
+          "name": "Bambu PLA Metal @BBL H2S",
+          "settingId": "GFSA02_08",
+          "isSupport": "0"
+        },
+        "Bambu PLA Pure @base": {
+          "name": "Bambu PLA Pure @BBL H2S",
+          "settingId": "GFSA19_18",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk @base": {
+          "name": "Bambu PLA Silk @BBL H2S",
+          "settingId": "GFSA05_08",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk+ @base": {
+          "name": "Bambu PLA Silk+ @BBL H2S",
+          "settingId": "GFSA06_21",
+          "isSupport": "0"
+        },
+        "Bambu PLA Sparkle @base": {
+          "name": "Bambu PLA Sparkle @BBL H2S",
+          "settingId": "GFSA08_06",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough @base": {
+          "name": "Bambu PLA Tough @BBL H2S",
+          "settingId": "GFSA09_09",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough+ @base": {
+          "name": "Bambu PLA Tough+ @BBL H2S",
+          "settingId": "GFSA10_15",
+          "isSupport": "0"
+        },
+        "Bambu PLA Translucent @base": {
+          "name": "Bambu PLA Translucent @BBL H2S",
+          "settingId": "GFSA17_15",
+          "isSupport": "0"
+        },
+        "Bambu PLA Wood @base": {
+          "name": "Bambu PLA Wood @BBL H2S",
+          "settingId": "GFSA16_16",
+          "isSupport": "0"
+        },
+        "Bambu PLA-CF @base": {
+          "name": "Bambu PLA-CF @BBL H2S",
+          "settingId": "GFSA50_07",
+          "isSupport": "0"
+        },
+        "Bambu PPA-CF @base": {
+          "name": "Bambu PPA-CF @BBL H2S",
+          "settingId": "GFSN06_09",
+          "isSupport": "0"
+        },
+        "Bambu PPS-CF @base": {
+          "name": "Bambu PPS-CF @BBL H2S",
+          "settingId": "GFST02_05",
+          "isSupport": "0"
+        },
+        "Bambu PVA @base": {
+          "name": "Bambu PVA @BBL H2S",
+          "settingId": "GFSS04_20",
+          "isSupport": "1"
+        },
+        "Bambu Support for ABS @base": {
+          "name": "Bambu Support for ABS @BBL H2S",
+          "settingId": "GFSS06_09",
+          "isSupport": "1"
+        },
+        "Bambu Support For PA/PET @base": {
+          "name": "Bambu Support For PA/PET @BBL H2S",
+          "settingId": "GFSS03_10",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA @base": {
+          "name": "Bambu Support For PLA @BBL H2S",
+          "settingId": "GFSS02_08",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA/PETG @base": {
+          "name": "Bambu Support For PLA/PETG @BBL H2S",
+          "settingId": "GFSS05_20",
+          "isSupport": "1"
+        },
+        "Bambu TPU 85A @base": {
+          "name": "Bambu TPU 85A @BBL H2S",
+          "settingId": "GFSU04_07",
+          "isSupport": "0"
+        },
+        "Bambu TPU 90A @base": {
+          "name": "Bambu TPU 90A @BBL H2S",
+          "settingId": "GFSU03_11",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A @base": {
+          "name": "Bambu TPU 95A @BBL H2S",
+          "settingId": "GFSU01_04",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A HF @base": {
+          "name": "Bambu TPU 95A HF @BBL H2S",
+          "settingId": "GFSU00_09",
+          "isSupport": "0"
+        },
+        "Bambu TPU for AMS @base": {
+          "name": "Bambu TPU for AMS @BBL H2S",
+          "settingId": "GFSU02_11",
+          "isSupport": "0"
+        }
+      }
+    },
+    "Bambu Lab P2S": {
+      "printerPreset": "Bambu Lab P2S 0.4 nozzle",
+      "processPreset": "0.20mm Standard @BBL P2S",
+      "nozzleDiameter": "0.4",
+      "nozzleDiameters": [
+        "0.4"
+      ],
+      "extruderTypes": [
+        "Direct Drive"
+      ],
+      "printableArea": [
+        "0x0",
+        "256x0",
+        "256x256",
+        "0x256"
+      ],
+      "printableHeight": "256",
+      "bedExcludeArea": [],
+      "extruderPrintableAreas": [],
+      "wrappingExcludeArea": [
+        "153x256",
+        "216x256",
+        "216x235",
+        "153x235"
+      ],
+      "filaments": {
+        "Bambu ABS @base": {
+          "name": "Bambu ABS @BBL P2S",
+          "settingId": "GFSB00_10",
+          "isSupport": "0"
+        },
+        "Bambu ABS-GF @base": {
+          "name": "Bambu ABS-GF @BBL P2S",
+          "settingId": "GFSB50_04",
+          "isSupport": "0"
+        },
+        "Bambu ASA @base": {
+          "name": "Bambu ASA @BBL P2S 0.4 nozzle",
+          "settingId": "GFSB01_16",
+          "isSupport": "0"
+        },
+        "Bambu ASA-Aero @base": {
+          "name": "Bambu ASA-Aero @BBL P2S",
+          "settingId": "GFSB02_04",
+          "isSupport": "0"
+        },
+        "Bambu ASA-CF @base": {
+          "name": "Bambu ASA-CF @BBL P2S 0.4 nozzle",
+          "settingId": "GFSB51_08",
+          "isSupport": "0"
+        },
+        "Bambu PA6-CF @base": {
+          "name": "Bambu PA6-CF @BBL P2S",
+          "settingId": "GFSN05_05",
+          "isSupport": "0"
+        },
+        "Bambu PA6-GF @base": {
+          "name": "Bambu PA6-GF @BBL P2S",
+          "settingId": "GFSN08_04",
+          "isSupport": "0"
+        },
+        "Bambu PAHT-CF @base": {
+          "name": "Bambu PAHT-CF @BBL P2S",
+          "settingId": "GFSN04_02",
+          "isSupport": "0"
+        },
+        "Bambu PC @base": {
+          "name": "Bambu PC @BBL P2S 0.4 nozzle",
+          "settingId": "GFSC00_20",
+          "isSupport": "0"
+        },
+        "Bambu PC FR @base": {
+          "name": "Bambu PC FR @BBL P2S 0.4 nozzle",
+          "settingId": "GFSC01_20",
+          "isSupport": "0"
+        },
+        "Bambu PET-CF @base": {
+          "name": "Bambu PET-CF @BBL P2S",
+          "settingId": "GFST01_03",
+          "isSupport": "0"
+        },
+        "Bambu PETG Basic @base": {
+          "name": "Bambu PETG Basic @BBL P2S 0.4 nozzle",
+          "settingId": "GFSG00_14",
+          "isSupport": "0"
+        },
+        "Bambu PETG HF @base": {
+          "name": "Bambu PETG HF @BBL P2S 0.4 nozzle",
+          "settingId": "GFSG02_16",
+          "isSupport": "0"
+        },
+        "Bambu PETG Matte @base": {
+          "name": "Bambu PETG Matte @BBL P2S 0.4 nozzle",
+          "settingId": "GFSG03_39",
+          "isSupport": "0"
+        },
+        "Bambu PETG Translucent @base": {
+          "name": "Bambu PETG Translucent @BBL P2S 0.4 nozzle",
+          "settingId": "GFSG01_13",
+          "isSupport": "0"
+        },
+        "Bambu PETG-CF @base": {
+          "name": "Bambu PETG-CF @BBL P2S 0.4 nozzle",
+          "settingId": "GFSG50_13",
+          "isSupport": "0"
+        },
+        "Bambu PLA Aero @base": {
+          "name": "Bambu PLA Aero @BBL P2S",
+          "settingId": "GFSA11_06",
+          "isSupport": "0"
+        },
+        "Bambu PLA Basic @base": {
+          "name": "Bambu PLA Basic @BBL P2S",
+          "settingId": "GFSA00_11",
+          "isSupport": "0"
+        },
+        "Bambu PLA Dynamic @base": {
+          "name": "Bambu PLA Dynamic @BBL P2S",
+          "settingId": "GFSA13_14",
+          "isSupport": "0"
+        },
+        "Bambu PLA Galaxy @base": {
+          "name": "Bambu PLA Galaxy @BBL P2S",
+          "settingId": "GFSA15_14",
+          "isSupport": "0"
+        },
+        "Bambu PLA Glow @base": {
+          "name": "Bambu PLA Glow @BBL P2S",
+          "settingId": "GFSA12_14",
+          "isSupport": "0"
+        },
+        "Bambu PLA Lite @base": {
+          "name": "Bambu PLA Lite @BBL P2S 0.4 nozzle",
+          "settingId": "GFSA18_23",
+          "isSupport": "0"
+        },
+        "Bambu PLA Marble @base": {
+          "name": "Bambu PLA Marble @BBL P2S",
+          "settingId": "GFSA07_05",
+          "isSupport": "0"
+        },
+        "Bambu PLA Matte @base": {
+          "name": "Bambu PLA Matte @BBL P2S",
+          "settingId": "GFSA01_12",
+          "isSupport": "0"
+        },
+        "Bambu PLA Metal @base": {
+          "name": "Bambu PLA Metal @BBL P2S",
+          "settingId": "GFSA02_13",
+          "isSupport": "0"
+        },
+        "Bambu PLA Pure @base": {
+          "name": "Bambu PLA Pure @BBL P2S 0.4 nozzle",
+          "settingId": "GFSA19_27",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk @base": {
+          "name": "Bambu PLA Silk @BBL P2S",
+          "settingId": "GFSA05_17",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk+ @base": {
+          "name": "Bambu PLA Silk+ @BBL P2S",
+          "settingId": "GFSA06_11",
+          "isSupport": "0"
+        },
+        "Bambu PLA Sparkle @base": {
+          "name": "Bambu PLA Sparkle @BBL P2S",
+          "settingId": "GFSA08_05",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough @base": {
+          "name": "Bambu PLA Tough @BBL P2S",
+          "settingId": "GFSA09_13",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough+ @base": {
+          "name": "Bambu PLA Tough+ @BBL P2S",
+          "settingId": "GFSA10_28",
+          "isSupport": "0"
+        },
+        "Bambu PLA Translucent @base": {
+          "name": "Bambu PLA Translucent @BBL P2S 0.4 nozzle",
+          "settingId": "GFSA17_21",
+          "isSupport": "0"
+        },
+        "Bambu PLA Wood @base": {
+          "name": "Bambu PLA Wood @BBL P2S",
+          "settingId": "GFSA16_08",
+          "isSupport": "0"
+        },
+        "Bambu PLA-CF @base": {
+          "name": "Bambu PLA-CF @BBL P2S 0.4 nozzle",
+          "settingId": "GFSA50_12",
+          "isSupport": "0"
+        },
+        "Bambu PPA-CF @base": {
+          "name": "Bambu PPA-CF @BBL P2S",
+          "settingId": "GFSN06_03",
+          "isSupport": "0"
+        },
+        "Bambu PVA @base": {
+          "name": "Bambu PVA @BBL P2S",
+          "settingId": "GFSS04_12",
+          "isSupport": "1"
+        },
+        "Bambu Support for ABS @base": {
+          "name": "Bambu Support for ABS @BBL P2S",
+          "settingId": "GFSS06_03",
+          "isSupport": "1"
+        },
+        "Bambu Support For PA/PET @base": {
+          "name": "Bambu Support For PA/PET @BBL P2S",
+          "settingId": "GFSS03_04",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA @base": {
+          "name": "Bambu Support For PLA @BBL P2S",
+          "settingId": "GFSS02_16",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA/PETG @base": {
+          "name": "Bambu Support For PLA/PETG @BBL P2S",
+          "settingId": "GFSS05_10",
+          "isSupport": "1"
+        },
+        "Bambu TPU 90A @base": {
+          "name": "Bambu TPU 90A @BBL P2S",
+          "settingId": "GFSU03_10",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A @base": {
+          "name": "Bambu TPU 95A @BBL P2S",
+          "settingId": "GFSU01_05",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A HF @base": {
+          "name": "Bambu TPU 95A HF @BBL P2S",
+          "settingId": "GFSU00_10",
+          "isSupport": "0"
+        },
+        "Bambu TPU for AMS @base": {
+          "name": "Bambu TPU for AMS @BBL P2S",
+          "settingId": "GFSU02_05",
+          "isSupport": "0"
+        }
+      }
+    },
+    "Bambu Lab H2C": {
+      "printerPreset": "Bambu Lab H2C 0.4 nozzle",
+      "processPreset": "0.20mm Standard @BBL H2C",
+      "nozzleDiameter": "0.4",
+      "nozzleDiameters": [
+        "0.4",
+        "0.4"
+      ],
+      "extruderTypes": [
+        "Direct Drive",
+        "Direct Drive"
+      ],
+      "printableArea": [
+        "0x0",
+        "330x0",
+        "330x320",
+        "0x320"
+      ],
+      "printableHeight": "325",
+      "bedExcludeArea": [],
+      "extruderPrintableAreas": [
+        "0x0,325x0,325x320,0x320",
+        "25x0,330x0,330x320,25x320"
+      ],
+      "wrappingExcludeArea": [
+        "145x310",
+        "251x310",
+        "251x326",
+        "145x326"
+      ],
+      "filaments": {
+        "Bambu ABS @base": {
+          "name": "Bambu ABS @BBL H2C",
+          "settingId": "GFSB00_22",
+          "isSupport": "0"
+        },
+        "Bambu ABS-GF @base": {
+          "name": "Bambu ABS-GF @BBL H2C 0.4 nozzle",
+          "settingId": "GFSB50_08",
+          "isSupport": "0"
+        },
+        "Bambu ASA @base": {
+          "name": "Bambu ASA @BBL H2C",
+          "settingId": "GFSB01_23",
+          "isSupport": "0"
+        },
+        "Bambu ASA-Aero @base": {
+          "name": "Bambu ASA-Aero @BBL H2C 0.4 nozzle",
+          "settingId": "GFSB02_08",
+          "isSupport": "0"
+        },
+        "Bambu ASA-CF @base": {
+          "name": "Bambu ASA-CF @BBL H2C 0.4 nozzle",
+          "settingId": "GFSB51_14",
+          "isSupport": "0"
+        },
+        "Bambu PA6-CF @base": {
+          "name": "Bambu PA6-CF @BBL H2C 0.4 nozzle",
+          "settingId": "GFSN05_08",
+          "isSupport": "0"
+        },
+        "Bambu PA6-GF @base": {
+          "name": "Bambu PA6-GF @BBL H2C 0.4 nozzle",
+          "settingId": "GFSN08_08",
+          "isSupport": "0"
+        },
+        "Bambu PAHT-CF @base": {
+          "name": "Bambu PAHT-CF @BBL H2C 0.4 nozzle",
+          "settingId": "GFSN04_06",
+          "isSupport": "0"
+        },
+        "Bambu PC @base": {
+          "name": "Bambu PC @BBL H2C",
+          "settingId": "GFSC00_34",
+          "isSupport": "0"
+        },
+        "Bambu PC FR @base": {
+          "name": "Bambu PC FR @BBL H2C 0.4 nozzle",
+          "settingId": "GFSC01_31",
+          "isSupport": "0"
+        },
+        "Bambu PET-CF @base": {
+          "name": "Bambu PET-CF @BBL H2C 0.4 nozzle",
+          "settingId": "GFST01_08",
+          "isSupport": "0"
+        },
+        "Bambu PETG Basic @base": {
+          "name": "Bambu PETG Basic @BBL H2C 0.4 nozzle",
+          "settingId": "GFSG00_23",
+          "isSupport": "0"
+        },
+        "Bambu PETG HF @base": {
+          "name": "Bambu PETG HF @BBL H2C",
+          "settingId": "GFSG02_25",
+          "isSupport": "0"
+        },
+        "Bambu PETG Matte @base": {
+          "name": "Bambu PETG Matte @BBL H2C 0.4 nozzle",
+          "settingId": "GFSG03_11",
+          "isSupport": "0"
+        },
+        "Bambu PETG Translucent @base": {
+          "name": "Bambu PETG Translucent @BBL H2C 0.4 nozzle",
+          "settingId": "GFSG01_22",
+          "isSupport": "0"
+        },
+        "Bambu PETG-CF @base": {
+          "name": "Bambu PETG-CF @BBL H2C 0.4 nozzle",
+          "settingId": "GFSG50_19",
+          "isSupport": "0"
+        },
+        "Bambu PLA Aero @base": {
+          "name": "Bambu PLA Aero @BBL H2C 0.4 nozzle",
+          "settingId": "GFSA11_11",
+          "isSupport": "0"
+        },
+        "Bambu PLA Basic @base": {
+          "name": "Bambu PLA Basic @BBL H2C",
+          "settingId": "GFSA00_22",
+          "isSupport": "0"
+        },
+        "Bambu PLA Dynamic @base": {
+          "name": "Bambu PLA Dynamic @BBL H2C 0.4 nozzle",
+          "settingId": "GFSA13_23",
+          "isSupport": "0"
+        },
+        "Bambu PLA Galaxy @base": {
+          "name": "Bambu PLA Galaxy @BBL H2C 0.4 nozzle",
+          "settingId": "GFSA15_23",
+          "isSupport": "0"
+        },
+        "Bambu PLA Glow @base": {
+          "name": "Bambu PLA Glow @BBL H2C 0.4 nozzle",
+          "settingId": "GFSA12_23",
+          "isSupport": "0"
+        },
+        "Bambu PLA Lite @base": {
+          "name": "Bambu PLA Lite @BBL H2C 0.4 nozzle",
+          "settingId": "GFSA18_15",
+          "isSupport": "0"
+        },
+        "Bambu PLA Marble @base": {
+          "name": "Bambu PLA Marble @BBL H2C 0.4 nozzle",
+          "settingId": "GFSA07_11",
+          "isSupport": "0"
+        },
+        "Bambu PLA Matte @base": {
+          "name": "Bambu PLA Matte @BBL H2C",
+          "settingId": "GFSA01_22",
+          "isSupport": "0"
+        },
+        "Bambu PLA Metal @base": {
+          "name": "Bambu PLA Metal @BBL H2C 0.4 nozzle",
+          "settingId": "GFSA02_20",
+          "isSupport": "0"
+        },
+        "Bambu PLA Pure @base": {
+          "name": "Bambu PLA Pure @BBL H2C",
+          "settingId": "GFSA19_10",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk @base": {
+          "name": "Bambu PLA Silk @BBL H2C 0.4 nozzle",
+          "settingId": "GFSA05_22",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk+ @base": {
+          "name": "Bambu PLA Silk+ @BBL H2C 0.4 nozzle",
+          "settingId": "GFSA06_18",
+          "isSupport": "0"
+        },
+        "Bambu PLA Sparkle @base": {
+          "name": "Bambu PLA Sparkle @BBL H2C 0.4 nozzle",
+          "settingId": "GFSA08_11",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough @base": {
+          "name": "Bambu PLA Tough @BBL H2C 0.4 nozzle",
+          "settingId": "GFSA09_20",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough+ @base": {
+          "name": "Bambu PLA Tough+ @BBL H2C",
+          "settingId": "GFSA10_24",
+          "isSupport": "0"
+        },
+        "Bambu PLA Translucent @base": {
+          "name": "Bambu PLA Translucent @BBL H2C",
+          "settingId": "GFSA17_29",
+          "isSupport": "0"
+        },
+        "Bambu PLA Wood @base": {
+          "name": "Bambu PLA Wood @BBL H2C 0.4 nozzle",
+          "settingId": "GFSA16_14",
+          "isSupport": "0"
+        },
+        "Bambu PLA-CF @base": {
+          "name": "Bambu PLA-CF @BBL H2C 0.4 nozzle",
+          "settingId": "GFSA50_18",
+          "isSupport": "0"
+        },
+        "Bambu PPA-CF @base": {
+          "name": "Bambu PPA-CF @BBL H2C 0.4 nozzle",
+          "settingId": "GFSN06_07",
+          "isSupport": "0"
+        },
+        "Bambu PPS-CF @base": {
+          "name": "Bambu PPS-CF @BBL H2C 0.4 nozzle",
+          "settingId": "GFST02_03",
+          "isSupport": "0"
+        },
+        "Bambu PVA @base": {
+          "name": "Bambu PVA @BBL H2C 0.4 nozzle",
+          "settingId": "GFSS04_17",
+          "isSupport": "1"
+        },
+        "Bambu Support for ABS @base": {
+          "name": "Bambu Support for ABS @BBL H2C 0.4 nozzle",
+          "settingId": "GFSS06_07",
+          "isSupport": "1"
+        },
+        "Bambu Support For PA/PET @base": {
+          "name": "Bambu Support For PA/PET @BBL H2C 0.4 nozzle",
+          "settingId": "GFSS03_08",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA @base": {
+          "name": "Bambu Support For PLA @BBL H2C 0.4 nozzle",
+          "settingId": "GFSS02_21",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA/PETG @base": {
+          "name": "Bambu Support For PLA/PETG @BBL H2C 0.4 nozzle",
+          "settingId": "GFSS05_17",
+          "isSupport": "1"
+        },
+        "Bambu TPU 90A @base": {
+          "name": "Bambu TPU 90A @BBL H2C 0.4 nozzle",
+          "settingId": "GFSU03_08",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A @base": {
+          "name": "Bambu TPU 95A @BBL H2C 0.4 nozzle",
+          "settingId": "GFSU01_08",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A HF @base": {
+          "name": "Bambu TPU 95A HF @BBL H2C 0.4 nozzle",
+          "settingId": "GFSU00_13",
+          "isSupport": "0"
+        },
+        "Bambu TPU for AMS @base": {
+          "name": "Bambu TPU for AMS @BBL H2C 0.4 nozzle",
+          "settingId": "GFSU02_09",
+          "isSupport": "0"
+        }
+      }
+    },
+    "Bambu Lab X2D": {
+      "printerPreset": "Bambu Lab X2D 0.4 nozzle",
+      "processPreset": "0.20mm Standard @BBL X2D",
+      "nozzleDiameter": "0.4",
+      "nozzleDiameters": [
+        "0.4",
+        "0.4"
+      ],
+      "extruderTypes": [
+        "Direct Drive",
+        "Bowden"
+      ],
+      "printableArea": [
+        "0x0",
+        "256x0",
+        "256x256",
+        "0x256 "
+      ],
+      "printableHeight": "261",
+      "bedExcludeArea": [],
+      "extruderPrintableAreas": [
+        "0x0,256x0,256x256,0x256",
+        "20.5x0,256x0,256x256,20.5x256"
+      ],
+      "wrappingExcludeArea": [],
+      "filaments": {
+        "Bambu ABS @base": {
+          "name": "Bambu ABS @BBL X2D 0.4 nozzle",
+          "settingId": "GFSB00_09",
+          "isSupport": "0"
+        },
+        "Bambu ABS-GF @base": {
+          "name": "Bambu ABS-GF @BBL X2D 0.4 nozzle",
+          "settingId": "GFSB50_06",
+          "isSupport": "0"
+        },
+        "Bambu ASA @base": {
+          "name": "Bambu ASA @BBL X2D 0.4 nozzle",
+          "settingId": "GFSB01_22",
+          "isSupport": "0"
+        },
+        "Bambu ASA-Aero @base": {
+          "name": "Bambu ASA-Aero @BBL X2D 0.4 nozzle",
+          "settingId": "GFSB02_06",
+          "isSupport": "0"
+        },
+        "Bambu ASA-CF @base": {
+          "name": "Bambu ASA-CF @BBL X2D 0.4 nozzle",
+          "settingId": "GFSB51_12",
+          "isSupport": "0"
+        },
+        "Bambu PA6-CF @base": {
+          "name": "Bambu PA6-CF @BBL X2D 0.4 nozzle",
+          "settingId": "GFSN05_01",
+          "isSupport": "0"
+        },
+        "Bambu PA6-GF @base": {
+          "name": "Bambu PA6-GF @BBL X2D 0.4 nozzle",
+          "settingId": "GFSN08_06",
+          "isSupport": "0"
+        },
+        "Bambu PAHT-CF @base": {
+          "name": "Bambu PAHT-CF @BBL X2D 0.4 nozzle",
+          "settingId": "GFSN04_04",
+          "isSupport": "0"
+        },
+        "Bambu PC @base": {
+          "name": "Bambu PC @BBL X2D 0.4 nozzle",
+          "settingId": "GFSC00_18",
+          "isSupport": "0"
+        },
+        "Bambu PC FR @base": {
+          "name": "Bambu PC FR @BBL X2D 0.4 nozzle",
+          "settingId": "GFSC01_28",
+          "isSupport": "0"
+        },
+        "Bambu PET-CF @base": {
+          "name": "Bambu PET-CF @BBL X2D 0.4 nozzle",
+          "settingId": "GFST01_06",
+          "isSupport": "0"
+        },
+        "Bambu PETG Basic @base": {
+          "name": "Bambu PETG Basic @BBL X2D 0.4 nozzle",
+          "settingId": "GFSG00_12",
+          "isSupport": "0"
+        },
+        "Bambu PETG HF @base": {
+          "name": "Bambu PETG HF @BBL X2D 0.4 nozzle",
+          "settingId": "GFSG02_12",
+          "isSupport": "0"
+        },
+        "Bambu PETG Matte @base": {
+          "name": "Bambu PETG Matte @BBL X2D 0.4 nozzle",
+          "settingId": "GFSG03_46",
+          "isSupport": "0"
+        },
+        "Bambu PETG Translucent @base": {
+          "name": "Bambu PETG Translucent @BBL X2D 0.4 nozzle",
+          "settingId": "GFSG01_19",
+          "isSupport": "0"
+        },
+        "Bambu PETG-CF @base": {
+          "name": "Bambu PETG-CF @BBL X2D 0.4 nozzle",
+          "settingId": "GFSG50_17",
+          "isSupport": "0"
+        },
+        "Bambu PLA Aero @base": {
+          "name": "Bambu PLA Aero @BBL X2D 0.4 nozzle",
+          "settingId": "GFSA11_09",
+          "isSupport": "0"
+        },
+        "Bambu PLA Basic @base": {
+          "name": "Bambu PLA Basic @BBL X2D 0.4 nozzle",
+          "settingId": "GFSA00_08",
+          "isSupport": "0"
+        },
+        "Bambu PLA Dynamic @base": {
+          "name": "Bambu PLA Dynamic @BBL X2D 0.4 nozzle",
+          "settingId": "GFSA13_20",
+          "isSupport": "0"
+        },
+        "Bambu PLA Galaxy @base": {
+          "name": "Bambu PLA Galaxy @BBL X2D 0.4 nozzle",
+          "settingId": "GFSA15_20",
+          "isSupport": "0"
+        },
+        "Bambu PLA Glow @base": {
+          "name": "Bambu PLA Glow @BBL X2D 0.4 nozzle",
+          "settingId": "GFSA12_20",
+          "isSupport": "0"
+        },
+        "Bambu PLA Lite @base": {
+          "name": "Bambu PLA Lite @BBL X2D 0.4 nozzle",
+          "settingId": "GFSA18_12",
+          "isSupport": "0"
+        },
+        "Bambu PLA Marble @base": {
+          "name": "Bambu PLA Marble @BBL X2D 0.4 nozzle",
+          "settingId": "GFSA07_08",
+          "isSupport": "0"
+        },
+        "Bambu PLA Matte @base": {
+          "name": "Bambu PLA Matte @BBL X2D 0.4 nozzle",
+          "settingId": "GFSA01_09",
+          "isSupport": "0"
+        },
+        "Bambu PLA Metal @base": {
+          "name": "Bambu PLA Metal @BBL X2D 0.4 nozzle",
+          "settingId": "GFSA02_17",
+          "isSupport": "0"
+        },
+        "Bambu PLA Pure @base": {
+          "name": "Bambu PLA Pure @BBL X2D 0.4 nozzle",
+          "settingId": "GFSA19_34",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk @base": {
+          "name": "Bambu PLA Silk @BBL X2D 0.4 nozzle",
+          "settingId": "GFSA05_14",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk+ @base": {
+          "name": "Bambu PLA Silk+ @BBL X2D 0.4 nozzle",
+          "settingId": "GFSA06_15",
+          "isSupport": "0"
+        },
+        "Bambu PLA Sparkle @base": {
+          "name": "Bambu PLA Sparkle @BBL X2D 0.4 nozzle",
+          "settingId": "GFSA08_08",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough @base": {
+          "name": "Bambu PLA Tough @BBL X2D 0.4 nozzle",
+          "settingId": "GFSA09_17",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough+ @base": {
+          "name": "Bambu PLA Tough+ @BBL X2D 0.4 nozzle",
+          "settingId": "GFSA10_17",
+          "isSupport": "0"
+        },
+        "Bambu PLA Translucent @base": {
+          "name": "Bambu PLA Translucent @BBL X2D 0.4 nozzle",
+          "settingId": "GFSA17_26",
+          "isSupport": "0"
+        },
+        "Bambu PLA Wood @base": {
+          "name": "Bambu PLA Wood @BBL X2D 0.4 nozzle",
+          "settingId": "GFSA16_12",
+          "isSupport": "0"
+        },
+        "Bambu PLA-CF @base": {
+          "name": "Bambu PLA-CF @BBL X2D 0.4 nozzle",
+          "settingId": "GFSA50_16",
+          "isSupport": "0"
+        },
+        "Bambu PPA-CF @base": {
+          "name": "Bambu PPA-CF @BBL X2D 0.4 nozzle",
+          "settingId": "GFSN06_05",
+          "isSupport": "0"
+        },
+        "Bambu PVA @base": {
+          "name": "Bambu PVA @BBL X2D 0.4 nozzle",
+          "settingId": "GFSS04_08",
+          "isSupport": "1"
+        },
+        "Bambu Support for ABS @base": {
+          "name": "Bambu Support for ABS @BBL X2D 0.4 nozzle",
+          "settingId": "GFSS06_05",
+          "isSupport": "1"
+        },
+        "Bambu Support For PA/PET @base": {
+          "name": "Bambu Support For PA/PET @BBL X2D 0.4 nozzle",
+          "settingId": "GFSS03_06",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA @base": {
+          "name": "Bambu Support For PLA @BBL X2D 0.4 nozzle",
+          "settingId": "GFSS02_14",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA/PETG @base": {
+          "name": "Bambu Support For PLA/PETG @BBL X2D 0.4 nozzle",
+          "settingId": "GFSS05_14",
+          "isSupport": "1"
+        },
+        "Bambu TPU 90A @base": {
+          "name": "Bambu TPU 90A @BBL X2D 0.4 nozzle",
+          "settingId": "GFSU03_06",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A @base": {
+          "name": "Bambu TPU 95A @BBL X2D 0.4 nozzle",
+          "settingId": "GFSU01_02",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A HF @base": {
+          "name": "Bambu TPU 95A HF @BBL X2D 0.4 nozzle",
+          "settingId": "GFSU00_07",
+          "isSupport": "0"
+        },
+        "Bambu TPU for AMS @base": {
+          "name": "Bambu TPU for AMS @BBL X2D 0.4 nozzle",
+          "settingId": "GFSU02_07",
+          "isSupport": "0"
+        }
+      }
+    },
+    "Bambu Lab A2L": {
+      "printerPreset": "Bambu Lab A2L 0.4 nozzle",
+      "processPreset": "0.20mm Standard @BBL A2L",
+      "nozzleDiameter": "0.4",
+      "nozzleDiameters": [
+        "0.4"
+      ],
+      "extruderTypes": [
+        "Direct Drive"
+      ],
+      "printableArea": [
+        "0x0",
+        "330x0",
+        "330x320",
+        "0x320"
+      ],
+      "printableHeight": "325",
+      "bedExcludeArea": [],
+      "extruderPrintableAreas": [],
+      "wrappingExcludeArea": [],
+      "filaments": {
+        "Bambu PETG Basic @base": {
+          "name": "Bambu PETG Basic @BBL A2L 0.4 nozzle",
+          "settingId": "GFSG00_33",
+          "isSupport": "0"
+        },
+        "Bambu PETG HF @base": {
+          "name": "Bambu PETG HF @BBL A2L",
+          "settingId": "GFSG02_28",
+          "isSupport": "0"
+        },
+        "Bambu PETG Matte @base": {
+          "name": "Bambu PETG Matte @BBL A2L 0.4 nozzle",
+          "settingId": "GFSG03_07",
+          "isSupport": "0"
+        },
+        "Bambu PETG Translucent @base": {
+          "name": "Bambu PETG Translucent @BBL A2L",
+          "settingId": "GFSG01_27",
+          "isSupport": "0"
+        },
+        "Bambu PETG-CF @base": {
+          "name": "Bambu PETG-CF @BBL A2L 0.4 nozzle",
+          "settingId": "GFSG50_20",
+          "isSupport": "0"
+        },
+        "Bambu PLA Aero @base": {
+          "name": "Bambu PLA Aero @BBL A2L",
+          "settingId": "GFSA11_13",
+          "isSupport": "0"
+        },
+        "Bambu PLA Basic @base": {
+          "name": "Bambu PLA Basic @BBL A2L 0.4 nozzle",
+          "settingId": "GFSA00_25",
+          "isSupport": "0"
+        },
+        "Bambu PLA Dynamic @base": {
+          "name": "Bambu PLA Dynamic @BBL A2L",
+          "settingId": "GFSA13_27",
+          "isSupport": "0"
+        },
+        "Bambu PLA Galaxy @base": {
+          "name": "Bambu PLA Galaxy @BBL A2L",
+          "settingId": "GFSA15_27",
+          "isSupport": "0"
+        },
+        "Bambu PLA Glow @base": {
+          "name": "Bambu PLA Glow @BBL A2L 0.4 nozzle",
+          "settingId": "GFSA12_27",
+          "isSupport": "0"
+        },
+        "Bambu PLA Lite @base": {
+          "name": "Bambu PLA Lite @BBL A2L 0.4 nozzle",
+          "settingId": "GFSA18_22",
+          "isSupport": "0"
+        },
+        "Bambu PLA Marble @base": {
+          "name": "Bambu PLA Marble @BBL A2L",
+          "settingId": "GFSA07_13",
+          "isSupport": "0"
+        },
+        "Bambu PLA Matte @base": {
+          "name": "Bambu PLA Matte @BBL A2L 0.4 nozzle",
+          "settingId": "GFSA01_25",
+          "isSupport": "0"
+        },
+        "Bambu PLA Metal @base": {
+          "name": "Bambu PLA Metal @BBL A2L",
+          "settingId": "GFSA02_23",
+          "isSupport": "0"
+        },
+        "Bambu PLA Pure @base": {
+          "name": "Bambu PLA Pure @BBL A2L",
+          "settingId": "GFSA19_08",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk @base": {
+          "name": "Bambu PLA Silk @BBL A2L 0.4 nozzle",
+          "settingId": "GFSA05_25",
+          "isSupport": "0"
+        },
+        "Bambu PLA Silk+ @base": {
+          "name": "Bambu PLA Silk+ @BBL A2L 0.4 nozzle",
+          "settingId": "GFSA06_24",
+          "isSupport": "0"
+        },
+        "Bambu PLA Sparkle @base": {
+          "name": "Bambu PLA Sparkle @BBL A2L",
+          "settingId": "GFSA08_13",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough @base": {
+          "name": "Bambu PLA Tough @BBL A2L",
+          "settingId": "GFSA09_24",
+          "isSupport": "0"
+        },
+        "Bambu PLA Tough+ @base": {
+          "name": "Bambu PLA Tough+ @BBL A2L 0.4 nozzle",
+          "settingId": "GFSA10_20",
+          "isSupport": "0"
+        },
+        "Bambu PLA Translucent @base": {
+          "name": "Bambu PLA Translucent @BBL A2L",
+          "settingId": "GFSA17_20",
+          "isSupport": "0"
+        },
+        "Bambu PLA Wood @base": {
+          "name": "Bambu PLA Wood @BBL A2L",
+          "settingId": "GFSA16_18",
+          "isSupport": "0"
+        },
+        "Bambu PLA-CF @base": {
+          "name": "Bambu PLA-CF @BBL A2L",
+          "settingId": "GFSA50_20",
+          "isSupport": "0"
+        },
+        "Bambu PVA @base": {
+          "name": "Bambu PVA @BBL A2L",
+          "settingId": "GFSS04_23",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA @base": {
+          "name": "Bambu Support For PLA @BBL A2L",
+          "settingId": "GFSS02_24",
+          "isSupport": "1"
+        },
+        "Bambu Support For PLA/PETG @base": {
+          "name": "Bambu Support For PLA/PETG @BBL A2L",
+          "settingId": "GFSS05_23",
+          "isSupport": "1"
+        },
+        "Bambu TPU 90A @base": {
+          "name": "Bambu TPU 90A @BBL A2L",
+          "settingId": "GFSU03_12",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A @base": {
+          "name": "Bambu TPU 95A @BBL A2L",
+          "settingId": "GFSU01_11",
+          "isSupport": "0"
+        },
+        "Bambu TPU 95A HF @base": {
+          "name": "Bambu TPU 95A HF @BBL A2L",
+          "settingId": "GFSU00_15",
+          "isSupport": "0"
+        },
+        "Bambu TPU for AMS @base": {
+          "name": "Bambu TPU for AMS @BBL A2L",
+          "settingId": "GFSU02_12",
+          "isSupport": "0"
+        }
+      }
+    }
+  }
+}

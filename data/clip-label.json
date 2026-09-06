@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "sourceFilename": "Filament_Clip_Label_3MF.stl",
+  "sourceSha256": "e328ce1fa4e135e1e94348b78fdb448b088f8c0e5a10880d57329ff05bf6d47f",
+  "sourceTriangleCount": 4216,
+  "retainedTriangleCount": 4204,
+  "removedPocketTriangleCount": 10,
+  "removedDegenerateFaces": [2796, 3943],
+  "addedFaceTriangleCount": 2,
+  "triangleCount": 4206,
+  "vertexCount": 2103,
+  "bounds": {
+    "min": [0, 0, 0],
+    "max": [51.40016174316406, 13.810226440429688, 15.002007484436035]
+  },
+  "retainedTriangleCoordinatesSha256": "61e76491e052f2b607416586647f3f64b286cd0cf7d18fb1280a55a6fcaaf1e2",
+  "assetSha256": "33ce8578b279d09d57294c8bd5a8c601e6d2b5708038729ab6d054d80aedd7c6",
+  "operation": "Replace the ten recessed-pocket triangles with two triangles across the original mouth. Omit two zero-area source triangles. Preserve all other source triangle coordinates and winding.",
+  "faceNormal": [0, -1, 0],
+  "textFaceY": 4.9026336669921875,
+  "faceFlatnessTolerance": 0.001,
+  "textArea": {
+    "minX": 13.1,
+    "maxX": 49.6,
+    "minZ": 1.2,
+    "maxZ": 13.8
+  }
+}

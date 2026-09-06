@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-09-04T16:31:38.721Z",
+  "source": {
+    "repository": "https://github.com/bambulab/BambuStudio",
+    "commit": "66e405477604cf9346ea7aa9e439a7854a01029b",
+    "profileIndex": "https://raw.githubusercontent.com/bambulab/BambuStudio/66e405477604cf9346ea7aa9e439a7854a01029b/resources/profiles/BBL.json",
+    "colorTable": "https://raw.githubusercontent.com/bambulab/BambuStudio/66e405477604cf9346ea7aa9e439a7854a01029b/resources/profiles/BBL/filament/filaments_color_codes.json",
+    "profileVersion": "02.08.00.05",
+    "colorTableSha256": "b600b1da4b275d93f06cfdd5cc715b5459691a47fade432998355cd908217a1d",
+    "license": "AGPL-3.0-only",
+    "licenseUrl": "https://github.com/bambulab/BambuStudio/blob/66e405477604cf9346ea7aa9e439a7854a01029b/LICENSE"
+  },
+  "catalogRows": 314,
+  "machineModels": 14,
+  "unmatchedProfileTypes": [],
+  "store": {
+    "region": "US",
+    "handles": 46,
+    "matchedColors": 258
+  }
+}
