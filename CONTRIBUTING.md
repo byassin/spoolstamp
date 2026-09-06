@@ -1,37 +1,40 @@
-# Contributing
+# Contributing to Spoolstamp
 
-Thanks for helping make physical filament labels easier to generate and safer to share.
+Open an issue to discuss larger changes, or send a pull request for a focused fix.
 
-## Before opening a pull request
+## Development
 
-1. Create an issue for significant UI, geometry, catalog, or printer-integration changes.
-2. Keep templates clean-room unless the contributor can document a compatible source license and attribution.
-3. Never commit printer access codes, Bambu account credentials, cloud tokens, or private model files.
-4. Run:
+Use Node.js 22.13 or newer.
 
-```bash
+```sh
+npm ci
+npm run dev
+```
+
+Before submitting:
+
+```sh
 npm run typecheck
 npm test
 npm run lint
 npm run build
 ```
 
-## Template requirements
+## Catalog updates
 
-Every label template must declare:
+Refresh generated catalog data through the sync scripts:
 
-- a stable id and version;
-- author and source;
-- SPDX license identifier;
-- whether derivatives and commercial use are allowed;
-- dimensional parameters and a printable bounding box;
-- minimum nozzle and layer-height constraints; and
-- semantic mesh roles (`body`, `accent`, `text`).
+```sh
+npm run sync:catalog
+npm run sync:studio-presets
+```
 
-Templates must produce closed, finite meshes with no zero-area triangles and non-negative Z coordinates. Raised text should overlap the body by a small amount instead of relying on coplanar faces.
+Optional store enrichment: `npm run sync:catalog:store`. Include the updated snapshots and sync report with your changes.
 
-## Catalog changes
+## New designs
 
-Do not hand-edit generated JSON. Update `scripts/sync-catalog.mjs`, run the sync, inspect `data/sync-report.json`, and include both the code and generated-data change in the pull request.
+Include the source, attribution, license, dimensions, and print settings. Templates should produce closed meshes, attached printable lettering, and consistent preview/export geometry. Add tests alongside the design.
 
-Store data is optional commerce enrichment. The BambuStudio profile dataset is the canonical print-data source.
+## Local integrations
+
+Keep printer access codes and account credentials out of commits and issues. See [AMS](docs/ams-integration.md) and [Studio handoff](docs/local-studio-handoff.md) for the implementation entry points.

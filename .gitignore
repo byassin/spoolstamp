@@ -42,3 +42,5 @@ next-env.d.ts
 
 # Local hosting identity is excluded from public snapshots.
 /.openai/
+/.playwright-cli/
+/output/
