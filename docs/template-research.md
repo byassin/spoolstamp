@@ -9,4 +9,4 @@ Spoolstamp includes two supplied STL-derived designs:
 
 The manifests record source hashes, dimensions, and modifications. Attribution and licensing are kept in [NOTICE-DATA.md](../NOTICE-DATA.md).
 
-The [Genetic Designs hinged-label page](https://makerworld.com/en/models/395861-filament-dry-box-hinged-label) was a visual reference during development; the exact upstream identity of the supplied STL has not been confirmed.
+The project owner identified the source listings as [Filament Dry Box Hinged Label by Genetic Designs](https://makerworld.com/en/models/395861-filament-dry-box-hinged-label) and [THE Filament Clip AND Label by Stag 3D](https://makerworld.com/en/models/181699-the-filament-clip-and-label). Both pages display MakerWorld's Standard Digital File License; see [NOTICE-DATA.md](../NOTICE-DATA.md).

@@ -14,10 +14,10 @@ Optional US storefront metadata is recorded separately from the profile data. No
 
 ## Model assets
 
-The two model meshes are derived from supplied STL files and are not covered by the application's MIT license. Their original redistribution terms remain unverified; this repository does not grant a separate model license.
+The two model meshes are derived from supplied STL files and are not covered by the application's MIT license. The source pages list MakerWorld's Standard Digital File License, which restricts redistribution, including remixes. Separate permission from the creators is needed for redistribution; this repository does not grant a model license.
 
-- `assets/supplied-drybox.mesh`: source and modifications in [data/supplied-drybox.json](data/supplied-drybox.json) and [design notes](docs/supplied-drybox.md).
-- `assets/clip-label.mesh`: source and modifications in [data/clip-label.json](data/clip-label.json) and [design notes](docs/clip-label.md).
+- `assets/supplied-drybox.mesh`: [Filament Dry Box Hinged Label by Genetic Designs](https://makerworld.com/en/models/395861-filament-dry-box-hinged-label). Modifications: [manifest](data/supplied-drybox.json) and [design notes](docs/supplied-drybox.md).
+- `assets/clip-label.mesh`: [THE Filament Clip AND Label by Stag 3D](https://makerworld.com/en/models/181699-the-filament-clip-and-label). Modifications: [manifest](data/clip-label.json) and [design notes](docs/clip-label.md).
 
 ## Font and geometry library
 
