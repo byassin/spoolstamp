@@ -8,7 +8,7 @@ import {
   STUDIO_TRANSFER_PATH,
   STUDIO_TRANSFER_TTL_MS,
   STUDIO_LOOPBACK_HOST,
-} from '../lib/studio-handoff';
+} from '../lib/studio-handoff.ts';
 
 const MAX_RETAINED_BYTES = 32 * 1024 * 1024;
 const MAX_TRANSFERS = 3;

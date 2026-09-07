@@ -111,7 +111,11 @@ export async function buildClipLabelMeshes(
         5.4,
         TEXT_PRINT_SPEC.relief + TEXT_PRINT_SPEC.attachmentOverlap,
         TEXT_PRINT_SPEC.lineWidth,
-        { minimumAspectRatio: 0.65, contourTolerance: 0.0001 },
+        {
+          minimumAspectRatio: 0.65,
+          contourTolerance: 0.0001,
+          consistentFontSize: true,
+        },
       );
     const placement = await appendLine(value).catch((error: unknown) => {
       const compact = compactClipLine(value, filament.product);

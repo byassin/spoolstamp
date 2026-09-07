@@ -12,14 +12,14 @@ import {
   parseAmsSnapshot,
   parsePrinterInfo,
   type AmsInventory,
-} from '../lib/ams';
-import { requestOrigin } from './local-studio-transfer';
+} from '../lib/ams.ts';
+import { requestOrigin } from './local-studio-transfer.ts';
 import {
   lanAmsDriver,
   AmsSerialMismatch,
   type AmsConnection,
   type AmsDriver,
-} from './ams-network';
+} from './ams-network.ts';
 
 class AmsError extends Error {
   constructor(

@@ -1,7 +1,7 @@
 import tls from 'node:tls';
 import { randomBytes } from 'node:crypto';
 import { MqttClient } from 'mqtt';
-import { mqttPacketLimit } from './mqtt-limit';
+import { mqttPacketLimit } from './mqtt-limit.ts';
 
 export type AmsConnection = { close(): void };
 export type AmsTransportEvent =

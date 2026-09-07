@@ -3,8 +3,8 @@ import tailwindcss from '@tailwindcss/postcss';
 import vinext from 'vinext';
 import { defineConfig } from 'vite';
 import { existsSync, readFileSync } from 'node:fs';
-import { localStudioTransfer } from './scripts/local-studio-transfer';
-import { localAms } from './scripts/local-ams';
+import { localStudioTransfer } from './scripts/local-studio-transfer.ts';
+import { localAms } from './scripts/local-ams.ts';
 
 const SITE_CREATOR_PLACEHOLDER_DATABASE_ID =
   '00000000-0000-4000-8000-000000000000';
@@ -43,7 +43,7 @@ const localBindingConfig = {
     : [],
 };
 
-export default defineConfig(async () => {
+export default defineConfig(async ({ command }) => {
   const staticBuild = process.env.SPOOLSTAMP_BUILD_TARGET === 'static';
   // Keep Wrangler and Miniflare state project-local. These are non-secret tool
   // settings; application environment belongs in ignored `.env*` files.
@@ -70,7 +70,8 @@ export default defineConfig(async () => {
       localStudioTransfer(),
       localAms(),
       vinext(),
-      ...(hostingConfig && !staticBuild ? [sites()] : []),
+      // Keep Sites packaging support without its unused development sign-in.
+      ...(hostingConfig && !staticBuild && command === 'build' ? [sites()] : []),
       ...cloudflarePlugins,
     ],
   };
