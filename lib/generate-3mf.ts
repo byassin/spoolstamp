@@ -143,10 +143,12 @@ async function buildDryBoxLabelMeshes(filament: Filament) {
     ...productLines.map((value) => ({
       value,
       height: productLines.length === 1 ? 8.6 : 5.7,
+      consistentFontSize: false,
     })),
     ...colorLines.map((value) => ({
       value,
-      height: colorLines.length === 1 ? 7.4 : 5.2,
+      height: colorLines.length === 1 ? 8.8 : 5.2,
+      consistentFontSize: true,
     })),
     { value: 'Bambu Lab', height: 5.2 },
     { value: `SKU: ${filament.colorCode}`, height: 5.2 },
@@ -188,6 +190,10 @@ async function buildDryBoxLabelMeshes(filament: Filament) {
       height,
       textDepth,
       TEXT_PRINT_SPEC.lineWidth,
+      {
+        consistentFontSize:
+          'consistentFontSize' in row && row.consistentFontSize,
+      },
     );
     if (placement)
       lettering.textRows.push({

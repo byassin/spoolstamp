@@ -36,6 +36,8 @@ export type VectorTextPlacement = {
 };
 
 export type VectorTextOptions = {
+  /** Use a shared ascender/descender envelope instead of enlarging each word. */
+  consistentFontSize?: boolean;
   /** Limit horizontal condensation; 1 retains the original letter proportions. */
   minimumAspectRatio?: number;
   contourTolerance?: number;
@@ -149,7 +151,7 @@ export async function appendOpenTypePathGeometry(
   targetHeight: number,
   depth: number,
   minimumLineWidth?: number,
-  options: VectorTextOptions = {},
+  options: VectorTextOptions & { referenceHeight?: number } = {},
 ): Promise<VectorTextPlacement | null> {
   requireFinite('centerX', centerX);
   requireFinite('centerY', centerY);
@@ -181,7 +183,9 @@ export async function appendOpenTypePathGeometry(
     ? 2 * TEXT_PRINT_SPEC.maximumOutlineExpansion
     : 0;
   const widthScale = (maxWidth - expansionMargin) / sourceWidth;
-  const heightScale = (targetHeight - expansionMargin) / sourceHeight;
+  const heightScale =
+    (targetHeight - expansionMargin) /
+    Math.max(sourceHeight, options.referenceHeight ?? sourceHeight);
   const scaleY = Math.min(
     heightScale,
     widthScale / (options.minimumAspectRatio ?? 1),
@@ -277,6 +281,16 @@ export async function addVectorTextLine(
     FONT_PATH_SIZE,
     minimumLineWidth ? { tracking: 60 } : undefined,
   );
+  // Include ascenders and descenders in every color's sizing envelope. Without
+  // this, "Cyan" is reduced because of its y while "Black" is enlarged to fill
+  // the same row. Actual outlines still cap the scale for taller glyphs.
+  const referenceYs = options.consistentFontSize
+    ? openTypePathCommandsToShapes(
+        font.getPath('Hkgy', 0, 0, FONT_PATH_SIZE).commands,
+      ).flatMap((shape) =>
+        shape.extractPoints(CURVE_SEGMENTS).shape.map((point) => point.y),
+      )
+    : undefined;
   try {
     return await appendOpenTypePathGeometry(
       target,
@@ -288,7 +302,12 @@ export async function addVectorTextLine(
       targetHeight,
       depth,
       minimumLineWidth,
-      options,
+      {
+        ...options,
+        referenceHeight: referenceYs
+          ? Math.max(...referenceYs) - Math.min(...referenceYs)
+          : undefined,
+      },
     );
   } catch (error) {
     throw new Error(
