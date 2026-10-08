@@ -1,21 +1,29 @@
 'use client';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { Cable, LoaderCircle, ShieldCheck, Unplug } from 'lucide-react';
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from 'react';
+import { Cable, LoaderCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { ColorSwatch } from './color-swatch';
 import { PRINTERS, type Filament, type DesignId } from '@/lib/catalog';
-import { type AmsInventory, type AmsProbe } from '@/lib/ams';
-import { readAms, probeAms, connectAms, disconnectAms } from '@/lib/ams-client';
+import { type AmsInventory } from '@/lib/ams';
 import {
   freshInventory,
   matchAmsSlot,
   textSpoolCandidates,
 } from '@/lib/ams-matching';
-import { isLoopbackUrl } from '@/lib/studio-handoff';
 import { MAX_BATCH_LABELS } from '@/lib/generate-label-batch';
 import { studioPresetFor } from '@/lib/studio-project';
 import type { BuilderConfiguration } from '@/lib/builder-configuration';
+import { CloudAmsConnection } from './cloud-ams-connection';
+import { validateCloudApiOrigin } from '@/lib/cloud-ams-client';
+const subscribeOrigin = () => () => {};
+const browserOrigin = () => window.location.origin;
+const serverOrigin = () => '';
 
 export function AmsPanel({
   filament,
@@ -36,14 +44,16 @@ export function AmsPanel({
   onSelect: (value: Partial<BuilderConfiguration>) => void;
   onLabelSelected?: () => void;
 }) {
-  const [available, setAvailable] = useState(false);
+  const origin = useSyncExternalStore(
+    subscribeOrigin,
+    browserOrigin,
+    serverOrigin,
+  );
+  const cloudOrigin = validateCloudApiOrigin(
+    import.meta.env.VITE_AMS_API_ORIGIN,
+    origin,
+  );
   const [inventory, setInventory] = useState<AmsInventory | null>(null);
-  const [pairing, setPairing] = useState(false);
-  const [host, setHost] = useState('');
-  const [serial, setSerial] = useState('');
-  const [code, setCode] = useState('');
-  const [probe, setProbe] = useState<AmsProbe | null>(null);
-  const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [confirmed, setConfirmed] = useState<Record<string, string>>({});
   const [selected, setSelected] = useState<string[]>([]);
@@ -77,45 +87,12 @@ export function AmsPanel({
     textFilamentProduct,
     autoText,
   ]);
-  const operation = useRef(0);
   const mounted = useRef(true);
   const previousIdentity = useRef('');
   useEffect(() => {
     mounted.current = true;
-    const controller = new AbortController();
-    let timer: ReturnType<typeof setTimeout>;
-    const poll = async () => {
-      const revision = operation.current;
-      try {
-        const state = await readAms(
-          AbortSignal.any([controller.signal, AbortSignal.timeout(5000)]),
-        );
-        if (!controller.signal.aborted && revision === operation.current) {
-          setAvailable(state.available === true);
-          setInventory(state);
-        }
-      } catch {
-        if (!controller.signal.aborted && revision === operation.current)
-          setInventory((value) =>
-            value
-              ? {
-                  ...value,
-                  connected: false,
-                  stale: true,
-                  message:
-                    'Local connection unavailable. Reconnect or use the manual picker.',
-                }
-              : null,
-          );
-      } finally {
-        if (!controller.signal.aborted) timer = setTimeout(poll, 5000);
-      }
-    };
-    if (isLoopbackUrl(window.location.origin)) void poll();
     return () => {
       mounted.current = false;
-      controller.abort();
-      clearTimeout(timer);
     };
   }, []);
   const identity = inventory
@@ -146,21 +123,6 @@ export function AmsPanel({
       onSelect({ textFilamentProduct: suggestedProduct });
   }, [autoText, fresh, suggestedProduct, textFilamentProduct, onSelect]);
 
-  async function pairAction(action: () => Promise<void>) {
-    if (busy) return;
-    operation.current++;
-    setBusy(true);
-    setError('');
-    try {
-      await action();
-    } catch (cause) {
-      if (mounted.current)
-        setError(cause instanceof Error ? cause.message : 'Connection failed.');
-    } finally {
-      if (mounted.current) setBusy(false);
-      operation.current++;
-    }
-  }
   function resolveLabel(key: string) {
     const slot = inventory?.slots.find((item) => item.key === key);
     if (!slot) return undefined;
@@ -264,160 +226,14 @@ export function AmsPanel({
         <h2 id="ams-heading">
           <Cable size={17} /> My AMS <small>Preview</small>
         </h2>
-        {available && !inventory?.connected && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => {
-              setPairing(!pairing);
-              setProbe(null);
-              setCode('');
-            }}
-            disabled={busy}
-          >
-            {pairing ? 'Cancel' : 'Connect'}
-          </Button>
-        )}
-        {inventory?.connected && (
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={busy}
-            onClick={() =>
-              void pairAction(async () => {
-                setInventory(await disconnectAms());
-                setProbe(null);
-                setCode('');
-              })
-            }
-          >
-            <Unplug size={14} /> Disconnect
-          </Button>
-        )}
       </div>
-      {!available && (
+      {cloudOrigin ? (
+        <CloudAmsConnection origin={cloudOrigin} onInventory={setInventory} />
+      ) : (
         <p className="field-note">
-          Optional AMS reading is available in the local edition. You can always
-          choose filament manually.
+          Cloud AMS is not configured on this edition yet. You can always choose
+          filament manually.
         </p>
-      )}
-      {available && !inventory?.connected && !pairing && (
-        <p className="field-note">
-          Use loaded spools to prefill labels. Connection is optional and
-          read-only.
-        </p>
-      )}
-      {available &&
-        inventory &&
-        !inventory.connected &&
-        inventory.message !== 'Not connected.' && (
-          <output className="field-note">{inventory.message}</output>
-        )}
-      {pairing && !inventory?.connected && (
-        <form
-          className="ams-pairing"
-          onSubmit={(event) => {
-            event.preventDefault();
-            void pairAction(async () => {
-              if (!probe) {
-                setProbe(await probeAms(host.trim()));
-                return;
-              }
-              const accessCode = code;
-              const token = probe.token;
-              setCode('');
-              // The server consumes the token even if pairing fails.
-              setProbe(null);
-              const result = await connectAms(
-                token,
-                serial.trim().toUpperCase(),
-                accessCode,
-              );
-              if (mounted.current) {
-                setInventory(result);
-                setPairing(false);
-                setProbe(null);
-              }
-            });
-          }}
-        >
-          <p className="field-note">
-            Use your printer’s LAN address and access code. No Bambu account
-            login. Credentials are not saved.
-          </p>
-          <label htmlFor="ams-printer-ip">
-            Printer IP
-            <Input
-              id="ams-printer-ip"
-              required
-              value={host}
-              placeholder="192.168.1.100"
-              disabled={busy || !!probe}
-              autoComplete="off"
-              onChange={(event) => setHost(event.target.value)}
-            />
-          </label>
-          {probe && (
-            <>
-              <div className="ams-trust">
-                <ShieldCheck size={18} />
-                <p>
-                  First-time certificate trust: only continue on a trusted
-                  network with your printer’s IP. This fingerprint is pinned for
-                  this session; it is not proof from Bambu Lab.
-                </p>
-                <code>{probe.fingerprint}</code>
-              </div>
-              <label htmlFor="ams-printer-serial">
-                Printer serial (not AMS / Hub serial)
-                <Input
-                  id="ams-printer-serial"
-                  required
-                  value={serial}
-                  autoComplete="off"
-                  maxLength={32}
-                  onChange={(event) => setSerial(event.target.value)}
-                />
-              </label>
-              <label htmlFor="ams-access-code">
-                LAN access code
-                <Input
-                  id="ams-access-code"
-                  required
-                  type="password"
-                  autoComplete="off"
-                  value={code}
-                  minLength={8}
-                  maxLength={8}
-                  onChange={(event) => setCode(event.target.value)}
-                />
-              </label>
-            </>
-          )}
-          <div className="ams-actions">
-            <Button type="submit" disabled={busy}>
-              {busy ? (
-                <LoaderCircle size={16} className="animate-spin" />
-              ) : null}
-              {probe
-                ? 'Trust & connect read-only'
-                : 'Check printer certificate'}
-            </Button>
-            {probe && (
-              <Button
-                type="button"
-                variant="outline"
-                disabled={busy}
-                onClick={() => {
-                  setProbe(null);
-                  setCode('');
-                }}
-              >
-                Change address
-              </Button>
-            )}
-          </div>
-        </form>
       )}
       {inventory?.connected && (
         <>
@@ -541,7 +357,11 @@ export function AmsPanel({
                           variant="outline"
                           disabled={disabled}
                           onClick={() => {
-                            if (label) {
+                            if (
+                              label &&
+                              live.current.inventory &&
+                              freshInventory(live.current.inventory)
+                            ) {
                               onSelect({
                                 filament: label,
                                 textFilamentProduct: textProductFor(label),
@@ -598,20 +418,6 @@ export function AmsPanel({
           )}
           {progress && <output className="field-note">{progress}</output>}
         </>
-      )}
-      {inventory?.diagnostics && inventory.diagnostics.requestsSent > 0 && (
-        <details className="field-note">
-          <summary>Connection diagnostics</summary>
-          <p>
-            Requests written: {inventory.diagnostics.requestsSent} · Reports
-            received: {inventory.diagnostics.messagesReceived} · Full AMS
-            snapshots: {inventory.diagnostics.fullSnapshots} · Incomplete AMS
-            reports: {inventory.diagnostics.incompleteAmsReports} · Retained:{' '}
-            {inventory.diagnostics.retainedMessages} · Unreadable:{' '}
-            {inventory.diagnostics.invalidMessages}
-          </p>
-          <p>No credentials or raw printer data are shown.</p>
-        </details>
       )}
       {error && (
         <p role="alert" className="error-message">

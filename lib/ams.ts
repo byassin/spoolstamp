@@ -1,26 +1,5 @@
 /** Public, sanitized inventory contract. Never contains access codes or tag UUIDs. */
-export const AMS_PATH = '/__local/ams';
-export const AMS_HEADER = 'X-AMS-Request';
 export const AMS_FRESH_MS = 45_000;
-export const AMS_INITIAL_WAIT_MS = 60_000;
-export type AmsDiagnostics = {
-  requestsSent: number;
-  messagesReceived: number;
-  retainedMessages: number;
-  invalidMessages: number;
-  reportsReceived: number;
-  incompleteAmsReports: number;
-  fullSnapshots: number;
-};
-export const emptyAmsDiagnostics = (): AmsDiagnostics => ({
-  requestsSent: 0,
-  messagesReceived: 0,
-  retainedMessages: 0,
-  invalidMessages: 0,
-  reportsReceived: 0,
-  incompleteAmsReports: 0,
-  fullSnapshots: 0,
-});
 export type AmsSlot = {
   key: string;
   unit: string;
@@ -43,12 +22,6 @@ export type AmsInventory = {
   stale: boolean;
   slots: AmsSlot[];
   message: string;
-  diagnostics?: AmsDiagnostics;
-};
-export type AmsProbe = {
-  token: string;
-  fingerprint: string;
-  expiresAt: number;
 };
 
 export const object = (value: unknown): Record<string, unknown> | null =>

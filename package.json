@@ -7,6 +7,9 @@
   },
   "scripts": {
     "dev": "vinext dev",
+    "probe:ams:cloud": "node --experimental-strip-types scripts/probe-cloud-ams.ts",
+    "serve:ams:cloud": "node --experimental-strip-types scripts/serve-cloud-ams.ts",
+    "build:ams:lambda": "node scripts/build-ams-lambda.mjs",
     "build": "vinext build",
     "build:static": "node scripts/build-static.mjs",
     "start": "wrangler dev --config dist/server/wrangler.json",
@@ -16,10 +19,14 @@
     "sync:catalog:store:refresh": "node scripts/sync-catalog.mjs --with-store --refresh-handles",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "lint": "oxlint app components/label-preview.tsx components/filament-selectors.tsx components/color-swatch.tsx components/ams-panel.tsx hooks lib scripts tests types",
+    "lint": "oxlint app components/label-preview.tsx components/filament-selectors.tsx components/color-swatch.tsx components/ams-panel.tsx components/cloud-ams-connection.tsx hooks lib scripts tests types",
     "format": "oxfmt"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "3.1147.0",
+    "@aws-sdk/client-kms": "3.1147.0",
+    "@aws-sdk/client-lambda": "3.1147.0",
+    "@aws-sdk/lib-dynamodb": "3.1147.0",
     "@base-ui/react": "1.7.0",
     "@fontsource/noto-sans": "5.3.0",
     "@shuding/opentype.js": "1.4.0-beta.0",
@@ -48,6 +55,7 @@
     "@types/three": "^0.185.4",
     "@vitejs/plugin-react": "6.0.2",
     "@vitejs/plugin-rsc": "0.5.34",
+    "esbuild": "0.28.2",
     "oxfmt": "0.61.0",
     "oxlint": "1.76.0",
     "oxlint-tsgolint": "7.0.2001",

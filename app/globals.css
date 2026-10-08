@@ -243,36 +243,19 @@
   font-weight: 400;
   color: var(--muted-foreground);
 }
-.ams-pairing {
+.ams-cloud-login {
   display: grid;
   gap: 14px;
 }
-.ams-pairing label {
+.ams-cloud-login label {
   display: grid;
   gap: 6px;
 }
-.ams-pairing input {
+.ams-cloud-login input {
   min-height: 40px;
 }
 .ams-panel .field-note {
   margin: 10px 0;
-}
-.ams-trust {
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: 0.8125rem;
-  line-height: 1.5;
-}
-.ams-trust svg {
-  color: var(--primary);
-  margin-bottom: 6px;
-}
-.ams-trust code {
-  display: block;
-  overflow-wrap: anywhere;
-  margin-top: 8px;
-  font-size: 0.75rem;
 }
 .ams-auto {
   display: flex;
@@ -313,7 +296,8 @@
   margin-top: 10px;
   line-height: 1.5;
 }
-.ams-slot select {
+.ams-slot select,
+.cloud-ams-connection select {
   width: 100%;
   background: #242b2f;
   padding: 10px;
@@ -325,6 +309,19 @@
   display: grid;
   gap: 8px;
   margin-top: 14px;
+}
+.cloud-ams-connection > label {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+}
+.cloud-ams-connection .ams-auto {
+  display: flex;
+  align-items: flex-start;
+}
+.cloud-ams-connection .ams-auto input {
+  min-height: 0;
+  margin-top: 4px;
 }
 .selector-trigger {
   width: 100%;

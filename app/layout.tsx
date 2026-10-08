@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   icons: { icon: '/brand/spoolstamp-mark.png' },
   title: 'Spoolstamp — Filament label studio',
   description:
-    'Design filament labels with a live 3D preview, Bambu Lab color catalog, optional local AMS inventory, and color-aware 3MF export.',
+    'Design filament labels with a live 3D preview, Bambu Lab color catalog, optional cloud AMS preview, and color-aware 3MF export.',
 };
 
 export default function RootLayout({

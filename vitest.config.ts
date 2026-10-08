@@ -8,6 +8,8 @@ export default defineConfig({
     },
   },
   test: {
+    // Geometry/catalog tests are CPU-heavy; avoid oversubscribing desktop CPUs.
+    maxWorkers: 2,
     environment: 'node',
     include: ['tests/**/*.test.ts'],
     setupFiles: ['tests/setup.ts'],

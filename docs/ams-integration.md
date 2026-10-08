@@ -1,36 +1,46 @@
 # My AMS
 
-Use the spools already loaded in your printer to create labels.
+Use the spools loaded in your printer to create labels through the optional,
+experimental Bambu Cloud connection. The LAN connection and saved-printer
+controls have been removed. The cloud backend is deployed as an AWS private
+preview, but the public browser interface is not enabled yet. Until browser
+qualification/configuration, the manual filament picker remains available.
 
 ## Connect
 
-1. Run Spoolstamp locally with `npm run dev`.
-2. Open **My AMS → Connect**.
-3. Enter your printer's LAN IP address, confirm the certificate fingerprint, then enter its serial number and LAN access code.
-4. Select **Use label** on a spool to fill in its material and color.
+1. Open **My AMS → Connect Bambu Cloud** on a configured edition.
+2. Enter your global-region Bambu email and accept the temporary connection notice.
+3. Click **Send verification email**, then enter the six-digit code.
+4. Choose a cloud-connected printer from your account and click **Read fresh AMS**.
+5. Confirm the loaded spools and select **Use label**.
 
-The drawer can be closed while the connection stays active.
+No local helper, printer IP, LAN access code, or account password is requested.
+The backend holds the Bambu token temporarily; it is never saved in the browser.
+Sign out ends the session. Sessions expire after 30 minutes. A local-preview
+backend restart clears sessions; a Lambda restart does not. Lambda stores temporary
+credentials encrypted with AWS KMS in DynamoDB; expired rows can remain encrypted
+until asynchronous TTL cleanup. Codes are never persisted.
+
+Reads are on demand: one per account/printer every five minutes. Label actions
+require a complete snapshot under 45 seconds old. After changing spools, wait
+and read again; old cached identities are not treated as current inventory.
 
 ## Text and batches
 
-**Use compatible loaded black/white text automatically** suggests a contrasting spool from the same material family. You can also choose the text filament manually in Print setup.
+**Use compatible loaded black/white text automatically** suggests a contrasting
+spool from the same material family. Text filament can also be chosen manually.
+Select up to eight spools to download separate 3MF labels together as a ZIP,
+using the current design and printer profile. Bambu Studio assigns final AMS
+slots when printing. Ambiguous products require confirmation, not guessing.
 
-Select **Batch** on up to eight spools to download their labels together as a ZIP. Each label uses the current design and printer profile.
+## Legacy saved credentials
 
-Bambu Studio handles the final AMS slot assignments when printing.
+The removed LAN feature's saved pairing files are not read, migrated, or deleted.
+Existing local credential files remain untouched outside this repository.
+No credentials are copied into the new cloud service.
 
-## Connection details
+## Setup and qualification
 
-AMS reading is available in the local app. It supports multiple reported AMS units and has been used with an X2D; other printer and accessory combinations may vary.
-
-The connection reads inventory over the local network. Access codes stay in server memory and are not saved to the repository or browser storage. Restarting the app server clears the connection.
-
-If inventory is missing, check the printer's address and LAN access code, reconnect, and expand **Connection diagnostics** for details.
-
-## Developer references
-
-- `scripts/local-ams.ts`: local connection and session handling.
-- `scripts/ams-network.ts`: TLS/MQTT transport.
-- `lib/ams.ts`: inventory parsing.
-- `lib/ams-matching.ts`: catalog and text-spool matching.
-- `tests/ams*.test.ts` and `tests/local-ams.test.ts`: protocol and lifecycle coverage.
+See [Hosted cloud AMS preview](hosted-cloud-ams.md) for local development of the
+hosted flow, deployment wiring, security boundaries, and pending qualification.
+The [isolated cloud probe](cloud-ams-prototype.md) remains a developer tool.
