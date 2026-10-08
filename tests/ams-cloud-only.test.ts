@@ -49,12 +49,21 @@ describe('cloud-only AMS feature', () => {
       /LAN connection|Printer IP|LAN access code|Remember this printer/,
     );
   });
-  it('does not claim backend restarts revoke hosted AWS sessions', () => {
+  it('keeps consent concise and privacy details provider-neutral', () => {
     const source = readFileSync(
       new URL('../components/cloud-ams-connection.tsx', import.meta.url),
       'utf8',
     );
-    expect(source).toContain('Hosted AWS sessions survive backend restarts');
+    expect(source).toContain(
+      'I agree to let Spoolstamp use my Bambu sign-in to read my AMS.',
+    );
+    expect(source).toContain('<summary>Privacy details</summary>');
+    expect(source).toContain('temporarily encrypted on our server');
+    expect(source).toContain('Verification codes aren’t stored');
+    expect(source).toContain('remain for days until cleanup');
+    expect(source).toContain('Sign-in expires after 30 minutes');
+    expect(source).toContain('disabled={busy || !consent || !state}');
+    expect(source).not.toMatch(/AWS|unofficial/i);
     expect(source).not.toContain('restarting the backend also signs you out');
   });
 });

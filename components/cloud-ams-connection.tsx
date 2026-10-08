@@ -126,8 +126,8 @@ export function CloudAmsConnection({
   return (
     <div className="cloud-ams-connection">
       <p className="field-note">
-        Experimental Bambu Cloud connection. Your printer must be
-        cloud-connected. No local helper is needed.
+        Connect through Bambu Cloud. Your printer must be cloud-connected.
+        No local helper is needed.
       </p>
       {!started ? (
         <Button
@@ -179,12 +179,7 @@ export function CloudAmsConnection({
                   disabled={busy}
                   onChange={(event) => setConsent(event.target.checked)}
                 />{' '}
-                I accept this unofficial, temporary connection. Spoolstamp’s
-                backend handles my email and verification code; my Bambu token
-                stays server-side, never in browser storage. Hosted AWS sessions
-                temporarily store my email/token encrypted, but never the code.
-                Sessions expire after 30 minutes; expired encrypted records may
-                remain until asynchronous cleanup. Sign out deletes the session.
+                I agree to let Spoolstamp use my Bambu sign-in to read my AMS.
               </label>
               <Button type="submit" disabled={busy || !consent || !state}>
                 {busy ? 'Requesting…' : 'Send verification email'}
@@ -227,10 +222,19 @@ export function CloudAmsConnection({
             </>
           )}
           <p className="field-note">
-            No password requested. No credentials saved in your browser. Sign-in
-            expires after 30 minutes. Hosted AWS sessions survive backend restarts;
-            sign out to end the session early.
+            No password needed. Sign-in expires after 30 minutes; sign out to
+            end it sooner.
           </p>
+          <details className="field-note">
+            <summary>Privacy details</summary>
+            <p>
+              Spoolstamp handles your email and verification code. Your email
+              and connection token are temporarily encrypted on our server,
+              never saved in browser storage. Verification codes aren’t stored.
+              Signing out deletes the session. Expired encrypted records may
+              remain for days until cleanup.
+            </p>
+          </details>
         </form>
       ) : (
         <>
