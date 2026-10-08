@@ -101,9 +101,11 @@ export function createAwsAmsDependencies(config: {
   const TableName = config.table;
   const pk = (key: string) => `session:${key}`;
   const item = (s: LambdaSession) => ({
+    ...s,
+    // Derive storage metadata last: a rehydrated record must never overwrite
+    // the rotated primary key or the absolute-expiry TTL.
     pk: pk(s.key),
     expires: Math.ceil(s.expiresAt / 1000),
-    ...s,
   });
   const store: SessionStore = {
     async get(key) {
@@ -114,7 +116,9 @@ export function createAwsAmsDependencies(config: {
           ConsistentRead: true,
         }),
       );
-      return result.Item as LambdaSession | undefined;
+      if (!result.Item) return undefined;
+      const { pk: _pk, expires: _expires, ...session } = result.Item;
+      return session as LambdaSession;
     },
     async create(session) {
       try {
