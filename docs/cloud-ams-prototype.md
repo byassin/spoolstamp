@@ -1,8 +1,9 @@
 # Cloud AMS: isolated read-only qualification
 
-This is an **experimental developer test, not a deployed website feature**.
+This command is an **experimental developer test**, separate from the live browser feature.
 It checks for a fresh AMS snapshot through Bambu Cloud independently of hosted
-login. The [hosted flow](hosted-cloud-ams.md) is now implemented but not deployed;
+login. The [hosted flow](hosted-cloud-ams.md) is deployed as an account-restricted
+preview with a successful real X2D browser sign-in/read;
 the LAN connection has been removed from the application.
 No companion app or local bridge is part of the proposed hosted solution.
 
@@ -63,22 +64,23 @@ we do not infer region from email or implement SMS login.
 - Only sanitized AMS fields and a receipt timestamp are printed. An empty
   snapshot or scanning/unknown trays do not qualify populated inventory.
 
-## Before hosting
+## Qualification and public rollout
 
-Fixtures validate the implementation, **not live Bambu compatibility**. Qualify a
-real populated X2D snapshot, 2FA retained, multi-AMS layout, offline/timeout,
-sign-out, and freshness after a spool change. Hosted acceptance should work from
-a phone with this development computer powered off, proving no local dependency.
+Fixtures validate the implementation, **not live Bambu compatibility**. A real
+populated X2D cloud snapshot was first read through this probe; the separate hosted
+email-code/sign-in/read path has since been demonstrated in the browser. Remaining
+checks include multi-AMS layout, offline/timeout, sign-out, and freshness after a
+spool change. Test phone use with the development computer powered off separately.
 
-Amplify currently serves a static site. Production needs a separate backend with
+Amplify serves the static site alongside a separately deployed backend with
 outbound MQTT/TLS, authenticated per-user sessions, ownership checks, encrypted
 token handling, expiration/revocation, rate/concurrency limits, no-cache responses,
 CSRF/origin controls, and a sanitized inventory API. Our app's read-only behavior
 does not make the account token narrowly scoped. Do not expose this prototype
 directly as a public API.
 
-Establish vendor-supported access before public rollout. Community code is not
-vendor approval. No deployment, partnership email, credential retrieval, or
+Establish vendor-supported access before unrestricted public rollout. Community
+code is not vendor approval. No deployment, partnership email, credential retrieval, or
 printer configuration change is performed by the offline tests.
 
 ## Sources

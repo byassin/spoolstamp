@@ -114,12 +114,29 @@ passed using `node scripts/check-ams-deployment.mjs --preview`. No Bambu email,
 credentials or printer requests were used. The default execute-api endpoint is
 disabled; table TTL is enabled on `expires`, and PITR is disabled. Worker retry
 count is zero with a 60-second maximum event age. The SAM artifact bucket blocks
-all public access. These are infrastructure/session checks, not live provider or
-browser qualification. Publishing the frontend does not remove the backend's
-account restriction or qualify AWS-to-Bambu access.
+all public access. These automated checks use no provider credentials. The
+frontend is also published with its custom API origin configured; this does not
+remove the backend's account restriction.
 
-Working-checkout validation: 299 tests passed with two workers, lint/typecheck and the
-Lambda/static frontend builds passed. The exhaustive catalog test timed out under
+On October 8, 2026 the owner supplied screenshots of successful browser sign-in,
+selection of Bambu-X2D, and a fresh cloud snapshot showing A1 PLA Basic Black (28%)
+and A2 PETG Basic Black (36%). This demonstrates actual backend-to-Bambu access
+and the browser sign-in/read path for that account/printer. The screenshot crop
+does not establish the other two slots, physical remaining-weight accuracy, batch
+export, lifecycle behavior, or unrestricted public readiness. See [the screenshots](ams-integration.md#live-x2d-browser-test).
+
+The first hosted sign-in exposed a database metadata bug: rehydrated `pk` and
+`expires` fields could overwrite the newly derived storage key/TTL during session
+rotation. Storage reads now strip metadata and writes derive it last. Two
+regressions failed before the fix and passed afterwards. A credential-free live
+database check also verified read/rotation/cleanup with disposable synthetic
+records, using the deployment identity rather than the Lambda execution role.
+The corrected API/worker bundles reached UPDATE_COMPLETE with preview parameters
+preserved, and the HTTPS/session smoke check passed again.
+
+Clean release CI for the session-rotation fix: 296 tests across 30 files passed,
+along with lint/typecheck, the Lambda bundle, and both frontend builds. The
+exhaustive catalog test previously timed out under
 unbounded desktop parallelism; the test configuration now caps concurrency at two
 without weakening assertions or increasing its timeout. Dependency audit still
 reports advisories in the larger application/build dependency tree; this work does
@@ -137,10 +154,12 @@ qualification and establish the owner's desired alerts before broader rollout.
 
 Local tests use synthetic providers and mocked SDKs; they do not prove live AWS
 configuration, actual Bambu cloud access from AWS, or browser privacy behavior.
-Remaining qualification includes runtime health, encrypted database writes,
-cookie/CORS boundaries, real OTP, expected X2D slots, expiry, stale disabling,
-logout during reads and a phone test without the local computer running. Vendor
-terms/access and public-rollout approval remain separate from a successful probe.
+Runtime health, infrastructure/session cookie/CORS checks, real OTP, and a fresh
+X2D browser snapshot have evidence above. Remaining real-device qualification
+includes the full expected inventory, label selection/batch exports, expiry,
+stale disabling, logout during reads, multi-AMS/other-model behavior, and a phone
+test without the local computer running. Vendor terms/access and public-rollout
+approval remain separate from this successful private test.
 
 Primary documentation: [Lambda statelessness](https://docs.aws.amazon.com/lambda/latest/dg/concepts-application-design.html),
 [HTTP API timeout](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-quotas.html),
