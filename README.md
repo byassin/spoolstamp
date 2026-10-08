@@ -16,7 +16,7 @@ Create 3D-printable filament labels in a few clicks. Pick a design, choose your 
 - **Automatic lettering** — filament details filled in for you, with contrasting black or white text.
 - **Printer profiles** — 14 Bambu Lab models with matching bed dimensions and export settings.
 - **Color-aware 3MF export** — separate body and text filament profiles, ready to open and slice in Bambu Studio.
-- **My AMS** — when running locally, choose loaded spools, suggest compatible text filament, and batch-export labels.
+- **My AMS** — optional cloud preview: choose loaded spools, suggest compatible text filament, and batch-export labels (requires the separate backend; not live yet).
 - **One-click Studio opening** — available when running locally alongside Bambu Studio.
 - **Responsive workspace** — designed for desktop, tablet, and phone.
 
@@ -48,6 +48,8 @@ Open `http://localhost:3000`.
 ## Documentation
 
 [Hosting](docs/hosting.md) · [My AMS](docs/ams-integration.md) · [Bambu Studio](docs/local-studio-handoff.md) · [Development](CONTRIBUTING.md) · [Architecture](docs/architecture.md)
+
+An opt-in [browser-hosted cloud AMS preview](docs/hosted-cloud-ams.md) is implemented. Its AWS Lambda backend is deployed as an account-restricted private preview; the browser interface is not published. The public website remains unchanged pending qualification and configuration.
 
 ## License
 

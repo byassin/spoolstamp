@@ -24,19 +24,27 @@ The preview provides a label close-up, full printer bed, top view, orbit, and zo
 
 Exports contain separate structural/text parts, two filament profiles, the printer/process presets, and color metadata. The complete assembly is centered within the printer's common printable area. See [3MF settings](studio-project.md).
 
-## Local integrations
+## Cloud AMS preview
 
-Two Vite services are available when running locally:
+The optional AMS connection uses a separate Lambda backend for global-region Bambu
+email verification and account-owned printer status reads over cloud TLS/MQTT.
+Tokens are stored temporarily encrypted with AWS KMS in DynamoDB; the browser receives an opaque session cookie and
+sanitized inventory. Reads are on demand, with freshness and cooldown safeguards.
+The backend is deployed as an account-restricted AWS private preview; the browser
+interface is unpublished and actual AWS-to-Bambu access remains unqualified. There is no LAN printer connection
+or saved-pairing service. A memory-only Node preview supports local development
+of the hosted flow. See [AMS setup](ams-integration.md) and [Lambda deployment](aws-lambda-ams.md).
+
+## Local Studio integration
 
 - **Bambu Studio transfer:** stages a temporary 3MF for Studio's URL handler.
-- **My AMS:** reads printer inventory over TLS/MQTT and matches loaded spools to catalog entries.
 
-Neither service is included in the hosted app. See [Studio setup](local-studio-handoff.md) and [AMS setup](ams-integration.md).
+This Vite service is not included in the hosted app. See [Studio setup](local-studio-handoff.md).
 
 ## Project layout
 
 - `app/`, `components/`, `hooks/`: interface and interaction state.
 - `lib/`: catalog, geometry, export, preview, and matching logic.
 - `assets/`, `data/`: model assets and catalog snapshots.
-- `scripts/`: sync, extraction, and local integrations.
+- `scripts/`: sync, extraction, cloud AMS backend, and local Studio integration.
 - `tests/`: geometry, printability, export, and integration tests.

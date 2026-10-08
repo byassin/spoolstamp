@@ -34,6 +34,8 @@ yarn-error.log*
 next-env.d.ts
 /dist/
 /.wrangler/
+/.aws-sam/
+samconfig.toml
 /outputs/
 /work/
 /.tmp/
@@ -44,3 +46,6 @@ next-env.d.ts
 /.openai/
 /.playwright-cli/
 /output/
+
+# User-local printer secrets must never be committed, even if copied here.
+ams-pairing.json

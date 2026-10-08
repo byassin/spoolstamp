@@ -4,7 +4,6 @@ import vinext from 'vinext';
 import { defineConfig } from 'vite';
 import { existsSync, readFileSync } from 'node:fs';
 import { localStudioTransfer } from './scripts/local-studio-transfer.ts';
-import { localAms } from './scripts/local-ams.ts';
 
 const SITE_CREATOR_PLACEHOLDER_DATABASE_ID =
   '00000000-0000-4000-8000-000000000000';
@@ -68,7 +67,6 @@ export default defineConfig(async ({ command }) => {
       : undefined,
     plugins: [
       localStudioTransfer(),
-      localAms(),
       vinext(),
       // Keep Sites packaging support without its unused development sign-in.
       ...(hostingConfig && !staticBuild && command === 'build' ? [sites()] : []),

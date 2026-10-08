@@ -1,0 +1,188 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Spoolstamp experimental private cloud AMS preview, stateless API and one-shot worker.
+Parameters:
+  AppOrigin:
+    Type: String
+    Default: https://spoolstamp.bourhan.org
+    AllowedValues: [https://spoolstamp.bourhan.org]
+  ApiDomain:
+    Type: String
+    Default: ams.spoolstamp.bourhan.org
+    AllowedValues: [ams.spoolstamp.bourhan.org]
+  HostedZoneId:
+    Type: String
+    Description: Existing public bourhan.org Route53 hosted zone ID, without /hostedzone/.
+    AllowedPattern: '[A-Z0-9]+'
+  EnablePreview:
+    Type: String
+    Default: disabled
+    AllowedValues: [disabled, experimental]
+  PreviewEmailSha256:
+    Type: String
+    Default: ''
+    NoEcho: true
+    AllowedPattern: '([a-f0-9]{64})?'
+    Description: SHA256 of lowercase owner email; preview remains unavailable without it.
+Globals:
+  Function:
+    Runtime: nodejs22.x
+    Architectures: [x86_64]
+    MemorySize: 256
+    CodeUri: ../.aws-sam/ams/
+    Tracing: PassThrough
+    Environment:
+      Variables:
+        SPOOLSTAMP_AMS_ENABLE: !Ref EnablePreview
+        SPOOLSTAMP_AMS_APP_ORIGIN: !Ref AppOrigin
+        AMS_API_HOST: !Ref ApiDomain
+        AMS_TABLE: !Ref Sessions
+        AMS_CREDENTIAL_KEY: !GetAtt CredentialKey.Arn
+        AMS_ALLOWED_EMAIL_SHA256: !Ref PreviewEmailSha256
+Resources:
+  Sessions:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions: [{AttributeName: pk, AttributeType: S}]
+      KeySchema: [{AttributeName: pk, KeyType: HASH}]
+      TimeToLiveSpecification: {AttributeName: expires, Enabled: true}
+      SSESpecification: {SSEEnabled: true}
+      PointInTimeRecoverySpecification: {PointInTimeRecoveryEnabled: false}
+      Tags: [{Key: project, Value: spoolstamp-ams}]
+  CredentialKey:
+    Type: AWS::KMS::Key
+    Properties:
+      Description: Spoolstamp temporary AMS credential envelope encryption
+      EnableKeyRotation: true
+      PendingWindowInDays: 7
+      KeyPolicy:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: {AWS: !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:root'}
+            Action: kms:*
+            Resource: '*'
+  AccountKey:
+    Type: AWS::KMS::Key
+    Properties:
+      Description: Spoolstamp private account rate-limit pseudonyms
+      KeySpec: HMAC_256
+      KeyUsage: GENERATE_VERIFY_MAC
+      PendingWindowInDays: 7
+      KeyPolicy:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: {AWS: !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:root'}
+            Action: kms:*
+            Resource: '*'
+  WorkerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement: [{Effect: Allow, Principal: {Service: lambda.amazonaws.com}, Action: 'sts:AssumeRole'}]
+      Policies:
+        - PolicyName: WorkerSessionAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: [dynamodb:GetItem, dynamodb:PutItem]
+                Resource: !GetAtt Sessions.Arn
+                Condition: {ForAllValues:StringLike: {dynamodb:LeadingKeys: ['session:*']}}
+              - Effect: Allow
+                Action: kms:Decrypt
+                Resource: !GetAtt CredentialKey.Arn
+                Condition: {StringEquals: {'kms:EncryptionContext:purpose': spoolstamp-ams-session}}
+              - Effect: Allow
+                Action: [logs:CreateLogStream, logs:PutLogEvents]
+                Resource: !GetAtt WorkerLogs.Arn
+  ApiRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement: [{Effect: Allow, Principal: {Service: lambda.amazonaws.com}, Action: 'sts:AssumeRole'}]
+      Policies:
+        - PolicyName: ApiSessionAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: [dynamodb:GetItem, dynamodb:PutItem, dynamodb:UpdateItem, dynamodb:DeleteItem]
+                Resource: !GetAtt Sessions.Arn
+                Condition: {ForAllValues:StringLike: {dynamodb:LeadingKeys: ['session:*', 'limit:*']}}
+              - Effect: Allow
+                Action: [kms:GenerateDataKey, kms:Decrypt]
+                Resource: !GetAtt CredentialKey.Arn
+                Condition: {StringEquals: {'kms:EncryptionContext:purpose': spoolstamp-ams-session}}
+              - Effect: Allow
+                Action: kms:GenerateMac
+                Resource: !GetAtt AccountKey.Arn
+              - Effect: Allow
+                Action: lambda:InvokeFunction
+                Resource: !GetAtt Worker.Arn
+              - Effect: Allow
+                Action: [logs:CreateLogStream, logs:PutLogEvents]
+                Resource: !GetAtt ApiLogs.Arn
+  ApiLogs:
+    Type: AWS::Logs::LogGroup
+    Properties: {LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-api', RetentionInDays: 7}
+  WorkerLogs:
+    Type: AWS::Logs::LogGroup
+    Properties: {LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-worker', RetentionInDays: 7}
+  Worker:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub '${AWS::StackName}-worker'
+      Handler: lambda-ams.workerHandler
+      Timeout: 80
+      ReservedConcurrentExecutions: 4
+      Role: !GetAtt WorkerRole.Arn
+      EventInvokeConfig: {MaximumEventAgeInSeconds: 60, MaximumRetryAttempts: 0}
+      LoggingConfig: {LogFormat: JSON, ApplicationLogLevel: ERROR, SystemLogLevel: WARN, LogGroup: !Ref WorkerLogs}
+  Api:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub '${AWS::StackName}-api'
+      Handler: lambda-ams.apiHandler
+      Timeout: 28
+      ReservedConcurrentExecutions: 8
+      Role: !GetAtt ApiRole.Arn
+      LoggingConfig: {LogFormat: JSON, ApplicationLogLevel: ERROR, SystemLogLevel: WARN, LogGroup: !Ref ApiLogs}
+      Environment:
+        Variables:
+          AMS_ACCOUNT_KEY: !GetAtt AccountKey.Arn
+          AMS_WORKER: !Ref Worker
+      Events:
+        Health: {Type: HttpApi, Properties: {ApiId: !Ref HttpApi, Path: /healthz, Method: GET, PayloadFormatVersion: '2.0', TimeoutInMillis: 29000}}
+        SessionGet: {Type: HttpApi, Properties: {ApiId: !Ref HttpApi, Path: /session, Method: GET, PayloadFormatVersion: '2.0', TimeoutInMillis: 29000}}
+        SessionDelete: {Type: HttpApi, Properties: {ApiId: !Ref HttpApi, Path: /session, Method: DELETE, PayloadFormatVersion: '2.0', TimeoutInMillis: 29000}}
+        Email: {Type: HttpApi, Properties: {ApiId: !Ref HttpApi, Path: /email-code, Method: POST, PayloadFormatVersion: '2.0', TimeoutInMillis: 29000}}
+        Login: {Type: HttpApi, Properties: {ApiId: !Ref HttpApi, Path: /login, Method: POST, PayloadFormatVersion: '2.0', TimeoutInMillis: 29000}}
+        Snapshot: {Type: HttpApi, Properties: {ApiId: !Ref HttpApi, Path: /snapshot, Method: POST, PayloadFormatVersion: '2.0', TimeoutInMillis: 29000}}
+        Preflight: {Type: HttpApi, Properties: {ApiId: !Ref HttpApi, Path: '/{proxy+}', Method: OPTIONS, PayloadFormatVersion: '2.0', TimeoutInMillis: 29000}}
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Ref ApiDomain
+      ValidationMethod: DNS
+      DomainValidationOptions: [{DomainName: !Ref ApiDomain, HostedZoneId: !Ref HostedZoneId}]
+  HttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: '$default'
+      DisableExecuteApiEndpoint: true
+      DefaultRouteSettings: {ThrottlingBurstLimit: 10, ThrottlingRateLimit: 5}
+      Domain:
+        DomainName: !Ref ApiDomain
+        CertificateArn: !Ref Certificate
+        EndpointConfiguration: REGIONAL
+        Route53: {HostedZoneId: !Ref HostedZoneId}
+Outputs:
+  ApiOrigin: {Value: !Sub 'https://${ApiDomain}'}
+  SessionTable: {Value: !Ref Sessions}
+  ApiFunction: {Value: !Ref Api}
+  WorkerFunction: {Value: !Ref Worker}

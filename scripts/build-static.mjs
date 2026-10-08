@@ -3,11 +3,12 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const root = new URL('../', import.meta.url);
-const cli = fileURLToPath(new URL('./cli.js', import.meta.resolve('vinext')));
-const result = spawnSync(process.execPath, [cli, 'build'], {
+const launcher = fileURLToPath(new URL('./run-vinext-build.mjs', import.meta.url));
+const result = spawnSync(process.execPath, [launcher], {
   cwd: fileURLToPath(root),
   env: { ...process.env, SPOOLSTAMP_BUILD_TARGET: 'static' },
   stdio: 'inherit',
+  timeout: 180_000,
 });
 
 if (result.error) throw result.error;
