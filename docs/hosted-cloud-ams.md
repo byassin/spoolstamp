@@ -4,9 +4,12 @@ Amplify still hosts the static website. The AWS Lambda backend handles
 global-region email-code login and Bambu Cloud snapshot reads. A single-process
 Node 22.13+ backend remains available for local development of the hosted flow.
 End users need a browser and a cloud-connected printer, not a local helper.
-The AWS backend is deployed as an account-restricted private preview; the browser
-interface is not published or real-browser-qualified. The preceding CLI
-transport was qualified against the owner's X2D, not the hosted session flow.
+The backend and browser interface are deployed as an account-restricted private
+preview. Owner-provided screenshots on October 8, 2026 demonstrate real email-code
+sign-in, X2D printer selection, and a fresh snapshot showing black PLA/PETG slots.
+See [browser evidence and user steps](ams-integration.md#live-x2d-browser-test).
+This qualifies that sign-in/read path only, not broader public access or every
+model, lifecycle behavior, and export action.
 
 ## Behavior and boundaries
 
@@ -94,15 +97,18 @@ DynamoDB TTL physical cleanup can take days. Lambda restarts do not clear sessio
    VITE_AMS_API_ORIGIN=https://ams.spoolstamp.bourhan.org and rebuild the static
    site. No secrets belong in VITE_ variables. Without valid configuration the
    site keeps the manual picker fallback; unrelated third-party API domains are rejected.
-6. Real-browser qualification remains: fresh OTP, expected X2D spools, stale
-   disablement, logout during read, expiry, cross-account ownership, cookies/CORS,
-   and edge-rate limits. Test on a phone with the local computer off.
+6. This alternative deployment has not been qualified. On the selected Lambda
+   deployment, real OTP/X2D reading and credential-free cookie/CORS checks passed.
+   Remaining real-device checks include complete expected inventory, stale
+   disablement, logout during read, expiry, cross-account ownership, edge-rate
+   limits, and phone use with the local computer off.
 
 This memory-only preview is not HA: restarts, multiple workers, scaling and rolling
 deployments lose sessions/counters. Do not put it on a stateless-instance platform
 without a reviewed shared encrypted session store and distributed limits. A restart
 also resets read cooldowns; never use restarts to force extra reads.
-No resources, DNS, production settings or secrets have been created by this work.
+No resources have been created for this alternative container deployment. The
+selected Lambda backend and its DNS/website wiring are already deployed.
 
 ## Credential-free validation
 
@@ -114,4 +120,6 @@ The Windows static-build shutdown assertion was traced to Vinext's explicit
 zero-code process exit. The isolated build launcher now lets Windows drain after
 explicit success; nonzero/undefined exits and later failures remain failures, with
 a bounded build deadline. The complete configured static build exits successfully.
-Linux deployment CI and real hosted-browser qualification remain separate checks.
+Linux release CI passed, including both frontend builds and the Lambda bundle.
+Synthetic tests remain separate from the real X2D browser evidence above and the
+remaining lifecycle/export qualification.
