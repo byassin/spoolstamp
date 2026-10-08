@@ -49,4 +49,12 @@ describe('cloud-only AMS feature', () => {
       /LAN connection|Printer IP|LAN access code|Remember this printer/,
     );
   });
+  it('does not claim backend restarts revoke hosted AWS sessions', () => {
+    const source = readFileSync(
+      new URL('../components/cloud-ams-connection.tsx', import.meta.url),
+      'utf8',
+    );
+    expect(source).toContain('Hosted AWS sessions survive backend restarts');
+    expect(source).not.toContain('restarting the backend also signs you out');
+  });
 });

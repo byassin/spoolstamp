@@ -228,7 +228,8 @@ export function CloudAmsConnection({
           )}
           <p className="field-note">
             No password requested. No credentials saved in your browser. Sign-in
-            expires after 30 minutes; restarting the backend also signs you out.
+            expires after 30 minutes. Hosted AWS sessions survive backend restarts;
+            sign out to end the session early.
           </p>
         </form>
       ) : (
