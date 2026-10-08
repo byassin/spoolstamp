@@ -60,6 +60,31 @@ const conditional = () =>
   });
 beforeEach(() => vi.resetAllMocks());
 describe('AWS AMS persistence adapter, mocked SDK only', () => {
+  it('does not carry database primary key or TTL metadata into session state', async () => {
+    const { store } = createAwsAmsDependencies(config);
+    mocks.ddb.mockResolvedValue({
+      Item: { ...session, pk: `session:${key}`, expires: 10 },
+    });
+    expect(await store.get(key)).toEqual(session);
+  });
+  it('rotates rehydrated sessions to a distinct key with freshly derived TTL', async () => {
+    const { store } = createAwsAmsDependencies(config);
+    const oldKey = 'c'.repeat(64);
+    // Real database reads include metadata, unlike the original bare fixtures.
+    const rehydrated = {
+      ...session,
+      pk: `session:${oldKey}`,
+      expires: 1,
+      expiresAt: 20000,
+    };
+    mocks.ddb.mockResolvedValue({});
+    expect(await store.rotate(rehydrated, oldKey, 0, 500)).toBe(true);
+    const items = mocks.ddb.mock.calls[0][0].input.TransactItems;
+    expect(items[0].Delete.Key.pk).toBe(`session:${oldKey}`);
+    expect(items[1].Put.Item.pk).toBe(`session:${key}`);
+    expect(items[1].Put.Item.pk).not.toBe(items[0].Delete.Key.pk);
+    expect(items[1].Put.Item.expires).toBe(20);
+  });
   it('uses strongly consistent reads and version/expiry-fenced writes', async () => {
     const { store } = createAwsAmsDependencies(config);
     mocks.ddb.mockResolvedValue({ Item: session });
