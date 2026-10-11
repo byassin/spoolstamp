@@ -1,10 +1,8 @@
 import snapshot from '@/data/bambu-studio-presets.json';
 import type { Filament } from '@/lib/catalog';
 import { resolveTextFilament } from '@/lib/text-filament';
-import {
-  normalizeColor,
-  textColorForFilament,
-} from '@/lib/filament-appearance';
+import { resolveTextColor, type TextColorId } from './text-color';
+import { normalizeColor } from '@/lib/filament-appearance';
 
 type PrinterPresets = {
   printerPreset: string;
@@ -53,6 +51,7 @@ export function studioProjectSettings(
   filament: Filament,
   printerName: string,
   textFilamentProduct?: string,
+  textColor?: TextColorId,
 ) {
   const { printer, preset } = studioPresetFor(filament, printerName);
   const textFilament = resolveTextFilament(filament, textFilamentProduct);
@@ -83,7 +82,7 @@ export function studioProjectSettings(
     filament_diameter: ['1.75', '1.75'],
     filament_colour: [
       studioBodyColor(filament),
-      textColorForFilament(filament.colors).slice(0, 7),
+      resolveTextColor(filament, textColor).slice(0, 7),
     ],
     // Explicit two-filament project defaults; never inherit a previous job's
     // zero entries. Studio stores one row-major N*N table per physical nozzle.

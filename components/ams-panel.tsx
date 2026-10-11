@@ -19,6 +19,7 @@ import {
 import { MAX_BATCH_LABELS } from '@/lib/generate-label-batch';
 import { studioPresetFor } from '@/lib/studio-project';
 import type { BuilderConfiguration } from '@/lib/builder-configuration';
+import type { TextColorId } from '@/lib/text-color';
 import { CloudAmsConnection } from './cloud-ams-connection';
 import { validateCloudApiOrigin } from '@/lib/cloud-ams-client';
 const subscribeOrigin = () => () => {};
@@ -30,6 +31,7 @@ export function AmsPanel({
   printerName,
   design,
   textFilamentProduct,
+  textColor,
   autoText,
   onAutoTextChange,
   onSelect,
@@ -39,6 +41,7 @@ export function AmsPanel({
   printerName: string;
   design: DesignId;
   textFilamentProduct?: string;
+  textColor?: TextColorId;
   autoText: boolean;
   onAutoTextChange: (value: boolean) => void;
   onSelect: (value: Partial<BuilderConfiguration>) => void;
@@ -66,6 +69,7 @@ export function AmsPanel({
     selected,
     confirmed,
     textFilamentProduct,
+    textColor,
     autoText,
   });
   useLayoutEffect(() => {
@@ -76,6 +80,7 @@ export function AmsPanel({
       selected,
       confirmed,
       textFilamentProduct,
+      textColor,
       autoText,
     };
   }, [
@@ -85,6 +90,7 @@ export function AmsPanel({
     selected,
     confirmed,
     textFilamentProduct,
+    textColor,
     autoText,
   ]);
   const mounted = useRef(true);
@@ -150,6 +156,7 @@ export function AmsPanel({
       confirmed,
       autoText,
       textFilamentProduct,
+      textColor,
     });
     const isCurrent = () => {
       const current = live.current;
@@ -174,6 +181,7 @@ export function AmsPanel({
           confirmed: current.confirmed,
           autoText: current.autoText,
           textFilamentProduct: current.textFilamentProduct,
+          textColor: current.textColor,
         })
       );
     };
@@ -194,6 +202,7 @@ export function AmsPanel({
         labels: (labels as Filament[]).map((body) => ({
           filament: body,
           textFilamentProduct: textProductFor(body),
+          textColor: autoText ? undefined : textColor,
         })),
         printer: printerName,
         design,
@@ -365,6 +374,7 @@ export function AmsPanel({
                               onSelect({
                                 filament: label,
                                 textFilamentProduct: textProductFor(label),
+                                textColor: autoText ? undefined : textColor,
                               });
                               onLabelSelected?.();
                             }

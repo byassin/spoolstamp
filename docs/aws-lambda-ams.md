@@ -34,13 +34,16 @@ can be used for at most ten minutes. Verification codes are never stored. Logout
 deletes the session immediately, subject to a successful DynamoDB acknowledgement.
 Lambda restarts do not revoke sessions or reset account/device cooldowns.
 
-## Private preview and bounds
+## Access modes and bounds
 
 - `EnablePreview` defaults to `disabled`. Health reports readiness without starting
   sessions; other calls fail closed until explicitly enabled.
-- `PreviewEmailSha256` (NoEcho) restricts code sending to one owner's lowercase
-  email. Its hash is a privacy-sensitive identifier, not an authentication secret.
-  Runtime configuration requires it. This is not yet an unrestricted public launch.
+- `AccessMode=public` explicitly opens sign-in to all global-region Bambu accounts.
+  No invitation or account approval is needed. `AccessMode` defaults to `private`
+  for new deployments; missing or unknown settings cannot accidentally open access.
+- `PreviewEmailSha256` (NoEcho) is required only in private mode, where it restricts
+  code sending to one email. The live public stack retains this unused hash solely
+  for rollback; public mode ignores it. Its value must never be published.
 - Exact website Origin, secure host-only cookie, CSRF, custom-domain binding and
   JSON 2 KiB bounds. The default execute-api endpoint is disabled. CORS is handled
   by the function, not wildcard API Gateway configuration.
@@ -90,13 +93,14 @@ validation creates a new validation record and the new API hostname in the exist
 zone. Check that the API DNS name is unused first; do not overwrite another service.
 
 After disabled deployment, verify health and that session creation remains 503.
-Enable the private preview only with the owner email hash configured, then test
-actual vendor access. AWS-origin vendor blocks must be surfaced, never bypassed.
-The owner approved publishing the browser interface for account-restricted
-qualification after infrastructure/session checks. Set the public frontend build
+Enable public access with `EnablePreview=experimental AccessMode=public` only
+after explicit owner approval and review of deployment/vendor-access risks.
+Set `AccessMode=private` to restore the retained owner-only restriction without
+changing the credential keys, table, API domain or frontend configuration.
+AWS-origin vendor blocks must be surfaced, never bypassed. Set the public frontend build
 variable `VITE_AMS_API_ORIGIN=https://ams.spoolstamp.bourhan.org`; this contains no
-credentials. Keep the backend account restriction until real-provider/browser
-qualification and separate public-rollout approval.
+credentials. Public access does not relax consent, ownership, session isolation,
+expiry, payload bounds or rate limits.
 The SAM template and an eventual dedicated GitHub deployment workflow are separate
 from the existing Amplify-on-main workflow; repository pushes alone do not currently
 deploy this backend. A GitHub OIDC deployment role needs separate scoped setup.
@@ -106,7 +110,7 @@ deploy this backend. A GitHub OIDC deployment role needs separate scoped setup.
 ### Current deployment evidence
 
 The `spoolstamp-ams` stack in `us-east-1` reached CREATE_COMPLETE while disabled,
-then UPDATE_COMPLETE with the account-restricted preview enabled. Public HTTPS
+then UPDATE_COMPLETE with an initial single-account preview enabled. Public HTTPS
 health passed with normal certificate verification. Anonymous bootstrap,
 host-only secure cookies, exact credentialed CORS, cross-request session
 persistence, preflight, CSRF rejection, logout and post-logout read rejection all
@@ -115,15 +119,15 @@ credentials or printer requests were used. The default execute-api endpoint is
 disabled; table TTL is enabled on `expires`, and PITR is disabled. Worker retry
 count is zero with a 60-second maximum event age. The SAM artifact bucket blocks
 all public access. These automated checks use no provider credentials. The
-frontend is also published with its custom API origin configured; this does not
-remove the backend's account restriction.
+frontend is also published with its custom API origin configured. Account access
+is controlled separately by the backend's explicit `AccessMode` parameter.
 
 On October 8, 2026 the owner supplied screenshots of successful browser sign-in,
 selection of Bambu-X2D, and a fresh cloud snapshot showing A1 PLA Basic Black (28%)
 and A2 PETG Basic Black (36%). This demonstrates actual backend-to-Bambu access
 and the browser sign-in/read path for that account/printer. The screenshot crop
 does not establish the other two slots, physical remaining-weight accuracy, batch
-export, lifecycle behavior, or unrestricted public readiness. See [the screenshots](ams-integration.md#live-x2d-browser-test).
+export, lifecycle behavior, or compatibility with every account/printer. See [the screenshots](ams-integration.md#live-x2d-browser-test).
 
 The first hosted sign-in exposed a database metadata bug: rehydrated `pk` and
 `expires` fields could overwrite the newly derived storage key/TTL during session
@@ -145,12 +149,13 @@ not claim an audit-clean repository or apply broad unrelated dependency upgrades
 ### Usage estimate
 
 Two customer-managed KMS keys start at $2/month combined plus usage. Symmetric key
-rotation adds storage charges at its first two rotations. At modest private-preview
+rotation adds storage charges at its first two rotations. At modest preview
 traffic an estimated $2–$5/month is reasonable, not guaranteed or a spending cap.
 API requests, Lambda duration, DynamoDB requests/storage, artifacts, DNS queries and
 logs also cost money; account-wide free tiers may already be used elsewhere.
 No NAT gateway or provisioned concurrency is included. Review AWS billing after
-qualification and establish the owner's desired alerts before broader rollout.
+qualification. Public traffic can raise costs; the unchanged rate/concurrency
+limits are not a billing cap.
 
 Local tests use synthetic providers and mocked SDKs; they do not prove live AWS
 configuration, actual Bambu cloud access from AWS, or browser privacy behavior.
@@ -158,8 +163,22 @@ Runtime health, infrastructure/session cookie/CORS checks, real OTP, and a fresh
 X2D browser snapshot have evidence above. Remaining real-device qualification
 includes the full expected inventory, label selection/batch exports, expiry,
 stale disabling, logout during reads, multi-AMS/other-model behavior, and a phone
-test without the local computer running. Vendor terms/access and public-rollout
-approval remain separate from this successful private test.
+test without the local computer running.
+
+### Public preview decision
+
+On October 11, 2026 the owner explicitly approved opening sign-in to all supported
+global-region accounts, including the vendor-access uncertainty and potential
+additional hosting costs. The China-region service is not implemented in the
+browser flow. This opens access, not a claim of universal printer qualification.
+
+The vendor review checked Bambu's [cloud-access statement](https://blog.bambulab.com/setting-the-record-straight-on-cloud-access-and-community/):
+its cloud is governed by a user agreement and official-client impersonation is
+prohibited. Spoolstamp identifies itself honestly and never bypasses vendor
+blocks/challenges. The current terms page could not be retrieved during review,
+so vendor permission for this hosted integration remains unresolved. Owner consent
+is not vendor endorsement. Existing privacy and deployment protections remain
+unchanged; missing configuration still fails closed.
 
 Primary documentation: [Lambda statelessness](https://docs.aws.amazon.com/lambda/latest/dg/concepts-application-design.html),
 [HTTP API timeout](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-quotas.html),

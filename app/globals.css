@@ -963,3 +963,62 @@
     scroll-behavior: auto !important;
   }
 }
+
+.text-filament-heading {
+  font-weight: 600;
+}
+.text-filament-summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0;
+}
+.text-filament-summary small {
+  display: block;
+  color: var(--muted-foreground);
+  margin-top: 3px;
+}
+.text-color-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 16px 0;
+  border: 0;
+  padding: 0;
+}
+.text-color-options legend {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.text-color-options button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 6px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  cursor: pointer;
+}
+.text-color-options button[aria-pressed='true'] {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+.text-color-options button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+.text-color-options .color-swatch {
+  width: 24px;
+  height: 24px;
+}
+.text-filament-control select {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  color: inherit;
+}

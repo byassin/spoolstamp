@@ -45,6 +45,7 @@ describe('cloud-only AMS feature', () => {
       }),
     );
     expect(markup).toContain('Connect Bambu Cloud');
+    expect(markup).toContain('Open to all global-region Bambu accounts.');
     expect(markup).not.toMatch(
       /LAN connection|Printer IP|LAN access code|Remember this printer/,
     );

@@ -126,8 +126,8 @@ export function CloudAmsConnection({
   return (
     <div className="cloud-ams-connection">
       <p className="field-note">
-        Connect through Bambu Cloud. Your printer must be cloud-connected.
-        No local helper is needed.
+        Connect through Bambu Cloud. Your printer must be cloud-connected. No
+        local helper is needed. Open to all global-region Bambu accounts.
       </p>
       {!started ? (
         <Button

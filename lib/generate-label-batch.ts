@@ -1,8 +1,13 @@
 import JSZip from 'jszip';
 import type { Filament, DesignId } from './catalog';
+import type { TextColorId } from './text-color';
 
 export const MAX_BATCH_LABELS = 8;
-export type BatchLabel = { filament: Filament; textFilamentProduct?: string };
+export type BatchLabel = {
+  filament: Filament;
+  textFilamentProduct?: string;
+  textColor?: TextColorId;
+};
 export async function generateLabelBatch(options: {
   labels: BatchLabel[];
   printer: string;

@@ -12,6 +12,7 @@ import {
 } from '../scripts/lambda-ams-core';
 import { sealEnvelope, openEnvelope } from '../scripts/lambda-ams-aws';
 import { CloudAmsError } from '../scripts/cloud-ams';
+import { allowedEmailHashForAccess } from '../scripts/lambda-ams-access';
 const APP = 'https://spoolstamp.example.org';
 const HOST = 'ams.spoolstamp.example.org';
 const EMAIL = 'preview@example.org';
@@ -24,7 +25,7 @@ const printer = {
   online: true,
 };
 
-function setup() {
+function setup(accountEmail = EMAIL) {
   let time = 100_000;
   const sessions = new Map<string, LambdaSession>();
   const rates = new Map<string, { count: number; until: number }>();
@@ -95,7 +96,7 @@ function setup() {
       requestEmailCode: send,
       async loginWithEmailCode(email, code) {
         await login();
-        expect(email).toBe(EMAIL);
+        expect(email).toBe(accountEmail);
         expect(code).toBe('123456');
         token = TOKEN;
       },
@@ -120,7 +121,7 @@ function setup() {
     provider,
     enqueue,
     now: () => time,
-    allowedEmailHash: digest(EMAIL),
+    allowedEmailHash: digest(EMAIL) as string | undefined,
   };
   const service = () => createLambdaAmsService(options);
   let cookie = '';
@@ -151,8 +152,12 @@ function setup() {
   async function authenticate() {
     expect((await call('/session')).statusCode).toBe(200);
     expect(
-      (await call('/email-code', 'POST', { email: EMAIL, consent: true }))
-        .statusCode,
+      (
+        await call('/email-code', 'POST', {
+          email: accountEmail,
+          consent: true,
+        })
+      ).statusCode,
     ).toBe(200);
     expect((await call('/login', 'POST', { code: '123456' })).statusCode).toBe(
       200,
@@ -183,6 +188,41 @@ function setup() {
 }
 
 describe('stateless Lambda cloud AMS', () => {
+  it('updates a cached offline printer after a fresh read and preserves it across refreshes', async () => {
+    const f = setup();
+    await f.authenticate();
+    const session = [...f.sessions.values()][0];
+    session.printers[0].online = false;
+    expect((await f.call('/session')).data.printers[0].online).toBe(false);
+    await f.call('/snapshot', 'POST', { serial: SERIAL });
+    const [key, job] = f.enqueue.mock.calls[0];
+    await f.service().worker({ key, job });
+    expect((await f.call('/session')).data.printers[0].online).toBe(true);
+    expect((await f.call('/session')).data.printers[0].online).toBe(true);
+    f.advance(5 * 60_000);
+    f.snapshot.mockRejectedValueOnce(new CloudAmsError('offline'));
+    await f.call('/snapshot', 'POST', { serial: SERIAL });
+    const [nextKey, nextJob] = f.enqueue.mock.calls[1];
+    await f.service().worker({ key: nextKey, job: nextJob });
+    expect((await f.call('/session')).data.printers[0].online).toBe(false);
+  });
+  it('authenticates different accounts in public mode while retaining ownership checks', async () => {
+    for (const email of [EMAIL, 'other@example.org']) {
+      const f = setup(email);
+      f.options.allowedEmailHash = allowedEmailHashForAccess(
+        'public',
+        digest(EMAIL),
+      );
+      await f.authenticate();
+      expect(f.send).toHaveBeenCalledWith(email);
+      expect((await f.call('/session')).data.authenticated).toBe(true);
+      expect(
+        (await f.call('/snapshot', 'POST', { serial: 'OTHERPRINTER123' }))
+          .statusCode,
+      ).toBe(403);
+      expect(f.enqueue).not.toHaveBeenCalled();
+    }
+  });
   it('rejects unrelated origins, raw AWS domains, queries, and LAN endpoints', async () => {
     const f = setup();
     const base = f.event('/session');
@@ -226,12 +266,10 @@ describe('stateless Lambda cloud AMS', () => {
     });
     expect(
       (
-        await f
-          .service()
-          .api({
-            ...event,
-            headers: { ...event.headers, 'x-spoolstamp-csrf': 'bad' },
-          })
+        await f.service().api({
+          ...event,
+          headers: { ...event.headers, 'x-spoolstamp-csrf': 'bad' },
+        })
       ).statusCode,
     ).toBe(403);
     expect(
@@ -282,12 +320,10 @@ describe('stateless Lambda cloud AMS', () => {
     expect([...f.sessions.values()][0].challengeUntil).toBe(0);
     expect(
       (
-        await f
-          .service()
-          .api({
-            ...f.event('/snapshot', 'POST', { serial: SERIAL }),
-            cookies: [old],
-          })
+        await f.service().api({
+          ...f.event('/snapshot', 'POST', { serial: SERIAL }),
+          cookies: [old],
+        })
       ).statusCode,
     ).toBe(401);
   });

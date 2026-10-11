@@ -23,14 +23,12 @@ import {
   CATALOG_META,
   DEFAULT_PRINTER,
   DESIGNS,
-  FILAMENT_TYPES,
   PRINTERS,
   type DesignId,
 } from '@/lib/catalog';
-import {
-  appearanceLabel,
-  textColorForFilament,
-} from '@/lib/filament-appearance';
+import { appearanceLabel } from '@/lib/filament-appearance';
+import { TextFilamentControl } from '@/components/text-filament-control';
+import { resolveTextColor, TEXT_COLORS } from '@/lib/text-color';
 import { filamentForProduct } from '@/lib/builder-configuration';
 import { useLabelBuilder } from '@/hooks/use-label-builder';
 import { studioPresetFor } from '@/lib/studio-project';
@@ -50,6 +48,7 @@ export default function Home() {
     design,
     printerId,
     textFilamentProduct,
+    textColor: textColorChoice,
     generating,
     busyAction,
     localStudio,
@@ -65,8 +64,9 @@ export default function Home() {
   const printer =
     PRINTERS.find((item) => item.id === printerId) ?? DEFAULT_PRINTER;
   const selectedDesign = DESIGNS.find((item) => item.id === design)!;
-  const textColor = textColorForFilament(filament.colors);
-  const textColorName = textColor === '#FFFFFFFF' ? 'White' : 'Black';
+  const textColor = resolveTextColor(filament, textColorChoice);
+  const textColorName =
+    TEXT_COLORS.find((item) => item.hex === textColor)?.name ?? 'Text';
   const textFilament = resolveTextFilament(filament, textFilamentProduct);
   const isMixed = filament.colors.length > 1;
   let presetError: string | null = null;
@@ -196,6 +196,7 @@ export default function Home() {
               filament={filament}
               design={design}
               printerName={printer.fullName}
+              textColor={textColorChoice}
             />
           </div>
           <p className="preview-caption">
@@ -237,38 +238,22 @@ export default function Home() {
             </div>
             <p className="field-note">0.4 mm nozzle · 0.20 mm Standard</p>
           </div>
-          <div className="field printer-field">
-            <label htmlFor="text-filament">
-              Text filament · {textColorName}
-            </label>
-            <div className="printer-select">
-              <ColorSwatch colors={[textColor]} />
-              <select
-                id="text-filament"
-                value={textFilament.product}
-                onChange={(event) => {
-                  setAutoAmsText(false);
-                  updateConfiguration({
-                    textFilamentProduct: event.target.value,
-                  });
-                }}
-                aria-describedby="text-filament-note"
-              >
-                {FILAMENT_TYPES.filter(
-                  (item) => item.material === filament.material,
-                ).map((item) => (
-                  <option key={item.product} value={item.product}>
-                    {item.product}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown size={16} aria-hidden="true" />
-            </div>
-            <p className="field-note" id="text-filament-note">
-              Match your loaded {textColorName.toLowerCase()} spool. Confirm its
-              AMS slot in Studio.
-            </p>
-          </div>
+          <TextFilamentControl
+            body={filament}
+            color={textColorChoice}
+            product={textFilamentProduct}
+            onChange={(textColor, textFilamentProduct) => {
+              setAutoAmsText(false);
+              updateConfiguration({ textColor, textFilamentProduct });
+            }}
+            onAutomatic={() => {
+              setAutoAmsText(true);
+              updateConfiguration({
+                textColor: undefined,
+                textFilamentProduct: undefined,
+              });
+            }}
+          />
           <section
             className="details-section"
             aria-labelledby="filament-details-heading"
@@ -423,8 +408,12 @@ export default function Home() {
           printerName={printer.fullName}
           design={design}
           textFilamentProduct={textFilamentProduct}
+          textColor={textColorChoice}
           autoText={autoAmsText}
-          onAutoTextChange={setAutoAmsText}
+          onAutoTextChange={(enabled) => {
+            setAutoAmsText(enabled);
+            if (enabled) updateConfiguration({ textColor: undefined });
+          }}
           onSelect={updateConfiguration}
           onLabelSelected={() => setAmsOpen(false)}
         />

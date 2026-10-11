@@ -9,12 +9,14 @@ import {
   type Filament,
 } from '@/lib/catalog';
 import { resolveTextFilament } from '@/lib/text-filament';
+import { resolveTextColor, type TextColorId } from './text-color';
 
 export type BuilderConfiguration = {
   filament: Filament;
   printerId: string;
   design: DesignId;
   textFilamentProduct?: string;
+  textColor?: TextColorId;
 };
 export const INITIAL_CONFIGURATION: BuilderConfiguration = {
   filament: DEFAULT_FILAMENT,
@@ -30,6 +32,7 @@ export function sameConfiguration(
     a.filament === b.filament &&
     a.printerId === b.printerId &&
     a.design === b.design &&
+    a.textColor === b.textColor &&
     a.textFilamentProduct === b.textFilamentProduct
   );
 }
@@ -59,6 +62,7 @@ export function resolveConfiguration(
         'printerId',
         'design',
         'textFilamentProduct',
+        'textColor',
       ].includes(key) ||
       typeof field !== 'string' ||
       !field
@@ -90,10 +94,16 @@ export function resolveConfiguration(
       ? current.textFilamentProduct
       : undefined)) as string | undefined;
   resolveTextFilament(filament, textFilamentProduct);
+  const textColor =
+    value.textColor === 'automatic'
+      ? undefined
+      : ((value.textColor ?? current.textColor) as TextColorId | undefined);
+  resolveTextColor(filament, textColor);
   return {
     filament,
     printerId,
     design,
     ...(textFilamentProduct ? { textFilamentProduct } : {}),
+    textColor,
   };
 }
