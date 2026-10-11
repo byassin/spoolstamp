@@ -6,6 +6,7 @@ import { createHostedAmsClient } from '../lib/cloud-ams-client';
 import type { HostedCloudState } from '../lib/cloud-ams';
 import type { AmsInventory } from '../lib/ams';
 import { PRINTERS } from '../lib/catalog';
+import { cloudPollDelay, snapshotStatus } from '../lib/ams-freshness';
 
 export function CloudAmsConnection({
   origin,
@@ -23,6 +24,8 @@ export function CloudAmsConnection({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [clock, setClock] = useState(() => Date.now());
+  const [unavailable, setUnavailable] = useState(false);
+  const [retry, setRetry] = useState(0);
   const client = useRef<ReturnType<typeof createHostedAmsClient> | null>(null);
   const lifecycle = useRef<AbortController | null>(null);
   const revision = useRef(0);
@@ -32,6 +35,13 @@ export function CloudAmsConnection({
     callback.current = onInventory;
   }, [onInventory]);
   function accept(value: HostedCloudState) {
+    setUnavailable(false);
+    setError((previous) =>
+      previous ===
+      'Cloud service unavailable. Check the connection or use the manual picker.'
+        ? ''
+        : previous,
+    );
     setState(value);
     setClock(Date.now());
     const model = value.printers.find(
@@ -53,33 +63,40 @@ export function CloudAmsConnection({
     const connection = createHostedAmsClient(origin);
     client.current = connection;
     let timer: ReturnType<typeof setTimeout>;
+    let failures = 0;
+    const clockTimer = setInterval(() => setClock(Date.now()), 1000);
     async function poll() {
       const version = revision.current;
       try {
         if (!working.current) {
           const value = await connection.read(controller.signal);
-          if (!controller.signal.aborted && version === revision.current)
+          if (!controller.signal.aborted && version === revision.current) {
+            failures = 0;
             accept(value);
+          }
         }
       } catch {
         if (!controller.signal.aborted && version === revision.current) {
           callback.current(null);
-          setState(null);
+          failures++;
+          setUnavailable(true);
           setError(
             'Cloud service unavailable. Check the connection or use the manual picker.',
           );
         }
       } finally {
-        if (!controller.signal.aborted) timer = setTimeout(poll, 5000);
+        if (!controller.signal.aborted)
+          timer = setTimeout(poll, cloudPollDelay(failures));
       }
     }
     void poll();
     return () => {
       controller.abort();
       clearTimeout(timer);
+      clearInterval(clockTimer);
       client.current = null;
     };
-  }, [origin, started]);
+  }, [origin, started, retry]);
   async function action(
     operation: (
       connection: ReturnType<typeof createHostedAmsClient>,
@@ -138,6 +155,26 @@ export function CloudAmsConnection({
         >
           Connect Bambu Cloud
         </Button>
+      ) : unavailable ? (
+        <div className="cloud-unavailable" aria-live="polite">
+          <p>
+            Cloud connection is temporarily unavailable. Your saved drafts and
+            manual filament picker still work.
+          </p>
+          <Button
+            variant="outline"
+            disabled={busy}
+            onClick={() => {
+              setError('');
+              setRetry((value) => value + 1);
+            }}
+          >
+            Retry connection
+          </Button>
+          <small>
+            No verification email or printer read is retried automatically.
+          </small>
+        </div>
       ) : !state?.authenticated ? (
         <form
           className="ams-cloud-login"
@@ -291,11 +328,19 @@ export function CloudAmsConnection({
             </Button>
           </div>
           <output className="field-note">{state.inventory.message}</output>
+          <output
+            className="snapshot-status"
+            data-fresh={snapshotStatus(state.inventory, clock).fresh}
+          >
+            {snapshotStatus(state.inventory, clock).text}
+          </output>
           <p className="field-note">
-            Snapshots are on demand, not continuous monitoring. Status requests
-            are limited to one per printer every five minutes. Label actions
-            require a snapshot less than 45 seconds old. If you change spools,
-            wait and read again.
+            {wait > 0
+              ? `Another read is available in ${Math.floor(wait / 60)}m ${wait % 60}s. `
+              : 'Ready for another read. '}
+            Read once, then choose or save labels within 45 seconds. The
+            five-minute cooldown protects the connection; this is not continuous
+            monitoring. Changed spools? Wait and read again.
           </p>
         </>
       )}

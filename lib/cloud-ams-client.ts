@@ -74,7 +74,9 @@ export function createHostedAmsClient(origin: string) {
             ? 'Sign-in failed or session expired. Request a fresh code and sign in again.'
             : response.status === 403
               ? 'Session or printer ownership check failed. Reload and sign in again.'
-              : 'Cloud request failed. Check the code or try again later.',
+              : [502, 503, 504].includes(response.status)
+                ? 'Cloud service is temporarily unavailable. Use your saved drafts or the manual picker and try again later.'
+                : 'Cloud request failed. Check the code or try again later.',
       );
     const value = object(await response.json());
     if (method === 'DELETE') {

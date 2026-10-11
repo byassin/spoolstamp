@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
 import {
@@ -35,6 +35,9 @@ import { studioPresetFor } from '@/lib/studio-project';
 import { resolveTextFilament } from '@/lib/text-filament';
 import { AmsPanel } from '@/components/ams-panel';
 import { formatNozzleRange } from '@/lib/print-temperature';
+import { useSavedWorkspace } from '@/hooks/use-saved-workspace';
+import { SavedWorkspacePanel } from '@/components/saved-workspace-panel';
+import type { BuilderConfiguration } from '@/lib/builder-configuration';
 
 export default function Home() {
   const [autoAmsText, setAutoAmsText] = useState(true);
@@ -62,6 +65,21 @@ export default function Home() {
     retryStudio,
     allowStudioOpen,
   } = useLabelBuilder();
+  const restoreSaved = useCallback(
+    (value: BuilderConfiguration) => {
+      setAutoAmsText(!value.textColor && !value.textFilamentProduct);
+      updateConfiguration(value);
+    },
+    [updateConfiguration],
+  );
+  const configuration = {
+    filament,
+    design,
+    printerId,
+    textFilamentProduct,
+    textColor: textColorChoice,
+  };
+  const saved = useSavedWorkspace(configuration, restoreSaved);
   const printer =
     PRINTERS.find((item) => item.id === printerId) ?? DEFAULT_PRINTER;
   const selectedDesign = DESIGNS.find((item) => item.id === design)!;
@@ -178,6 +196,14 @@ export default function Home() {
             <br />
             Independent community project.
           </p>
+          <SavedWorkspacePanel
+            configuration={configuration}
+            saved={saved}
+            onSelect={(value) => {
+              setAutoAmsText(false);
+              updateConfiguration(value);
+            }}
+          />
         </section>
 
         <section className="preview-panel" aria-label="Label preview">
@@ -410,6 +436,29 @@ export default function Home() {
           </output>
         </section>
       </div>
+      <div className="mobile-export-bar" aria-label="Quick label export">
+        <span>
+          <strong>{filament.colorName}</strong>
+          <small>
+            {presetError
+              ? 'Review print setup'
+              : `${textColorName} text · ${printer.name}`}
+          </small>
+        </span>
+        <Button
+          className="download-button"
+          aria-label="Download current label"
+          disabled={generating || !!presetError}
+          onClick={() => void generateAndDownload().catch(() => undefined)}
+        >
+          {generating ? (
+            <LoaderCircle size={16} className="animate-spin" />
+          ) : (
+            <Download size={16} />
+          )}
+          {generating ? 'Preparing…' : 'Download 3MF'}
+        </Button>
+      </div>
       <dialog
         ref={amsDialog}
         className="ams-drawer"
@@ -440,6 +489,19 @@ export default function Home() {
             if (enabled) updateConfiguration({ textColor: undefined });
           }}
           onSelect={updateConfiguration}
+          onSaveDraft={(value) => {
+            const target = PRINTERS.find(
+              (item) => item.fullName === printer.fullName,
+            )!;
+            return saved.saveDraft({
+              filament,
+              design,
+              printerId: target.id,
+              textFilamentProduct,
+              textColor: textColorChoice,
+              ...value,
+            });
+          }}
           onLabelSelected={() => setAmsOpen(false)}
         />
       </dialog>

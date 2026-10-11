@@ -22,6 +22,7 @@ import type { BuilderConfiguration } from '@/lib/builder-configuration';
 import type { TextColorId } from '@/lib/text-color';
 import { CloudAmsConnection } from './cloud-ams-connection';
 import { validateCloudApiOrigin } from '@/lib/cloud-ams-client';
+import { snapshotStatus } from '@/lib/ams-freshness';
 const subscribeOrigin = () => () => {};
 const browserOrigin = () => window.location.origin;
 const serverOrigin = () => '';
@@ -36,6 +37,7 @@ export function AmsPanel({
   onAutoTextChange,
   onSelect,
   onLabelSelected,
+  onSaveDraft,
 }: {
   filament: Filament;
   printerName: string;
@@ -46,6 +48,7 @@ export function AmsPanel({
   onAutoTextChange: (value: boolean) => void;
   onSelect: (value: Partial<BuilderConfiguration>) => void;
   onLabelSelected?: () => void;
+  onSaveDraft?: (value: Partial<BuilderConfiguration>) => boolean;
 }) {
   const origin = useSyncExternalStore(
     subscribeOrigin,
@@ -62,6 +65,8 @@ export function AmsPanel({
   const [selected, setSelected] = useState<string[]>([]);
   const [batchBusy, setBatchBusy] = useState(false);
   const [progress, setProgress] = useState('');
+  const [layout, setLayout] = useState('separate');
+  const [clock, setClock] = useState(() => Date.now());
   const live = useRef({
     inventory,
     printerName,
@@ -71,6 +76,7 @@ export function AmsPanel({
     textFilamentProduct,
     textColor,
     autoText,
+    layout,
   });
   useLayoutEffect(() => {
     live.current = {
@@ -82,6 +88,7 @@ export function AmsPanel({
       textFilamentProduct,
       textColor,
       autoText,
+      layout,
     };
   }, [
     inventory,
@@ -92,13 +99,16 @@ export function AmsPanel({
     textFilamentProduct,
     textColor,
     autoText,
+    layout,
   ]);
   const mounted = useRef(true);
   const previousIdentity = useRef('');
   useEffect(() => {
     mounted.current = true;
+    const timer = setInterval(() => setClock(Date.now()), 1000);
     return () => {
       mounted.current = false;
+      clearInterval(timer);
     };
   }, []);
   const identity = inventory
@@ -113,7 +123,8 @@ export function AmsPanel({
       setSelected([]);
     }
   }, [identity]);
-  const fresh = inventory !== null && freshInventory(inventory);
+  const freshness = snapshotStatus(inventory, clock);
+  const fresh = freshness.fresh;
   const textChoices = inventory
     ? textSpoolCandidates(filament, inventory, printerName)
     : [];
@@ -157,6 +168,7 @@ export function AmsPanel({
       autoText,
       textFilamentProduct,
       textColor,
+      layout,
     });
     const isCurrent = () => {
       const current = live.current;
@@ -182,6 +194,7 @@ export function AmsPanel({
           autoText: current.autoText,
           textFilamentProduct: current.textFilamentProduct,
           textColor: current.textColor,
+          layout: current.layout,
         })
       );
     };
@@ -196,9 +209,8 @@ export function AmsPanel({
         throw new Error(
           'A selected label has no confirmed compatible black/white spool. Export it individually and choose its text filament.',
         );
-      const { generateLabelBatch } = await import('@/lib/generate-label-batch');
       const { downloadBlob } = await import('@/lib/generate-3mf');
-      const blob = await generateLabelBatch({
+      const options = {
         labels: (labels as Filament[]).map((body) => ({
           filament: body,
           textFilamentProduct: textProductFor(body),
@@ -207,14 +219,31 @@ export function AmsPanel({
         printer: printerName,
         design,
         isCurrent,
-        onProgress: (done, total) => {
+        onProgress: (done: number, total: number) => {
           if (mounted.current) setProgress(`Prepared ${done} of ${total}`);
         },
-      });
-      downloadBlob(blob, 'AMS-filament-labels.zip');
-      setProgress(
-        `Downloaded ${labels.length} separate 3MF projects. Confirm each project’s AMS assignments in Studio.`,
-      );
+      };
+      if (layout === 'plates') {
+        const { generateLabelPlates } =
+          await import('@/lib/generate-label-plates');
+        const result = await generateLabelPlates(options);
+        if (!isCurrent())
+          throw new Error('AMS selection changed. Read and try again.');
+        downloadBlob(result.blob, 'AMS-filament-plates.zip');
+        setProgress(
+          `Downloaded ${result.plates} plate project(s). Confirm all AMS assignments and placement in Studio.`,
+        );
+      } else {
+        const { generateLabelBatch } =
+          await import('@/lib/generate-label-batch');
+        const blob = await generateLabelBatch(options);
+        if (!isCurrent())
+          throw new Error('AMS selection changed. Read and try again.');
+        downloadBlob(blob, 'AMS-filament-labels.zip');
+        setProgress(
+          `Downloaded ${labels.length} separate 3MF projects. Confirm each project’s AMS assignments in Studio.`,
+        );
+      }
     } catch (cause) {
       if (mounted.current) {
         setError(
@@ -266,7 +295,10 @@ export function AmsPanel({
               exporting.
             </p>
           )}
-          <output className="field-note">{inventory.message}</output>
+          <p className="field-note">
+            Save a draft while the read is fresh to edit or export later. Drafts
+            contain catalog choices, not a claim about what is still loaded.
+          </p>
           <label className="ams-auto">
             <input
               type="checkbox"
@@ -382,6 +414,41 @@ export function AmsPanel({
                         >
                           Use label
                         </Button>
+                        {onSaveDraft && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            disabled={disabled}
+                            onClick={() => {
+                              const current = live.current.inventory;
+                              if (
+                                !label ||
+                                !current ||
+                                !freshInventory(current)
+                              )
+                                return;
+                              const product = textProductFor(label);
+                              if (autoText && !product) {
+                                setError(
+                                  'Choose a compatible text filament manually before saving this draft.',
+                                );
+                                return;
+                              }
+                              if (
+                                onSaveDraft({
+                                  filament: label,
+                                  textFilamentProduct: product,
+                                  textColor: autoText ? undefined : textColor,
+                                })
+                              )
+                                setProgress(
+                                  'Draft saved in My saved filaments. It is not live AMS inventory.',
+                                );
+                            }}
+                          >
+                            Save draft
+                          </Button>
+                        )}
                         <label className="ams-auto">
                           <input
                             type="checkbox"
@@ -411,6 +478,20 @@ export function AmsPanel({
           </div>
           {!!selected.length && (
             <div className="ams-batch">
+              <label>
+                Batch layout
+                <select
+                  aria-label="AMS batch layout"
+                  value={layout}
+                  disabled={batchBusy}
+                  onChange={(event) => setLayout(event.target.value)}
+                >
+                  <option value="separate">Separate 3MF projects</option>
+                  <option value="plates">
+                    Arrange compatible labels on plates
+                  </option>
+                </select>
+              </label>
               <Button
                 disabled={batchBusy || !fresh}
                 onClick={() => void downloadBatch()}
@@ -421,8 +502,11 @@ export function AmsPanel({
                 Download {selected.length} labels
               </Button>
               <small>
-                ZIP of separate 3MF projects · current design and printer · up
-                to {MAX_BATCH_LABELS}
+                ZIP · current design and printer · up to {MAX_BATCH_LABELS}{' '}
+                labels.
+                {layout === 'plates'
+                  ? ' Product pairs, colors and bed limits may produce several plates. Check brim and purge-tower clearance in Studio.'
+                  : ' One project per label.'}
               </small>
             </div>
           )}
