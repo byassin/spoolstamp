@@ -15,8 +15,34 @@ import {
 } from '../lib/builder-configuration';
 import { buildConfiguredMeshes, generate3mf } from '../lib/generate-3mf';
 import { TextFilamentControl } from '../components/text-filament-control';
+import { generateLabelBatch } from '../lib/generate-label-batch';
 
 describe('optional text color override', () => {
+  it('carries a manual color through AMS batch ZIP export', async () => {
+    const blob = await generateLabelBatch({
+      labels: [
+        {
+          filament: DEFAULT_FILAMENT,
+          textColor: 'gray',
+          textFilamentProduct: 'PLA Matte',
+        },
+      ],
+      design: 'clip-label',
+      printer: 'Bambu Lab X2D',
+      isCurrent: () => true,
+      onProgress() {},
+    });
+    const batch = await JSZip.loadAsync(await blob.arrayBuffer());
+    const entry = Object.values(batch.files).find((file) =>
+      file.name.endsWith('.3mf'),
+    )!;
+    const model = await JSZip.loadAsync(await entry.async('arraybuffer'));
+    const settings = JSON.parse(
+      await model.file('Metadata/project_settings.config')!.async('string'),
+    );
+    expect(settings.filament_colour[1]).toBe('#AFB1AE');
+    expect(settings.filament_settings_id[1]).toContain('PLA Matte');
+  });
   it('keeps automatic contrast by default and rejects arbitrary colors', () => {
     expect(resolveTextColor(DEFAULT_FILAMENT)).toMatch(/^#(000000|FFFFFF)FF$/);
     for (const choice of TEXT_COLORS)

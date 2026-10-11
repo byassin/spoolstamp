@@ -409,7 +409,7 @@ export default function Home() {
           design={design}
           textFilamentProduct={textFilamentProduct}
           textColor={textColorChoice}
-          autoText={autoAmsText}
+          autoText={autoAmsText && textColorChoice === undefined}
           onAutoTextChange={(enabled) => {
             setAutoAmsText(enabled);
             if (enabled) updateConfiguration({ textColor: undefined });
