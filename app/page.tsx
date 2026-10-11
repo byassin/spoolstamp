@@ -34,6 +34,7 @@ import { useLabelBuilder } from '@/hooks/use-label-builder';
 import { studioPresetFor } from '@/lib/studio-project';
 import { resolveTextFilament } from '@/lib/text-filament';
 import { AmsPanel } from '@/components/ams-panel';
+import { formatNozzleRange } from '@/lib/print-temperature';
 
 export default function Home() {
   const [autoAmsText, setAutoAmsText] = useState(true);
@@ -262,7 +263,11 @@ export default function Home() {
             <dl className="spec-list">
               <Spec label="Color code" value={filament.colorCode} />
               <Spec
-                label="Nozzle"
+                label="Print range (nozzle)"
+                value={formatNozzleRange(filament.nozzleTemperatureRange)}
+              />
+              <Spec
+                label="Profile nozzle"
                 value={temperature(filament.nozzleTemperature)}
               />
               <Spec
@@ -279,6 +284,26 @@ export default function Home() {
               />
               <Spec label="AMS family" value={filament.amsId} />
             </dl>
+            <p className="field-note">
+              {filament.nozzleTemperatureRange ? (
+                <>
+                  <a
+                    href={filament.nozzleTemperatureRange.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Bambu recommended range
+                  </a>{' '}
+                  · printed on the hinged label. Profile nozzle is the catalog
+                  preset value, not a range.
+                </>
+              ) : (
+                <>
+                  No verified range for this product yet. The hinged label says
+                  “Print: see guide”; check Bambu’s product guidance.
+                </>
+              )}
+            </p>
           </section>
         </section>
 

@@ -27,7 +27,7 @@ it.each(['drybox-tab', 'clip-label'] as const)(
         design === 'drybox-tab' ? 54.00001 : 36.50001,
       );
       expect(row!.height).toBeLessThanOrEqual(
-        design === 'drybox-tab' ? 8.8 : 5.4,
+        design === 'drybox-tab' ? 11 : 5.4,
       );
       rows.push(row!);
     }
@@ -35,7 +35,10 @@ it.each(['drybox-tab', 'clip-label'] as const)(
       expect(row.scale).toBeCloseTo(rows[0].scale, 8);
     }
     expect(rows[4].scale).toBeLessThanOrEqual(rows[0].scale);
-    if (design === 'drybox-tab') expect(rows[0].height).toBeGreaterThan(6.5);
+    if (design === 'drybox-tab') {
+      expect(rows[0].height).toBeGreaterThan(8);
+      expect(rows[3].height).toBeGreaterThan(8);
+    }
   },
   30_000,
 );

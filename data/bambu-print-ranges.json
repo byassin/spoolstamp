@@ -1,0 +1,247 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-09-07",
+  "ranges": [
+    {
+      "product": "ABS",
+      "min": 240,
+      "max": 280,
+      "sourceUrl": "https://cdn1.bambulab.com/filament/filament-guide/bcv8wbl4hj/filament-guide-en.pdf"
+    },
+    {
+      "product": "ABS-GF",
+      "min": 240,
+      "max": 280,
+      "sourceUrl": "https://cdn1.bambulab.com/filament/filament-guide/bcv8wbl4hj/filament-guide-en.pdf"
+    },
+    {
+      "product": "ASA",
+      "min": 240,
+      "max": 280,
+      "sourceUrl": "https://cdn1.bambulab.com/filament/filament-guide/bcv8wbl4hj/filament-guide-en.pdf"
+    },
+    {
+      "product": "ASA-CF",
+      "min": 250,
+      "max": 290,
+      "sourceUrl": "https://cdn1.bambulab.com/filament/filament-guide/bcv8wbl4hj/filament-guide-en.pdf"
+    },
+    {
+      "product": "PC",
+      "min": 260,
+      "max": 290,
+      "sourceUrl": "https://cdn1.bambulab.com/filament/filament-guide/bcv8wbl4hj/filament-guide-en.pdf"
+    },
+    {
+      "product": "TPU 95A HF",
+      "min": 220,
+      "max": 240,
+      "sourceUrl": "https://cdn1.bambulab.com/filament/filament-guide/bcv8wbl4hj/filament-guide-en.pdf"
+    },
+    {
+      "product": "PLA-CF",
+      "min": 210,
+      "max": 240,
+      "sourceUrl": "https://cdn1.bambulab.com/filament/filament-guide/bcv8wbl4hj/filament-guide-en.pdf"
+    },
+    {
+      "product": "PETG HF",
+      "min": 230,
+      "max": 260,
+      "sourceUrl": "https://cdn1.bambulab.com/filament/filament-guide/bcv8wbl4hj/filament-guide-en.pdf"
+    },
+    {
+      "product": "PETG-CF",
+      "min": 240,
+      "max": 270,
+      "sourceUrl": "https://cdn1.bambulab.com/filament/filament-guide/bcv8wbl4hj/filament-guide-en.pdf"
+    },
+    {
+      "product": "PET-CF",
+      "min": 260,
+      "max": 300,
+      "sourceUrl": "https://cdn1.bambulab.com/filament/filament-guide/bcv8wbl4hj/filament-guide-en.pdf"
+    },
+    {
+      "product": "PAHT-CF",
+      "min": 260,
+      "max": 300,
+      "sourceUrl": "https://cdn1.bambulab.com/filament/filament-guide/bcv8wbl4hj/filament-guide-en.pdf"
+    },
+    {
+      "product": "PA6-CF",
+      "min": 260,
+      "max": 300,
+      "sourceUrl": "https://cdn1.bambulab.com/filament/filament-guide/bcv8wbl4hj/filament-guide-en.pdf"
+    },
+    {
+      "product": "PA6-GF",
+      "min": 260,
+      "max": 290,
+      "sourceUrl": "https://cdn1.bambulab.com/filament/filament-guide/bcv8wbl4hj/filament-guide-en.pdf"
+    },
+    {
+      "product": "PPA-CF",
+      "min": 280,
+      "max": 310,
+      "sourceUrl": "https://cdn1.bambulab.com/filament/filament-guide/bcv8wbl4hj/filament-guide-en.pdf"
+    },
+    {
+      "product": "PPS-CF",
+      "min": 310,
+      "max": 340,
+      "sourceUrl": "https://cdn1.bambulab.com/filament/filament-guide/bcv8wbl4hj/filament-guide-en.pdf"
+    },
+    {
+      "product": "PLA Basic",
+      "min": 190,
+      "max": 230,
+      "sourceUrl": "https://cdn.shopify.com/s/files/1/0584/7236/6216/files/Bambu_PLA_Basic_Technical_Data_Sheet_bf3411ce-be39-4db7-9669-1b4671d2196b.pdf?v=1734060943"
+    },
+    {
+      "product": "PLA Tough+",
+      "min": 220,
+      "max": 250,
+      "sourceUrl": "https://store.bblcdn.com/s1/default/7130c176eac54e928d650e48d8b12d72/new_Bambu_PLA_Tough_Technical_Data_Sheet.pdf"
+    },
+    {
+      "product": "PLA Pure",
+      "min": 190,
+      "max": 230,
+      "sourceUrl": "https://store.bblcdn.com/s7/default/ecb663b46ebb4fb984786d33befb8d2f/PLA_Pure_TDS.pdf"
+    },
+    {
+      "product": "PLA Matte",
+      "min": 190,
+      "max": 230,
+      "sourceUrl": "https://store.bblcdn.com/s6/default/90932dfb28e74333b25a5741bdc464bc/Bambu_PLA_Matte_Technical_Data_Sheet_60a941f9-8495-48ec-b1b0-52e07ff0f4c2.pdf"
+    },
+    {
+      "product": "PLA Glow",
+      "min": 190,
+      "max": 230,
+      "sourceUrl": "https://store.bblcdn.com/cd34cf072d14484bbf027290d16abe9b.pdf"
+    },
+    {
+      "product": "PLA Galaxy",
+      "min": 190,
+      "max": 230,
+      "sourceUrl": "https://store.bblcdn.com/8f0b6b2741e3498689c2c7706374c482.pdf"
+    },
+    {
+      "product": "PLA Silk+",
+      "min": 210,
+      "max": 240,
+      "sourceUrl": "https://store.bblcdn.com/s7/default/3d4344cb7ecc4daf98a0d53c2fdb39b4/Bambu_PLA_Silk__Technical_Data_Sheet.pdf"
+    },
+    {
+      "product": "PLA Silk",
+      "min": 210,
+      "max": 240,
+      "sourceUrl": "https://store.bblcdn.com/68cde6571452494fb5c454ccadb9a6aa.pdf"
+    },
+    {
+      "product": "PLA Marble",
+      "min": 190,
+      "max": 230,
+      "sourceUrl": "https://store.bblcdn.com/b81e083c7d1f4e2182ef749d48f9ec86.pdf"
+    },
+    {
+      "product": "PLA Sparkle",
+      "min": 190,
+      "max": 230,
+      "sourceUrl": "https://store.bblcdn.com/169532c9ce4d4610a9e85d92c0222bb9.pdf"
+    },
+    {
+      "product": "PLA Wood",
+      "min": 190,
+      "max": 240,
+      "sourceUrl": "https://store.bblcdn.com/s4/default/6fda0ae88e5a4e66bb5d58f2968eee42/Bambus_PLA_Wood_Technical_Data_Sheet.pdf"
+    },
+    {
+      "product": "PLA Metal",
+      "min": 190,
+      "max": 230,
+      "sourceUrl": "https://polyalkemi.no/wp-content/uploads/2023/06/Bambu_PLA_Metal_Technical_Data_Sheet.pdf"
+    },
+    {
+      "product": "PLA Translucent",
+      "min": 200,
+      "max": 240,
+      "sourceUrl": "https://www.createeducation.com/wp-content/uploads/2025/07/Bambu_PLA_Translucent_Technical_Data_Sheet.pdf"
+    },
+    {
+      "product": "PLA Aero",
+      "min": 210,
+      "max": 260,
+      "sourceUrl": "https://jp.store.bambulab.com/products/pla-aero"
+    },
+    {
+      "product": "ASA Aero",
+      "min": 240,
+      "max": 280,
+      "sourceUrl": "https://wiki.bambulab.com/filament-acc/abs-asa-pc/bambu_asa_aero_technical_data_sheet.pdf"
+    },
+    {
+      "product": "PC FR",
+      "min": 260,
+      "max": 280,
+      "sourceUrl": "https://store.bblcdn.com/s6/default/280fecd3890948588fb95ac91013b7ba/Bambu_PC_FR_Technical_Data_Sheet.pdf"
+    },
+    {
+      "product": "PETG Basic",
+      "min": 230,
+      "max": 260,
+      "sourceUrl": "https://store.bblcdn.com/s1/default/cb94589bf7994fdcbfa833badefae9cd/Bambu_PETG_Basic_Technical_Data_Sheet.pdf"
+    },
+    {
+      "product": "PETG Translucent",
+      "min": 230,
+      "max": 260,
+      "sourceUrl": "https://us.store.bambulab.com/products/petg-translucent?id=42720025804936&skr=yes"
+    },
+    {
+      "product": "Support for PLA",
+      "min": 220,
+      "max": 230,
+      "sourceUrl": "https://store.bblcdn.com/s2/default/200ef29f5cd04b20ba6c2c86f0cc3ec0/Bambus_Support_for_PLA_Technical_Data_Sheet.pdf"
+    },
+    {
+      "product": "Support for ABS",
+      "min": 240,
+      "max": 270,
+      "sourceUrl": "https://eu.store.bambulab.com/en-ch/products/support-for-pla-petg"
+    },
+    {
+      "product": "PVA",
+      "min": 220,
+      "max": 250,
+      "sourceUrl": "https://eu.store.bambulab.com/en-ch/products/support-for-pla-petg"
+    },
+    {
+      "product": "TPU for AMS",
+      "min": 220,
+      "max": 240,
+      "sourceUrl": "https://cdn.shopify.com/s/files/1/0584/7236/6216/files/Bambu_TPU_for_AMS_Technical_Data_Sheet.pdf?v=1730944629"
+    }
+  ],
+  "unverifiedProducts": [
+    "PETG Matte",
+    "PLA Dynamic",
+    "PLA Lite",
+    "PLA Tough",
+    "TPU 85A",
+    "TPU 90A",
+    "TPU 95A"
+  ],
+  "conflictingProducts": [
+    {
+      "product": "Support for PA/PET",
+      "reason": "TDS says 260-290 C; store comparison says 280-300 C."
+    },
+    {
+      "product": "Support for PLA/PETG",
+      "reason": "TDS says 190-240 C; store recommendation says 190-220 C."
+    }
+  ]
+}

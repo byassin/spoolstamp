@@ -21,6 +21,7 @@ import { placeAssemblyOnBed } from '@/lib/build-plate';
 import { HINGE_CLEARANCE } from '@/lib/hinge-clearance';
 import { resolveTextFilament } from '@/lib/text-filament';
 import { resolveTextColor, type TextColorId } from '@/lib/text-color';
+import { printTemperatureLabel } from '@/lib/print-temperature';
 
 export type LabelMesh = {
   name: string;
@@ -134,10 +135,7 @@ async function buildDryBoxLabelMeshes(filament: Filament) {
   const bottom = 3;
   const usableHeight = top - bottom;
   const hex = filament.colors[0].slice(0, 7).toUpperCase();
-  const nozzle =
-    filament.nozzleTemperature == null
-      ? 'Nozzle: profile default'
-      : `Nozzle: ${filament.nozzleTemperature} °C`;
+  const nozzle = printTemperatureLabel(filament.nozzleTemperatureRange);
 
   const productLines = wrapLabelLine(filament.product, 16);
   const colorLines = wrapLabelLine(filament.colorName, 18);
@@ -149,7 +147,8 @@ async function buildDryBoxLabelMeshes(filament: Filament) {
     })),
     ...colorLines.map((value) => ({
       value,
-      height: colorLines.length === 1 ? 8.8 : 5.2,
+      // Make the color the visual headline; long names still wrap and fit.
+      height: colorLines.length === 1 ? 11 : 6.4,
       consistentFontSize: true,
     })),
     { value: 'Bambu Lab', height: 5.2 },
@@ -233,7 +232,7 @@ export function buildConfiguredMeshes(
     filament.material,
     filament.colorCode,
     filament.colors,
-    filament.nozzleTemperature,
+    filament.nozzleTemperatureRange,
   ]);
   const existing = meshCache.get(key);
   if (existing) {

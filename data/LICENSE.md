@@ -1,5 +1,7 @@
 # Catalog snapshot license
 
+`bambu-print-ranges.json` is a separately reviewed collection of factual temperature recommendations with per-product source URLs, not BambuStudio profile code. See `../docs/print-temperature-ranges.md` for its provenance and unresolved products; source PDFs and storefront content are not redistributed.
+
 SPDX-License-Identifier: AGPL-3.0-only
 
 `bambu-catalog.json`, `bambu-machines.json`, and `bambu-studio-presets.json` are normalized from the BambuStudio profile tree at the exact commit recorded inside each file. BambuStudio identifies the project as licensed under version 3 of the GNU Affero General Public License.
