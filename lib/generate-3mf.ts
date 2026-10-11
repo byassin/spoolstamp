@@ -239,7 +239,7 @@ export function buildConfiguredMeshes(
   if (existing) {
     meshCache.delete(key);
     meshCache.set(key, existing);
-    return existing.then(recolor);
+    return textColor === undefined ? existing : existing.then(recolor);
   }
   const pending = buildLabelMeshes(filament, design).catch((error: unknown) => {
     if (meshCache.get(key) === pending) meshCache.delete(key);
@@ -247,7 +247,7 @@ export function buildConfiguredMeshes(
   });
   meshCache.set(key, pending);
   if (meshCache.size > 3) meshCache.delete(meshCache.keys().next().value!);
-  return pending.then(recolor);
+  return textColor === undefined ? pending : pending.then(recolor);
 }
 
 function escapeXml(value: string) {
