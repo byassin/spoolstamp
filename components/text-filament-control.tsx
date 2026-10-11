@@ -7,6 +7,7 @@ import {
   TEXT_COLORS,
   commonTextTypes,
   resolveTextColor,
+  textContrastWarning,
   type TextColorId,
 } from '../lib/text-color';
 import { resolveTextFilament } from '../lib/text-filament';
@@ -21,8 +22,8 @@ export function TextFilamentControl({
   body: Filament;
   color?: TextColorId;
   product?: string;
-  onChange(color: TextColorId, product: string): void;
-  onAutomatic(): void;
+  onChange: (color: TextColorId, product: string) => void;
+  onAutomatic: () => void;
 }) {
   const [expanded, setExpanded] = useState(!!color);
   const hex = resolveTextColor(body, color);
@@ -35,6 +36,7 @@ export function TextFilamentControl({
     ? profile.product
     : choices[0].product;
   const chosenColor = color ?? (hex === '#FFFFFFFF' ? 'white' : 'black');
+  const warning = textContrastWarning(body, color);
   return (
     <div className="field text-filament-control">
       <span className="text-filament-heading">Text filament</span>
@@ -47,6 +49,22 @@ export function TextFilamentControl({
           </small>
         </span>
       </div>
+      {warning && (
+        <div className="contrast-warning" aria-live="polite">
+          <p>
+            This text may be hard to read on your label. Screen colors are only
+            an estimate.
+          </p>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => onChange(warning.suggested, chosenProduct)}
+          >
+            Use suggested {warning.suggestedName}
+          </Button>
+          <small>You can keep your chosen color.</small>
+        </div>
+      )}
       <Button
         variant="outline"
         size="sm"

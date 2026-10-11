@@ -12,6 +12,7 @@ export type PrintBed = {
 
 // An additional layout margin, not a replacement for Studio's collision checks.
 export const BED_PLACEMENT_MARGIN = 10;
+export const LABEL_PLACEMENT_GAP = 6;
 
 function polygonBounds(values: string[]): Rectangle {
   const points = values.map((value) => {
@@ -27,6 +28,90 @@ function polygonBounds(values: string[]): Rectangle {
     minY: Math.min(...points.map(([, y]) => y)),
     maxY: Math.max(...points.map(([, y]) => y)),
   };
+}
+
+/** Deterministic whole-assembly packing; conservative rectangles, never scaling or rotating mechanics. */
+export function placeAssembliesOnBed(
+  assemblies: Pick<LabelMesh, 'vertices'>[][],
+  bed: PrintBed,
+) {
+  if (!assemblies.length) throw new Error('Cannot place an empty plate.');
+  const { common, restricted } = printBedLayout(bed);
+  const margin = BED_PLACEMENT_MARGIN;
+  const height = Number(bed.printableHeight);
+  if (!Number.isFinite(height) || height <= 0)
+    throw new Error('Invalid printable height.');
+  const placed: ReturnType<typeof placeAssemblyOnBed>[] = [];
+  const excluded = restricted.filter((item) => item.kind === 'excluded');
+  for (const meshes of assemblies) {
+    const bounds = assemblyBounds(meshes);
+    const width = bounds.max[0] - bounds.min[0];
+    const depth = bounds.max[1] - bounds.min[1];
+    const xs = [
+      ...new Set([
+        common.minX + margin,
+        ...excluded.map((r) => r.maxX + margin),
+        ...placed.map((r) => r.bounds.max[0] + LABEL_PLACEMENT_GAP),
+      ]),
+    ].sort((a, b) => a - b);
+    const ys = [
+      ...new Set([
+        common.minY + margin,
+        ...excluded.map((r) => r.maxY + margin),
+        ...placed.map((r) => r.bounds.max[1] + LABEL_PLACEMENT_GAP),
+      ]),
+    ].sort((a, b) => a - b);
+    let candidate: ReturnType<typeof placeAssemblyOnBed> | undefined;
+    for (const y of ys) {
+      for (const x of xs) {
+        const min: Point3 = [x, y, 0];
+        const max: Point3 = [
+          x + width,
+          y + depth,
+          bounds.max[2] - bounds.min[2],
+        ];
+        if (
+          max[0] > common.maxX - margin ||
+          max[1] > common.maxY - margin ||
+          max[2] > height
+        )
+          continue;
+        if (
+          excluded.some(
+            (r) =>
+              max[0] > r.minX - margin &&
+              min[0] < r.maxX + margin &&
+              max[1] > r.minY - margin &&
+              min[1] < r.maxY + margin,
+          )
+        )
+          continue;
+        if (
+          placed.some(
+            (r) =>
+              max[0] > r.bounds.min[0] - LABEL_PLACEMENT_GAP &&
+              min[0] < r.bounds.max[0] + LABEL_PLACEMENT_GAP &&
+              max[1] > r.bounds.min[1] - LABEL_PLACEMENT_GAP &&
+              min[1] < r.bounds.max[1] + LABEL_PLACEMENT_GAP,
+          )
+        )
+          continue;
+        candidate = {
+          translation: [x - bounds.min[0], y - bounds.min[1], -bounds.min[2]],
+          bounds: { min, max },
+          clearance: margin,
+        };
+        break;
+      }
+      if (candidate) break;
+    }
+    if (!candidate)
+      throw new Error(
+        'These labels do not fit safely together on this printer’s bed.',
+      );
+    placed.push(candidate);
+  }
+  return placed;
 }
 
 function rectangularBed(values: string[]) {

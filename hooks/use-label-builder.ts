@@ -224,7 +224,7 @@ export function useLabelBuilder() {
               textFilamentProduct: {
                 type: 'string',
                 description:
-                  'Actual black or white text spool product, such as PLA Basic. Must match the body material family.',
+                  'Actual text spool product, such as PLA Basic. Must match the body material family.',
               },
               textColor: {
                 type: 'string',

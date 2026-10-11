@@ -249,7 +249,7 @@ export function buildConfiguredMeshes(
   return textColor === undefined ? pending : pending.then(recolor);
 }
 
-function escapeXml(value: string) {
+export function escapeXml(value: string) {
   return value.replace(
     /[&<>"']/g,
     (character) =>
@@ -263,7 +263,7 @@ function escapeXml(value: string) {
   );
 }
 
-function objectXml(
+export function objectXml(
   value: LabelMesh,
   objectId: number,
   colorGroupId: number,

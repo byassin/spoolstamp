@@ -50,8 +50,13 @@ color** to override it with white, black, gray, red, blue or yellow and a short 
 of common same-material profiles. This turns off automatic AMS text selection;
 **Use automatic text** restores it. The preview, single 3MF, Studio settings and
 batch exports use your chosen color. Confirm that it matches the physical spool.
-Select up to eight spools to download separate 3MF labels together as a ZIP,
-using the current design and printer profile. Bambu Studio assigns final AMS
+Select up to eight spools and choose separate 3MF projects or arranged plate
+projects in the ZIP, using the current design and printer profile. Plate export
+groups exact body/text product pairs, splits for bed space and at most four
+project filaments, and never combines support profiles. Save a resolved label
+draft while the snapshot is fresh to edit or export later; drafts are catalog
+choices, not live AMS inventory. See [Saved workspace and plates](saved-workspace.md).
+Bambu Studio assigns final AMS
 slots when printing. Ambiguous products require confirmation, not guessing.
 
 ## Legacy saved credentials

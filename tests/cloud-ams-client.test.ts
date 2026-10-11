@@ -90,7 +90,25 @@ describe('browser cloud client', () => {
         ),
     );
     const client = createHostedAmsClient(API);
-    await expect(client.read()).rejects.toThrow('Cloud request failed.');
+    await expect(client.read()).rejects.toThrow(
+      'Cloud service is temporarily unavailable.',
+    );
+  });
+  it('does not automatically resend emails, sign-ins or printer reads during outages', async () => {
+    const fetcher = vi
+      .fn<typeof fetch>()
+      .mockResolvedValue(new Response('PRIVATE', { status: 503 }));
+    vi.stubGlobal('fetch', fetcher);
+    const client = createHostedAmsClient(API);
+    for (const operation of [
+      () => client.sendCode('test@example.org'),
+      () => client.login('123456'),
+      () => client.snapshot('TESTPRINTER123'),
+    ])
+      await expect(operation()).rejects.toThrow(
+        'saved drafts or the manual picker',
+      );
+    expect(fetcher).toHaveBeenCalledTimes(3);
   });
   it('fences a late poll from overwriting a CSRF nonce rotated by login', async () => {
     let complete!: (value: Response) => void;

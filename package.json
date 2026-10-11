@@ -19,7 +19,7 @@
     "sync:catalog:store:refresh": "node scripts/sync-catalog.mjs --with-store --refresh-handles",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "lint": "oxlint app components/label-preview.tsx components/filament-selectors.tsx components/color-swatch.tsx components/ams-panel.tsx components/cloud-ams-connection.tsx hooks lib scripts tests types",
+    "lint": "oxlint app components/label-preview.tsx components/filament-selectors.tsx components/color-swatch.tsx components/ams-panel.tsx components/cloud-ams-connection.tsx components/text-filament-control.tsx components/saved-workspace-panel.tsx hooks lib scripts tests types",
     "format": "oxfmt"
   },
   "dependencies": {

@@ -14,7 +14,7 @@ Design meshes and generated Noto Sans lettering are combined in the browser. The
 
 - **Hinged label:** retains the supplied card and hook, with the R2 moving-link clearance adjustment.
 - **Clip-on label:** fills the supplied clip's label recess and adds material/color lettering.
-- **Text:** uses pure black or white for contrast. Long clip names are fitted or shortened, with full names retained in metadata.
+- **Text:** defaults to black or white for contrast, with six optional text colors and a short same-material profile list. A low-contrast override shows an advisory suggestion. Long clip names are fitted or shortened, with full names retained in metadata.
 
 See [hinged design](supplied-drybox.md) and [clip design](clip-label.md).
 
@@ -22,7 +22,11 @@ See [hinged design](supplied-drybox.md) and [clip design](clip-label.md).
 
 The preview provides a label close-up, full printer bed, top view, orbit, and zoom. Printer selection sets the bed dimensions and model placement.
 
-Exports contain separate structural/text parts, two filament profiles, the printer/process presets, and color metadata. The complete assembly is centered within the printer's common printable area. See [3MF settings](studio-project.md).
+Single-label exports contain separate structural/text parts, two filament profiles, the printer/process presets, and color metadata. The complete assembly is centered within the printer's common printable area. Arranged batch exports use independent multipart assemblies, whole-assembly translations, and up to four unique profile/color combinations per plate. Exact body/text product pairs are grouped conservatively; additional colors or bed limits split the export into more projects. Studio still checks brim and purge-tower clearance. See [3MF settings](studio-project.md).
+
+## Saved workspace
+
+The browser can optionally remember the builder setup and store favorites and label drafts using a versioned, catalog-validated local-storage record. This contains no Bambu credentials or printer identifiers. Drafts are catalog configurations, not live inventory, and can be exported without an AMS session. Saving from AMS still requires a fresh resolved snapshot. See [saved workspace and plates](saved-workspace.md).
 
 ## Cloud AMS preview
 
@@ -30,6 +34,7 @@ The optional AMS connection uses a separate Lambda backend for global-region Bam
 email verification and account-owned printer status reads over cloud TLS/MQTT.
 Tokens are stored temporarily encrypted with AWS KMS in DynamoDB; the browser receives an opaque session cookie and
 sanitized inventory. Reads are on demand, with freshness and cooldown safeguards.
+The interface updates snapshot age every second and retains manual picking and saved drafts during outages. Only session-state GET polling backs off; verification emails, sign-in and printer reads are not automatically retried.
 The backend and browser interface are open to all global-region Bambu accounts.
 Public access is explicitly configured; account ownership, session isolation and
 all existing rate limits remain enforced. The owner demonstrated real X2D email-code

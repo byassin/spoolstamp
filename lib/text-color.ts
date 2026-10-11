@@ -1,5 +1,9 @@
 import { FILAMENT_TYPES, type Filament } from './catalog';
-import { textColorForFilament } from './filament-appearance';
+import {
+  contrastRatio,
+  normalizeColor,
+  textColorForFilament,
+} from './filament-appearance';
 
 export const TEXT_COLORS = [
   { id: 'white', name: 'White', hex: '#FFFFFFFF' },
@@ -10,6 +14,29 @@ export const TEXT_COLORS = [
   { id: 'yellow', name: 'Yellow', hex: '#F4EE2AFF' },
 ] as const;
 export type TextColorId = (typeof TEXT_COLORS)[number]['id'];
+
+/** Advisory screen-color estimate, not a guarantee of physical print contrast. */
+export function textContrastWarning(body: Filament, override?: TextColorId) {
+  if (
+    !override ||
+    body.transparent ||
+    !body.colors.length ||
+    body.colors.some((color) => !normalizeColor(color).endsWith('FF'))
+  )
+    return null;
+  const chosen = resolveTextColor(body, override);
+  const ratio = Math.min(
+    ...body.colors.map((color) => contrastRatio(color, chosen)),
+  );
+  if (ratio >= 3) return null;
+  const suggested =
+    textColorForFilament(body.colors) === '#FFFFFFFF' ? 'white' : 'black';
+  return {
+    ratio,
+    suggested: suggested as TextColorId,
+    suggestedName: suggested === 'white' ? 'White' : 'Black',
+  };
+}
 
 export function resolveTextColor(
   body: Filament,
