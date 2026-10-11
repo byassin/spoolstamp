@@ -1,6 +1,7 @@
 import { createCloudAmsSession } from './cloud-ams.ts';
 import { createAwsAmsDependencies } from './lambda-ams-aws.ts';
 import { createLambdaAmsService, type ApiEvent } from './lambda-ams-core.ts';
+import { allowedEmailHashForAccess } from './lambda-ams-access.ts';
 
 function required(name: string): string {
   const value = process.env[name];
@@ -15,7 +16,10 @@ function service() {
   return createLambdaAmsService({
     appOrigin: required('SPOOLSTAMP_AMS_APP_ORIGIN'),
     apiHost: required('AMS_API_HOST'),
-    allowedEmailHash: required('AMS_ALLOWED_EMAIL_SHA256'),
+    allowedEmailHash: allowedEmailHashForAccess(
+      process.env.AMS_ACCESS_MODE,
+      process.env.AMS_ALLOWED_EMAIL_SHA256,
+    ),
     ...createAwsAmsDependencies({
       table: required('AMS_TABLE'),
       credentialKey: required('AMS_CREDENTIAL_KEY'),

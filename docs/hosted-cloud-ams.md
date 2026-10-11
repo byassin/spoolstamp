@@ -4,11 +4,11 @@ Amplify still hosts the static website. The AWS Lambda backend handles
 global-region email-code login and Bambu Cloud snapshot reads. A single-process
 Node 22.13+ backend remains available for local development of the hosted flow.
 End users need a browser and a cloud-connected printer, not a local helper.
-The backend and browser interface are deployed as an account-restricted private
-preview. Owner-provided screenshots on October 8, 2026 demonstrate real email-code
+The backend and browser interface are open to all global-region Bambu accounts,
+without invitations or account approval. Owner-provided screenshots on October 8, 2026 demonstrate real email-code
 sign-in, X2D printer selection, and a fresh snapshot showing black PLA/PETG slots.
 See [browser evidence and user steps](ams-integration.md#live-x2d-browser-test).
-This qualifies that sign-in/read path only, not broader public access or every
+This qualifies that sign-in/read path only, not compatibility with every
 model, lifecycle behavior, and export action.
 
 ## Behavior and boundaries
@@ -66,7 +66,7 @@ SPOOLSTAMP_AMS_DEV on a remote deployment (it permits insecure loopback cookies)
 
 ## AWS Lambda deployment
 
-See [AWS Lambda AMS](aws-lambda-ams.md) for the SAM stack, private-preview gate,
+See [AWS Lambda AMS](aws-lambda-ams.md) for the SAM stack, explicit access modes,
 deployment commands, costs, and validation limits. This is the chosen hosted path.
 Lambda does not rely on warm-process memory or background work after HTTP return.
 Sessions have a hard 30-minute expiry enforced on every API/worker operation;
@@ -74,8 +74,10 @@ DynamoDB TTL physical cleanup can take days. Lambda restarts do not clear sessio
 
 ## Alternative single-process deployment — not executed
 
-1. Resolve vendor access/terms and public-rollout approval separately. This is
-   unofficial: a working private probe does not constitute vendor approval.
+1. Review vendor access/terms and public-rollout risk separately. The selected
+   Lambda public preview has owner approval, not vendor endorsement. The current
+   vendor terms could not be retrieved during that review; access may be changed
+   or blocked. This alternative container path still needs its own deployment review.
 2. Host `deploy/cloud-ams.Dockerfile` behind HTTPS with **exactly one process and
    one running instance**. Build from repository root:
    `docker build -f deploy/cloud-ams.Dockerfile -t spoolstamp-cloud-ams .`

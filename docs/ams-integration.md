@@ -3,8 +3,8 @@
 Use the spools loaded in your printer to create labels through the Bambu Cloud
 preview on [Spoolstamp](https://spoolstamp.bourhan.org/). The browser interface and
 cloud backend are live, with a successful real X2D sign-in and fresh snapshot.
-Sign-in is currently restricted to the approved preview account; the manual
-filament picker remains available to everyone. The LAN connection and saved-printer
+Sign-in is open to all global-region Bambu accounts, with no invitation or account
+approval required. The manual filament picker also works without sign-in. The LAN connection and saved-printer
 controls have been removed.
 
 ## Connect
@@ -38,14 +38,18 @@ of **Bambu-X2D (X2D)**, and a fresh cloud snapshot. The visible slots are A1
 <img src="images/ams-cloud-snapshot.png" width="320" alt="Fresh X2D cloud snapshot showing black PLA and black PETG in A1 and A2" />
 
 This verifies the hosted sign-in/read path for this printer and account, not every
-model or a public rollout. The crop does not show A3/A4. Actual label selection,
+model or account configuration. The crop does not show A3/A4. Actual label selection,
 batch downloads, expiry, stale-action disabling, logout during reads, multi-AMS,
 and use with the development computer off still need separate real-device checks.
 
 ## Text and batches
 
 **Use compatible loaded black/white text automatically** suggests a contrasting
-spool from the same material family. Text filament can also be chosen manually.
+spool from the same material family. In **Print setup**, choose **Customize text
+color** to override it with white, black, gray, red, blue or yellow and a short list
+of common same-material profiles. This turns off automatic AMS text selection;
+**Use automatic text** restores it. The preview, single 3MF, Studio settings and
+batch exports use your chosen color. Confirm that it matches the physical spool.
 Select up to eight spools to download separate 3MF labels together as a ZIP,
 using the current design and printer profile. Bambu Studio assigns final AMS
 slots when printing. Ambiguous products require confirmation, not guessing.

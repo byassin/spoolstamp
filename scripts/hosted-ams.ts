@@ -423,6 +423,9 @@ export function createHostedAmsService(options: {
         })
         .then((snapshot) => {
           if (!alive(current)) return;
+          current.printers = current.printers.map((item) =>
+            item.serial === printer.serial ? { ...item, online: true } : item,
+          );
           current.inventory = {
             ...current.inventory,
             updatedAt: snapshot.updatedAt,
@@ -433,6 +436,12 @@ export function createHostedAmsService(options: {
         })
         .catch((error) => {
           if (!alive(current)) return;
+          if (error instanceof CloudAmsError && error.code === 'offline')
+            current.printers = current.printers.map((item) =>
+              item.serial === printer.serial
+                ? { ...item, online: false }
+                : item,
+            );
           current.inventory = {
             ...current.inventory,
             slots: [],

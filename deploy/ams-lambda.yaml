@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Spoolstamp experimental private cloud AMS preview, stateless API and one-shot worker.
+Description: Spoolstamp cloud AMS preview, stateless API and one-shot worker.
 Parameters:
   AppOrigin:
     Type: String
@@ -23,7 +23,12 @@ Parameters:
     Default: ''
     NoEcho: true
     AllowedPattern: '([a-f0-9]{64})?'
-    Description: SHA256 of lowercase owner email; preview remains unavailable without it.
+    Description: SHA256 of lowercase owner email, required only for private access mode.
+  AccessMode:
+    Type: String
+    Default: private
+    AllowedValues: [private, public]
+    Description: Explicit public opt-in; private mode requires PreviewEmailSha256.
 Globals:
   Function:
     Runtime: nodejs22.x
@@ -39,6 +44,7 @@ Globals:
         AMS_TABLE: !Ref Sessions
         AMS_CREDENTIAL_KEY: !GetAtt CredentialKey.Arn
         AMS_ALLOWED_EMAIL_SHA256: !Ref PreviewEmailSha256
+        AMS_ACCESS_MODE: !Ref AccessMode
 Resources:
   Sessions:
     Type: AWS::DynamoDB::Table

@@ -2,8 +2,8 @@
 
 This command is an **experimental developer test**, separate from the live browser feature.
 It checks for a fresh AMS snapshot through Bambu Cloud independently of hosted
-login. The [hosted flow](hosted-cloud-ams.md) is deployed as an account-restricted
-preview with a successful real X2D browser sign-in/read;
+login. The [hosted flow](hosted-cloud-ams.md) is open to all global-region Bambu
+accounts, with a successful real X2D browser sign-in/read;
 the LAN connection has been removed from the application.
 No companion app or local bridge is part of the proposed hosted solution.
 
@@ -79,8 +79,10 @@ CSRF/origin controls, and a sanitized inventory API. Our app's read-only behavio
 does not make the account token narrowly scoped. Do not expose this prototype
 directly as a public API.
 
-Establish vendor-supported access before unrestricted public rollout. Community
-code is not vendor approval. No deployment, partnership email, credential retrieval, or
+The owner approved the public preview on October 11, 2026 after reviewing the
+unresolved vendor-permission risk. Community code and working sign-in are not
+vendor approval; access can change or be blocked. Honest client identity, no
+challenge bypass and bounded reads remain mandatory. No partnership email, credential retrieval, or
 printer configuration change is performed by the offline tests.
 
 ## Sources

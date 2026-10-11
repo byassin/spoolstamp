@@ -20,6 +20,7 @@ import {
 import { placeAssemblyOnBed } from '@/lib/build-plate';
 import { HINGE_CLEARANCE } from '@/lib/hinge-clearance';
 import { resolveTextFilament } from '@/lib/text-filament';
+import { resolveTextColor, type TextColorId } from '@/lib/text-color';
 
 export type LabelMesh = {
   name: string;
@@ -43,6 +44,7 @@ type GenerateOptions = {
   design: DesignId;
   printer: string;
   textFilamentProduct?: string;
+  textColor?: TextColorId;
 };
 
 function mesh(
@@ -212,7 +214,18 @@ async function buildDryBoxLabelMeshes(filament: Filament) {
 
 const meshCache = new Map<string, Promise<LabelMesh[]>>();
 
-export function buildConfiguredMeshes(filament: Filament, design: DesignId) {
+export function buildConfiguredMeshes(
+  filament: Filament,
+  design: DesignId,
+  textColor?: TextColorId,
+) {
+  const color = resolveTextColor(filament, textColor);
+  const recolor = (parts: LabelMesh[]) =>
+    textColor === undefined
+      ? parts
+      : parts.map((part) =>
+          part.materialRole === 'raised-text' ? { ...part, color } : part,
+        );
   const key = JSON.stringify([
     design,
     filament.product,
@@ -226,7 +239,7 @@ export function buildConfiguredMeshes(filament: Filament, design: DesignId) {
   if (existing) {
     meshCache.delete(key);
     meshCache.set(key, existing);
-    return existing;
+    return textColor === undefined ? existing : existing.then(recolor);
   }
   const pending = buildLabelMeshes(filament, design).catch((error: unknown) => {
     if (meshCache.get(key) === pending) meshCache.delete(key);
@@ -234,7 +247,7 @@ export function buildConfiguredMeshes(filament: Filament, design: DesignId) {
   });
   meshCache.set(key, pending);
   if (meshCache.size > 3) meshCache.delete(meshCache.keys().next().value!);
-  return pending;
+  return textColor === undefined ? pending : pending.then(recolor);
 }
 
 function escapeXml(value: string) {
@@ -359,7 +372,10 @@ function generatorMetadata(
   placement: ReturnType<typeof placeAssemblyOnBed>,
 ) {
   const bodyColor = studioBodyColor(options.filament);
-  const textColor = textColorForFilament(options.filament.colors).slice(0, 7);
+  const textColor = resolveTextColor(options.filament, options.textColor).slice(
+    0,
+    7,
+  );
   const textFilament = resolveTextFilament(
     options.filament,
     options.textFilamentProduct,
@@ -451,9 +467,14 @@ export async function generate3mf(options: GenerateOptions) {
     options.filament,
     options.printer,
     options.textFilamentProduct,
+    options.textColor,
   );
   const { default: JSZip } = await import('jszip');
-  const meshes = await buildConfiguredMeshes(options.filament, options.design);
+  const meshes = await buildConfiguredMeshes(
+    options.filament,
+    options.design,
+    options.textColor,
+  );
   const placement = placeAssemblyOnBed(
     meshes,
     studioPresetFor(options.filament, options.printer).printer,

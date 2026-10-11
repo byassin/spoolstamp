@@ -103,6 +103,25 @@ async function signedIn(client = jar(), email = 'test@example.org') {
 const tick = () => new Promise((resolve) => setTimeout(resolve, 10));
 
 describe('hosted cloud boundary', () => {
+  it('updates the sign-in printer availability after a fresh snapshot', async () => {
+    fake.printers.mockResolvedValueOnce([
+      { serial: SERIAL, name: 'Desk', model: 'X2D', online: false },
+    ]);
+    const client = await signedIn();
+    expect((await client.call('/session')).value.printers[0].online).toBe(
+      false,
+    );
+    await client.call('/snapshot', 'POST', { serial: SERIAL });
+    await tick();
+    expect((await client.call('/session')).value.printers[0].online).toBe(true);
+    time += 5 * 60_000;
+    fake.snapshot.mockRejectedValueOnce(new CloudAmsError('offline'));
+    await client.call('/snapshot', 'POST', { serial: SERIAL });
+    await tick();
+    expect((await client.call('/session')).value.printers[0].online).toBe(
+      false,
+    );
+  });
   it('preserves read cooldown across two already-authorized sessions for one account', async () => {
     const a = await signedIn();
     time += 5 * 60_000;

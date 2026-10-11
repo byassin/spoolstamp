@@ -14,9 +14,10 @@ Create 3D-printable filament labels in a few clicks. Pick a design, choose your 
 - **Bambu Lab filament catalog** — 314 colors with searchable material types, color names, and codes.
 - **Live 3D preview** — rotate, zoom, and switch between a label close-up and your printer's build plate.
 - **Automatic lettering** — filament details filled in for you, with contrasting black or white text.
+- **Optional text colors** — use **Customize text color** for white, black, gray, red, blue, or yellow and a compact same-material profile selector. Return to automatic text with one click.
 - **Printer profiles** — 14 Bambu Lab models with matching bed dimensions and export settings.
 - **Color-aware 3MF export** — separate body and text filament profiles, ready to open and slice in Bambu Studio.
-- **My AMS cloud preview** — connect in your browser, choose loaded spools, suggest compatible text filament, and batch-export labels. No local helper needed; access is currently limited to the approved preview account.
+- **My AMS cloud connection** — connect in your browser, choose loaded spools, suggest compatible text filament, and batch-export labels. Open to all global-region Bambu accounts; no local helper needed.
 - **One-click Studio opening** — available when running locally alongside Bambu Studio.
 - **Responsive workspace** — designed for desktop, tablet, and phone.
 
@@ -37,7 +38,7 @@ Read your loaded spools directly through Bambu Cloud, then create labels without
 
 <img src="docs/images/ams-cloud-snapshot.png" width="420" alt="Live X2D cloud AMS snapshot showing A1 PLA Basic Black at 28 percent and A2 PETG Basic Black at 36 percent remaining" />
 
-**Preview access:** the interface is live, but sign-in is currently restricted to the approved preview account—not open to every Bambu account yet. The manual filament picker works for everyone.
+Sign in with your global-region Bambu account—no invitation or account approval is needed. Your printer must be cloud-connected. The manual filament picker is also available without signing in.
 
 Sign-in expires after 30 minutes. Credentials stay server-side, temporarily encrypted; verification codes are not stored. Reads are on demand with a five-minute cooldown, and label actions require a snapshot less than 45 seconds old. Remaining filament is the printer's estimate. See [My AMS](docs/ams-integration.md) for privacy details and current validation limits.
 
@@ -58,7 +59,7 @@ Open `http://localhost:3000`.
 
 [Hosting](docs/hosting.md) · [My AMS](docs/ams-integration.md) · [Bambu Studio](docs/local-studio-handoff.md) · [Development](CONTRIBUTING.md) · [Architecture](docs/architecture.md)
 
-The [browser-hosted cloud AMS preview](docs/hosted-cloud-ams.md) is deployed separately from the static website. Real X2D sign-in and a fresh cloud snapshot have been demonstrated; broader account access and additional qualification remain pending.
+The [browser-hosted cloud AMS connection](docs/hosted-cloud-ams.md) is deployed separately from the static website. Sign-in is open to all global-region Bambu accounts. Real X2D sign-in and a fresh cloud snapshot have been demonstrated; additional printer and lifecycle testing is ongoing.
 
 ## License
 

@@ -30,9 +30,10 @@ The optional AMS connection uses a separate Lambda backend for global-region Bam
 email verification and account-owned printer status reads over cloud TLS/MQTT.
 Tokens are stored temporarily encrypted with AWS KMS in DynamoDB; the browser receives an opaque session cookie and
 sanitized inventory. Reads are on demand, with freshness and cooldown safeguards.
-The backend and browser interface are deployed as an account-restricted private
-preview. The owner demonstrated real X2D email-code sign-in and a fresh cloud
-snapshot on October 8, 2026; broader model/account access and lifecycle/export
+The backend and browser interface are open to all global-region Bambu accounts.
+Public access is explicitly configured; account ownership, session isolation and
+all existing rate limits remain enforced. The owner demonstrated real X2D email-code
+sign-in and a fresh cloud snapshot on October 8, 2026; broader model and lifecycle/export
 qualification remain separate. There is no LAN printer connection
 or saved-pairing service. A memory-only Node preview supports local development
 of the hosted flow. See [AMS setup](ams-integration.md) and [Lambda deployment](aws-lambda-ams.md).

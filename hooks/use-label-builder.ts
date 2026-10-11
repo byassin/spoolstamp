@@ -90,6 +90,7 @@ export function useLabelBuilder() {
           design: selected.design,
           printer: printer.fullName,
           textFilamentProduct: selected.textFilamentProduct,
+          textColor: selected.textColor,
         });
         signal.throwIfAborted();
         const transfer = await prepareStudioTransfer(
@@ -160,6 +161,7 @@ export function useLabelBuilder() {
         design: selected.design,
         printer: printer.fullName,
         textFilamentProduct: selected.textFilamentProduct,
+        textColor: selected.textColor,
       });
       if (!isCurrent()) {
         throw new Error(
@@ -224,6 +226,20 @@ export function useLabelBuilder() {
                 description:
                   'Actual black or white text spool product, such as PLA Basic. Must match the body material family.',
               },
+              textColor: {
+                type: 'string',
+                enum: [
+                  'automatic',
+                  'white',
+                  'black',
+                  'gray',
+                  'red',
+                  'blue',
+                  'yellow',
+                ],
+                description:
+                  'Optional text color override. Automatic restores contrasting black/white.',
+              },
               design: { type: 'string', enum: DESIGNS.map((item) => item.id) },
             },
             additionalProperties: false,
@@ -243,6 +259,7 @@ export function useLabelBuilder() {
               printer: printer.fullName,
               design: selected.design,
               textFilamentProduct: selected.textFilamentProduct,
+              textColor: selected.textColor ?? 'automatic',
             };
           },
         },

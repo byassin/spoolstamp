@@ -571,6 +571,13 @@ export function createLambdaAmsService(options: Options) {
       await save({
         ...claimed,
         job: null,
+        // A fresh MQTT response proves the selected printer is online now.
+        // Do not retain the availability captured during account sign-in.
+        printers: claimed.printers.map((printer) =>
+          printer.serial === claimed.job!.serial
+            ? { ...printer, online: true }
+            : printer,
+        ),
         inventory: {
           ...claimed.inventory,
           updatedAt: snapshot.updatedAt,
@@ -590,6 +597,17 @@ export function createLambdaAmsService(options: Options) {
           job: null,
           ...(revoke
             ? { secret: null, authenticated: false, printers: [] }
+            : {}),
+          ...(!revoke &&
+          error instanceof CloudAmsError &&
+          error.code === 'offline'
+            ? {
+                printers: claimed.printers.map((printer) =>
+                  printer.serial === claimed.job!.serial
+                    ? { ...printer, online: false }
+                    : printer,
+                ),
+              }
             : {}),
           inventory: {
             ...emptyInventory(),
