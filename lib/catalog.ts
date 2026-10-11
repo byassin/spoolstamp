@@ -1,5 +1,9 @@
 import catalogData from '@/data/bambu-catalog.json';
 import machineData from '@/data/bambu-machines.json';
+import {
+  recommendedNozzleRange,
+  type NozzleTemperatureRange,
+} from '@/lib/print-temperature';
 
 export type ColorType = 'single' | 'gradient' | 'multi';
 
@@ -25,6 +29,7 @@ export type Filament = {
   amsId: string;
   colorVariantId: string;
   nozzleTemperature: number | null;
+  nozzleTemperatureRange: NozzleTemperatureRange | null;
   texturedPlateTemperature: number | null;
   density: number | null;
   maxVolumetricSpeed: number | null;
@@ -56,6 +61,7 @@ export const FILAMENTS: Filament[] = catalogData.catalog.map(
       amsId: item.amsId,
       colorVariantId: item.colorVariantId,
       nozzleTemperature: item.specs.nozzleTemperature,
+      nozzleTemperatureRange: recommendedNozzleRange(item.product),
       texturedPlateTemperature: item.specs.texturedPlateTemperature,
       density: item.specs.density,
       maxVolumetricSpeed: item.specs.maxVolumetricSpeed,
