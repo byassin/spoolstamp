@@ -19,7 +19,7 @@ Arranged batches preserve whole label assemblies and pack them at Z=0 with 6 mm 
 
 Open the 3MF as a project so Studio loads its profiles and colors.
 
-Studio's importer requires a BambuStudio-prefixed application identifier. Single-label exports retain `BambuStudio-02.08.02.61+FilamentLabelLab.0.1.0` for compatibility; arranged plates use `BambuStudio-02.08.02.61+Spoolstamp.0.1.0`. Separate generator metadata identifies the application. Legacy single-label metadata names remain stable.
+Studio's importer requires a BambuStudio-prefixed application identifier. Single-label exports use `BambuStudio-02.08.02.61+FilamentLabelLab.X.Y.Z`; arranged plates use `BambuStudio-02.08.02.61+Spoolstamp.X.Y.Z`, with the app release version replacing `X.Y.Z`. The pinned Studio compatibility prefix and legacy metadata names remain stable. Separate generator metadata also reports the app version.
 
 Purge tables are sized to the printer's physical nozzle count and the actual project filament count, using Studio's default 280 mm³ transitions. These are not color-calibrated recommendations; Studio can recalculate purging for the selected colors.
 

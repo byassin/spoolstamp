@@ -98,6 +98,26 @@
   color: var(--muted-foreground);
   font-size: 0.8125rem;
 }
+.brand-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 9px;
+}
+.brand-title h1 {
+  margin: 0;
+}
+.app-version {
+  color: #c0ccbe;
+  background: #b7f36b0d;
+  border: 1px solid #b7f36b26;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 0.625rem;
+  font-family: var(--font-geist-mono), monospace;
+  line-height: 1.3;
+  white-space: nowrap;
+}
 .ams-launcher {
   min-height: 40px;
   margin-left: auto;
@@ -176,6 +196,9 @@
   background: #05080bb3;
   backdrop-filter: blur(3px);
 }
+html:has(.ams-drawer[open]) {
+  overflow: hidden;
+}
 .drawer-top {
   display: flex;
   align-items: center;
@@ -250,6 +273,99 @@
 .ams-cloud-login label {
   display: grid;
   gap: 6px;
+}
+.cloud-ams-connection {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+.ams-panel .cloud-ams-connection .field-note {
+  margin: 0;
+}
+.ams-panel output.field-note {
+  display: block;
+  overflow-wrap: anywhere;
+}
+.ams-panel .cloud-ams-connection > label {
+  margin: 0;
+}
+.cloud-ams-connection select {
+  margin-top: 0;
+  min-height: 44px;
+}
+.cloud-ams-connection .ams-actions {
+  margin: 0;
+}
+.cloud-ams-connection .ams-actions button {
+  min-height: 44px;
+}
+.ams-connection-status {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  padding: 14px;
+  background: #242b2f;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.ams-connection-status output {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.ams-connection-status p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+}
+.ams-connection-status[data-state='fresh'] {
+  border-color: #b7f36b70;
+}
+.ams-connection-status[data-state='reading'] {
+  border-color: #8599b5;
+}
+.ams-help summary {
+  min-height: 32px;
+  display: list-item;
+  padding: 5px 0;
+}
+.ams-help p {
+  margin-top: 8px;
+}
+.ams-label-library {
+  margin-top: 20px;
+}
+.ams-label-library h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.ams-label-choices {
+  display: grid;
+  gap: 10px;
+}
+.ams-label-choice {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+}
+.ams-label-choice strong,
+.ams-label-choice small {
+  display: block;
+  overflow-wrap: anywhere;
+}
+.ams-label-choice small {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  margin-top: 3px;
+}
+.ams-label-choice button {
+  min-height: 44px;
 }
 .ams-cloud-login input {
   min-height: 40px;
@@ -1095,16 +1211,6 @@
   color: var(--muted-foreground);
   margin-top: 4px;
 }
-.snapshot-status {
-  border: 1px solid var(--border);
-  padding: 10px;
-  border-radius: 8px;
-  margin: 12px 0;
-  font-size: 0.8rem;
-}
-.snapshot-status[data-fresh='true'] {
-  border-color: var(--primary);
-}
 .cloud-unavailable {
   padding: 12px;
   border: 1px solid #e9c46a;
@@ -1112,6 +1218,36 @@
 }
 .mobile-export-bar {
   display: none;
+}
+@media (max-width: 360px) {
+  .app-header {
+    gap: 8px;
+    padding-inline: 12px;
+  }
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+  }
+  .brand-title {
+    flex-wrap: nowrap;
+    gap: 6px;
+  }
+  .brand-name h1 {
+    font-size: 1rem;
+  }
+  .brand-name > span {
+    font-size: 0.625rem;
+    white-space: nowrap;
+  }
+  .app-version {
+    font-size: 0.5625rem;
+    padding: 2px 4px;
+  }
+  .ams-launcher {
+    font-size: 0.75rem;
+    padding-inline: 8px;
+    gap: 5px;
+  }
 }
 @media (max-width: 699px) {
   .label-app {

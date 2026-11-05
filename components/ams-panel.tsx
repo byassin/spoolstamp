@@ -23,6 +23,8 @@ import type { TextColorId } from '@/lib/text-color';
 import { CloudAmsConnection } from './cloud-ams-connection';
 import { validateCloudApiOrigin } from '@/lib/cloud-ams-client';
 import { snapshotStatus } from '@/lib/ams-freshness';
+import { captureLabelChoices } from '@/lib/ams-label-choices';
+import { AmsLabelChoices } from './ams-label-choices';
 const subscribeOrigin = () => () => {};
 const browserOrigin = () => window.location.origin;
 const serverOrigin = () => '';
@@ -60,6 +62,26 @@ export function AmsPanel({
     origin,
   );
   const [inventory, setInventory] = useState<AmsInventory | null>(null);
+  const [labelChoices, setLabelChoices] = useState<Filament[]>([]);
+  const capturedRead = useRef<number | null>(null);
+  function receiveInventory(value: AmsInventory | null) {
+    setInventory(value);
+    if (
+      value &&
+      freshInventory(value) &&
+      value.updatedAt !== capturedRead.current
+    ) {
+      capturedRead.current = value.updatedAt;
+      setLabelChoices(captureLabelChoices(value));
+    }
+  }
+  function rememberChoice(value: Filament) {
+    setLabelChoices((previous) =>
+      previous.some((item) => item.id === value.id)
+        ? previous
+        : [...previous, value],
+    );
+  }
   const [error, setError] = useState('');
   const [confirmed, setConfirmed] = useState<Record<string, string>>({});
   const [selected, setSelected] = useState<string[]>([]);
@@ -266,20 +288,34 @@ export function AmsPanel({
         </h2>
       </div>
       {cloudOrigin ? (
-        <CloudAmsConnection origin={cloudOrigin} onInventory={setInventory} />
+        <CloudAmsConnection
+          origin={cloudOrigin}
+          onInventory={receiveInventory}
+          hasLabelChoices={labelChoices.length > 0}
+        />
       ) : (
         <p className="field-note">
-          Cloud AMS is not configured on this edition yet. You can always choose
-          filament manually.
+          AMS isn’t available here. You can choose filament manually.
         </p>
       )}
-      {inventory?.connected && (
+      {!fresh && (
+        <AmsLabelChoices
+          choices={labelChoices}
+          onSelect={(choice) => {
+            onSelect({
+              filament: choice,
+              textFilamentProduct:
+                choice.material === filament.material
+                  ? textFilamentProduct
+                  : undefined,
+              textColor,
+            });
+            onLabelSelected?.();
+          }}
+        />
+      )}
+      {inventory?.connected && fresh && (
         <>
-          <p className="field-note">
-            {inventory.printerName ??
-              'Connection established · identifying printer…'}
-            {inventory.firmware ? ` · ${inventory.firmware}` : ''}
-          </p>
           {detectedPrinter && detectedPrinter.fullName !== printerName && (
             <Button
               variant="outline"
@@ -295,25 +331,21 @@ export function AmsPanel({
               exporting.
             </p>
           )}
-          <p className="field-note">
-            Save a draft while the read is fresh to edit or export later. Drafts
-            contain catalog choices, not a claim about what is still loaded.
-          </p>
           <label className="ams-auto">
             <input
               type="checkbox"
               checked={autoText}
               onChange={(event) => onAutoTextChange(event.target.checked)}
             />{' '}
-            Use compatible loaded black/white text automatically
+            Match text to a loaded black/white spool
           </label>
           {autoText && (
             <p className="field-note">
               {!fresh
-                ? 'Automatic text selection is paused until the AMS inventory is received.'
+                ? 'Text can be chosen in Print setup.'
                 : suggestedText
-                  ? `Text suggestion: ${suggestedText.product} · ${suggestedText.slot.label}. Confirm the physical slot in Studio.`
-                  : 'No confirmed compatible black/white spool found. Check the text filament choice manually.'}
+                  ? `Text: ${suggestedText.product} · ${suggestedText.slot.label}`
+                  : 'No matching text spool. Choose one in Print setup.'}
             </p>
           )}
           <div className="ams-slots">
@@ -366,12 +398,21 @@ export function AmsPanel({
                           aria-label={`Confirm filament in ${slot.label}`}
                           value={confirmed[slot.key] ?? ''}
                           disabled={!fresh || batchBusy}
-                          onChange={(event) =>
+                          onChange={(event) => {
                             setConfirmed({
                               ...confirmed,
                               [slot.key]: event.target.value,
-                            })
-                          }
+                            });
+                            const choice = matches.find(
+                              (item) => item.id === event.target.value,
+                            );
+                            if (
+                              choice &&
+                              live.current.inventory &&
+                              freshInventory(live.current.inventory)
+                            )
+                              rememberChoice(choice);
+                          }}
                         >
                           <option value="">Choose exact filament…</option>
                           {matches.map((item) => (
@@ -403,6 +444,7 @@ export function AmsPanel({
                               live.current.inventory &&
                               freshInventory(live.current.inventory)
                             ) {
+                              rememberChoice(label);
                               onSelect({
                                 filament: label,
                                 textFilamentProduct: textProductFor(label),
@@ -441,9 +483,7 @@ export function AmsPanel({
                                   textColor: autoText ? undefined : textColor,
                                 })
                               )
-                                setProgress(
-                                  'Draft saved in My saved filaments. It is not live AMS inventory.',
-                                );
+                                setProgress('Saved in My saved filaments.');
                             }}
                           >
                             Save draft

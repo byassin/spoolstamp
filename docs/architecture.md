@@ -34,7 +34,7 @@ The optional AMS connection uses a separate Lambda backend for global-region Bam
 email verification and account-owned printer status reads over cloud TLS/MQTT.
 Tokens are stored temporarily encrypted with AWS KMS in DynamoDB; the browser receives an opaque session cookie and
 sanitized inventory. Reads are on demand, with freshness and cooldown safeguards.
-The interface updates snapshot age every second and retains manual picking and saved drafts during outages. Only session-state GET polling backs off; verification emails, sign-in and printer reads are not automatically retried.
+The interface updates freshness state every second and retains manual picking and saved drafts during outages. Exact catalog label choices captured while fresh are also retained in memory for the visit, separate from live inventory, so returning for another label does not need another vendor read. Only session-state GET polling backs off; verification emails, sign-in and printer reads are not automatically retried.
 The backend and browser interface are open to all global-region Bambu accounts.
 Public access is explicitly configured; account ownership, session isolation and
 all existing rate limits remain enforced. The owner demonstrated real X2D email-code

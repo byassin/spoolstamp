@@ -8,6 +8,7 @@ import {
 import { buildConfiguredMeshes, objectXml } from '../lib/generate-3mf';
 import { placeAssembliesOnBed, LABEL_PLACEMENT_GAP } from '../lib/build-plate';
 import { studioPresetFor } from '../lib/studio-project';
+import { APP_VERSION } from '../lib/app-version';
 const options = () => ({
   labels: [{ filament: DEFAULT_FILAMENT, textColor: 'white' as const }],
   printer: 'Bambu Lab X2D',
@@ -99,6 +100,7 @@ describe('multi-label plates', () => {
     const manifest = JSON.parse(
       await model.file('Metadata/spoolstamp-plate.json')!.async('string'),
     );
+    expect(manifest.generatorVersion).toBe(APP_VERSION);
     expect(manifest.labels).toHaveLength(2);
     for (const label of manifest.labels) {
       expect(label.bodyFilament).toBeGreaterThan(0);

@@ -12,8 +12,8 @@ controls have been removed.
 1. Open **My AMS → Connect Bambu Cloud** on the live website.
 2. Enter your global-region Bambu email and accept the connection notice.
 3. Click **Send verification email**, then enter the six-digit code.
-4. Choose a cloud-connected printer from your account and click **Read fresh AMS**.
-5. Confirm the loaded spools and select **Use label**.
+4. Choose a cloud-connected printer from your account and click **Read AMS**.
+5. Confirm the loaded spools and select **Use label**. Return to **My AMS** for another label without another read: after live inventory expires, **Labels from your last read** keeps the resolved catalog choices for this visit. These are not live inventory; refresh only to check changed spools.
 
 No local helper, printer IP, LAN access code, or account password is requested.
 The backend holds your email/token temporarily encrypted; the token is never
@@ -28,7 +28,17 @@ require a complete snapshot under 45 seconds old. After changing spools, wait
 and read again; old cached identities are not treated as current inventory.
 Remaining percentages are printer estimates, not measured spool weights.
 
+The freshness requirement applies to live-slot actions. Reusable label choices are captured from exact catalog matches while the snapshot is fresh (ambiguous products only after confirmation). They retain catalog filament records only, not slot identity, printer identifiers, remaining percentages or inventory timestamps. They remain available in memory while the page stays open, including when the drawer is closed or the cloud is unavailable. Selecting one is the same as choosing that catalog filament manually; it does not refresh inventory or make a vendor request. Save the resulting label draft to keep it across reloads. Unknown products still require the manual picker.
+
+One state-aware status card replaces repeated connection messages. Timing details are under **How it works**. If the account has only one printer it is selected automatically, without making a printer-read request. Selecting a different printer never presents the previous printer’s snapshot as live for the new selection.
+
 ## Live X2D browser test
+
+### UI regression checks — November 4, 2026
+
+Local synthetic AMS checks covered ready, reading, fresh, expired and outage states on desktop (1440 px), mobile (390 px), and narrow mobile (320 px). Selecting one label, expiring the snapshot, reopening My AMS and selecting another left the simulated printer-read count at one. Reusable choices also worked during a simulated cloud outage. The status stayed block-aligned, and the version badge fit beside the logo without adding a footer. No Bambu credentials, verification emails, or real printer reads were used in these checks; they do not expand real-device qualification.
+
+### Owner-provided X2D evidence — October 8, 2026
 
 Owner-provided screenshots from October 8, 2026 show successful sign-in, selection
 of **Bambu-X2D (X2D)**, and a fresh cloud snapshot. The visible slots are A1
