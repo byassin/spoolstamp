@@ -1,4 +1,5 @@
 'use client';
+import { APP_VERSION } from './app-version';
 
 import {
   normalizeColor as rgb,
@@ -307,7 +308,7 @@ function modelXml(
   return `<?xml version="1.0" encoding="UTF-8"?>
 <model unit="millimeter" xml:lang="en-US" xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02" xmlns:m="http://schemas.microsoft.com/3dmanufacturing/material/2015/02" xmlns:BambuStudio="http://schemas.bambulab.com/package/2021" xmlns:fll="https://filament-label-lab.dev/3mf/2026/metadata" recommendedextensions="m">
   <metadata name="Title">${escapeXml(`${options.filament.product} · ${options.filament.colorName} label`)}</metadata>
-  <metadata name="Application">BambuStudio-02.08.02.61+FilamentLabelLab.0.1.0</metadata>
+  <metadata name="Application">BambuStudio-02.08.02.61+FilamentLabelLab.${APP_VERSION}</metadata>
   <metadata name="BambuStudio:3mfVersion">1</metadata>
   <metadata name="fll:generator">Filament Label Lab</metadata>
   <metadata name="fll:compatibility">Application is an importer compatibility identifier; the actual generator is Filament Label Lab, not Bambu Studio.</metadata>
@@ -382,7 +383,7 @@ function generatorMetadata(
   return JSON.stringify(
     {
       schemaVersion: 1,
-      generator: { name: 'Filament Label Lab', version: '0.1.0' },
+      generator: { name: 'Filament Label Lab', version: APP_VERSION },
       design: options.design,
       targetPrinter: options.printer,
       slicingRequired: true,

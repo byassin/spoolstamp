@@ -54,53 +54,63 @@ describe('generated Bambu catalog', () => {
     );
   });
 
-  it('builds printable text strokes for every catalog row and built-in design', async () => {
-    const failures: string[] = [];
-    for (const filament of FILAMENTS) {
-      for (const design of DESIGNS) {
-        const meshes = await buildConfiguredMeshes(filament, design.id).catch(
-          (error) => {
-            failures.push(
-              `${filament.product} / ${filament.colorName} / ${design.id}: ${error.message}`,
-            );
-            return [];
-          },
-        );
-        if (!meshes.length) continue;
-        expect(meshes.length).toBeGreaterThanOrEqual(2);
-        const lettering = meshes.find((mesh) => mesh.name === 'raised-text');
-        expect(lettering).toBeDefined();
-        if (design.id === 'clip-label') {
-          expect(lettering?.textRows).toHaveLength(2);
-          for (const row of lettering?.textRows ?? []) {
-            expect(
-              row.strokeAudit?.passes,
-              `${filament.product}: ${row.value}`,
-            ).toBe(true);
-            expect(row.width).toBeLessThanOrEqual(36.5001);
-            expect(row.centerY - row.height / 2).toBeGreaterThanOrEqual(1.2);
-            expect(row.centerY + row.height / 2).toBeLessThanOrEqual(13.8);
+  // Keep the full catalog × design matrix, but budget/report each product
+  // independently instead of timing the entire CPU-heavy catalog as one test.
+  it.each(FILAMENT_TYPES)(
+    'builds printable text strokes for every $product color and built-in design',
+    async ({ product }) => {
+      const failures: string[] = [];
+      const filaments = FILAMENTS_BY_PRODUCT.get(product) ?? [];
+      expect(filaments.length).toBeGreaterThan(0);
+      for (const filament of filaments) {
+        for (const design of DESIGNS) {
+          const meshes = await buildConfiguredMeshes(filament, design.id).catch(
+            (error) => {
+              failures.push(
+                `${filament.product} / ${filament.colorName} / ${design.id}: ${error.message}`,
+              );
+              return [];
+            },
+          );
+          if (!meshes.length) continue;
+          expect(meshes.length).toBeGreaterThanOrEqual(2);
+          const lettering = meshes.find((mesh) => mesh.name === 'raised-text');
+          expect(lettering).toBeDefined();
+          if (design.id === 'clip-label') {
+            expect(lettering?.textRows).toHaveLength(2);
+            for (const row of lettering?.textRows ?? []) {
+              expect(
+                row.strokeAudit?.passes,
+                `${filament.product}: ${row.value}`,
+              ).toBe(true);
+              expect(row.width).toBeLessThanOrEqual(36.5001);
+              expect(row.centerY - row.height / 2).toBeGreaterThanOrEqual(1.2);
+              expect(row.centerY + row.height / 2).toBeLessThanOrEqual(13.8);
+            }
+            continue;
           }
-          continue;
-        }
-        if (design.id === 'drybox-tab') {
-          expect(lettering?.textRows?.length).toBeGreaterThanOrEqual(6);
-          for (const row of lettering?.textRows ?? []) {
-            expect(
-              row.strokeAudit?.passes,
-              `${filament.product}: ${row.value}`,
-            ).toBe(true);
-            expect(
-              row.strokeAudit?.minimumComponentAreaRecovery,
-            ).toBeGreaterThanOrEqual(0.98);
-            expect(row.width).toBeLessThanOrEqual(54.0001);
-            expect(row.centerY - row.height / 2).toBeGreaterThanOrEqual(2.9999);
-            expect(row.centerY + row.height / 2).toBeLessThanOrEqual(58.0001);
+          if (design.id === 'drybox-tab') {
+            expect(lettering?.textRows?.length).toBeGreaterThanOrEqual(6);
+            for (const row of lettering?.textRows ?? []) {
+              expect(
+                row.strokeAudit?.passes,
+                `${filament.product}: ${row.value}`,
+              ).toBe(true);
+              expect(
+                row.strokeAudit?.minimumComponentAreaRecovery,
+              ).toBeGreaterThanOrEqual(0.98);
+              expect(row.width).toBeLessThanOrEqual(54.0001);
+              expect(row.centerY - row.height / 2).toBeGreaterThanOrEqual(
+                2.9999,
+              );
+              expect(row.centerY + row.height / 2).toBeLessThanOrEqual(58.0001);
+            }
+            continue;
           }
-          continue;
         }
       }
-    }
-    expect(failures).toEqual([]);
-  }, 120_000);
+      expect(failures).toEqual([]);
+    },
+    120_000,
+  );
 });

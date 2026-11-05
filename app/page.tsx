@@ -38,6 +38,7 @@ import { formatNozzleRange } from '@/lib/print-temperature';
 import { useSavedWorkspace } from '@/hooks/use-saved-workspace';
 import { SavedWorkspacePanel } from '@/components/saved-workspace-panel';
 import type { BuilderConfiguration } from '@/lib/builder-configuration';
+import { APP_VERSION_LABEL } from '@/lib/app-version';
 
 export default function Home() {
   const [autoAmsText, setAutoAmsText] = useState(true);
@@ -108,7 +109,15 @@ export default function Home() {
           height={40}
         />
         <div className="brand-name">
-          <h1>Spoolstamp</h1>
+          <div className="brand-title">
+            <h1>Spoolstamp</h1>
+            <span
+              className="app-version"
+              aria-label={`Version ${APP_VERSION_LABEL.slice(1)}`}
+            >
+              {APP_VERSION_LABEL}
+            </span>
+          </div>
           <span>Filament label studio</span>
         </div>
         <Button

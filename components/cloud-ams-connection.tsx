@@ -6,14 +6,17 @@ import { createHostedAmsClient } from '../lib/cloud-ams-client';
 import type { HostedCloudState } from '../lib/cloud-ams';
 import type { AmsInventory } from '../lib/ams';
 import { PRINTERS } from '../lib/catalog';
-import { cloudPollDelay, snapshotStatus } from '../lib/ams-freshness';
+import { cloudPollDelay, formatReadWait } from '../lib/ams-freshness';
+import { AmsConnectionStatus } from './ams-connection-status';
 
 export function CloudAmsConnection({
   origin,
   onInventory,
+  hasLabelChoices = false,
 }: {
   origin: string;
   onInventory: (value: AmsInventory | null) => void;
+  hasLabelChoices?: boolean;
 }) {
   const [state, setState] = useState<HostedCloudState | null>(null);
   const [started, setStarted] = useState(false);
@@ -21,6 +24,7 @@ export function CloudAmsConnection({
   const [code, setCode] = useState('');
   const [consent, setConsent] = useState(false);
   const [printer, setPrinter] = useState('');
+  const selectedPrinter = useRef('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [clock, setClock] = useState(() => Date.now());
@@ -50,11 +54,25 @@ export function CloudAmsConnection({
     const profile = PRINTERS.find(
       (item) => item.name === model || item.fullName === model,
     );
-    callback.current({
-      ...value.inventory,
-      printerName: profile?.fullName ?? value.inventory.printerName,
-    });
-    if (!value.authenticated) setPrinter('');
+    const chosen = !value.authenticated
+      ? ''
+      : value.printers.some((item) => item.serial === selectedPrinter.current)
+        ? selectedPrinter.current
+        : value.printers.some((item) => item.serial === value.selectedSerial)
+          ? value.selectedSerial!
+          : value.printers.length === 1
+            ? value.printers[0].serial
+            : '';
+    selectedPrinter.current = chosen;
+    setPrinter(chosen);
+    callback.current(
+      value.selectedSerial === chosen
+        ? {
+            ...value.inventory,
+            printerName: profile?.fullName ?? value.inventory.printerName,
+          }
+        : null,
+    );
   }
   useEffect(() => {
     if (!started) return;
@@ -117,6 +135,7 @@ export function CloudAmsConnection({
       else {
         setState(null);
         setPrinter('');
+        selectedPrinter.current = '';
         setEmail('');
         setCode('');
         setConsent(false);
@@ -142,10 +161,11 @@ export function CloudAmsConnection({
   );
   return (
     <div className="cloud-ams-connection">
-      <p className="field-note">
-        Connect through Bambu Cloud. Your printer must be cloud-connected. No
-        local helper is needed. Open to all global-region Bambu accounts.
-      </p>
+      {!state?.authenticated && (
+        <p className="field-note ams-intro">
+          Read your loaded spools with Bambu Cloud.
+        </p>
+      )}
       {!started ? (
         <Button
           onClick={() => {
@@ -158,8 +178,8 @@ export function CloudAmsConnection({
       ) : unavailable ? (
         <div className="cloud-unavailable" aria-live="polite">
           <p>
-            Cloud connection is temporarily unavailable. Your saved drafts and
-            manual filament picker still work.
+            Can’t reach Bambu Cloud. Use your label choices or the manual
+            picker.
           </p>
           <Button
             variant="outline"
@@ -171,9 +191,6 @@ export function CloudAmsConnection({
           >
             Retry connection
           </Button>
-          <small>
-            No verification email or printer read is retried automatically.
-          </small>
         </div>
       ) : !state?.authenticated ? (
         <form
@@ -196,6 +213,9 @@ export function CloudAmsConnection({
         >
           {!state?.codeRequested ? (
             <>
+              <p className="field-note">
+                Use a global-region account with a cloud-connected printer.
+              </p>
               <label htmlFor="cloud-ams-email">
                 Bambu account email (global region)
                 <Input
@@ -276,12 +296,16 @@ export function CloudAmsConnection({
       ) : (
         <>
           <label htmlFor="cloud-ams-printer">
-            Your printer
+            Printer
             <select
               id="cloud-ams-printer"
               value={printer}
               disabled={busy || state.pending}
-              onChange={(event) => setPrinter(event.target.value)}
+              onChange={(event) => {
+                selectedPrinter.current = event.target.value;
+                setPrinter(event.target.value);
+                callback.current(null);
+              }}
             >
               <option value="">Choose a printer</option>
               {state.printers.map((item) => (
@@ -313,8 +337,8 @@ export function CloudAmsConnection({
               {state.pending
                 ? 'Reading AMS…'
                 : printer === state.selectedSerial && wait > 0
-                  ? `Refresh in ${wait}s`
-                  : 'Read fresh AMS'}
+                  ? `Refresh in ${formatReadWait(wait)}`
+                  : 'Read AMS'}
             </Button>
             <Button
               variant="outline"
@@ -327,24 +351,27 @@ export function CloudAmsConnection({
               Sign out
             </Button>
           </div>
-          <output className="field-note">{state.inventory.message}</output>
-          <output
-            className="snapshot-status"
-            data-fresh={snapshotStatus(state.inventory, clock).fresh}
-          >
-            {snapshotStatus(state.inventory, clock).text}
-          </output>
-          <p className="field-note">
-            {wait > 0
-              ? `Another read is available in ${Math.floor(wait / 60)}m ${wait % 60}s. `
-              : 'Ready for another read. '}
-            Read once, then choose or save labels within 45 seconds. The
-            five-minute cooldown protects the connection; this is not continuous
-            monitoring. Changed spools? Wait and read again.
-          </p>
+          <AmsConnectionStatus
+            state={state}
+            printer={printer}
+            now={clock}
+            hasLabelChoices={hasLabelChoices}
+          />
+          <details className="ams-help field-note">
+            <summary>How it works</summary>
+            <p>
+              One read gives you reusable label choices for this visit. Save a
+              draft to keep a label for later.
+            </p>
+            <p>
+              Live inventory is current for 45 seconds. Refresh is limited to
+              once every five minutes; it is only needed to check changed
+              spools. Confirm physical spools in Studio before printing.
+            </p>
+          </details>
         </>
       )}
-      {error && (
+      {error && !unavailable && (
         <p className="error-message" role="alert">
           {error}
         </p>

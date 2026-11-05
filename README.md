@@ -44,11 +44,13 @@ Read your loaded spools directly through Bambu Cloud, then create labels without
 
 Sign in with your global-region Bambu account—no invitation or account approval is needed. Your printer must be cloud-connected. The manual filament picker is also available without signing in.
 
-Sign-in expires after 30 minutes. Credentials stay server-side, temporarily encrypted; verification codes are not stored. Reads are on demand with a five-minute cooldown, and label actions require a snapshot less than 45 seconds old. Remaining filament is the printer's estimate. See [My AMS](docs/ams-integration.md) for privacy details and current validation limits.
+Sign-in expires after 30 minutes. Credentials stay server-side, temporarily encrypted; verification codes are not stored. Reads are on demand with a five-minute cooldown, and live-slot actions require a snapshot less than 45 seconds old. Resolved catalog label choices remain reusable for this visit, so returning for another label does not require another read. Remaining filament is the printer's estimate. See [My AMS](docs/ams-integration.md) for privacy details and current validation limits.
 
 Save an AMS label draft while the read is fresh to edit or export it later from **My saved filaments**. A saved draft is a catalog configuration, not current inventory. Confirm your physical spools, all filament assignments, label spacing, brim and purge-tower clearance in Studio before slicing. Multi-label placement is digitally checked; real multi-label printing is not yet qualified. See [Saved workspace and plates](docs/saved-workspace.md).
 
 ## Run locally
+
+The version beside the logo comes from `package.json`. See the [changelog](CHANGELOG.md) and [release workflow](docs/releases.md).
 
 Requires Node.js 22.13 or newer.
 

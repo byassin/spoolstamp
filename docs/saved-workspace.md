@@ -13,6 +13,8 @@ The versioned `spoolstamp.workspace.v1` browser-storage record contains only cat
 
 Drafts are not live inventory and can be exported without signing in. They say to confirm the physical spools in Studio. Expired AMS snapshots still cannot be used to create new drafts or live exports; the 45-second freshness and five-minute vendor-read cooldown are unchanged. No stale inventory is silently upgraded to current inventory.
 
+**Labels from your last read** is a separate, memory-only collection of exact catalog choices captured while a read was fresh. It lets you return for another label after the live snapshot expires, without waiting for another read. It contains no live slot identity or quantities and makes no claim about what is still loaded. Choosing a cached catalog label works like the manual picker; **Save label draft** in the main builder can keep that configuration across reloads. The live-slot **Save draft** button still requires a fresh snapshot.
+
 ## Plate projects
 
 Select up to eight loaded labels or saved drafts, choose **Arrange compatible labels on plates**, and download the ZIP. Each `.3mf` contains one plate with independent multipart label objects and their body/text filament assignments. Saved batches use the currently selected design and printer; individual **Use draft** restores that draft's configuration.

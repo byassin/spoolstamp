@@ -1,4 +1,5 @@
 import JSZip from 'jszip';
+import { APP_VERSION } from '../lib/app-version';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -176,7 +177,7 @@ describe('source STL preservation and 3MF export', () => {
         '<metadata name="fll:generator">Filament Label Lab</metadata>',
       );
       expect(model).toContain(
-        '<metadata name="Application">BambuStudio-02.08.02.61+FilamentLabelLab.0.1.0</metadata>',
+        `<metadata name="Application">BambuStudio-02.08.02.61+FilamentLabelLab.${APP_VERSION}</metadata>`,
       );
       expect(model).toContain(
         'actual generator is Filament Label Lab, not Bambu Studio',
