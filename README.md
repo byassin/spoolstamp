@@ -34,16 +34,30 @@ A flat face with two lines: material type and color.
 
 ![Clip-on label in the Spoolstamp 3D preview](docs/images/clip-label.png)
 
+## Flat adhesive labels
+
+Choose **Flat label** for an original 60 × 25 mm backing with raised product, color and catalog-code lettering. Add your own suitable adhesive after printing. See [design details and print guidance](docs/adhesive-label.md); physical printing and mounting still need testing.
+
+![Flat adhesive label and editing toolbar in Spoolstamp v0.3.0](docs/images/flat-label.png)
+
+## Edit, share and keep your labels
+
+Use the toolbar above the preview to **Undo**, **Redo**, **Reset**, or **Share label**. Share links restore catalog choices without including Bambu account data or live inventory.
+
+Save favorites and drafts under **My saved filaments**. Open **Backup & restore** to download a JSON backup or import it into another browser. After importing, choose **Use imported setup** if you want to apply the backed-up label. See the [step-by-step guide](docs/label-editing.md).
+
 ## My AMS
 
 Read your loaded spools directly through Bambu Cloud, then create labels without looking up each filament. The browser flow has been tested with a real X2D on the live website.
 
 1. Open **My AMS → Connect Bambu Cloud**.
 2. Enter your Bambu account email, accept the connection notice, and request a verification code.
-3. Sign in with the code, select your cloud-connected printer, and click **Read fresh AMS**.
+3. Sign in with the code, select your cloud-connected printer, and click **Read AMS**.
 4. Confirm your loaded spools, then use a label or select spools for a batch ZIP export.
 
-<img src="docs/images/ams-cloud-snapshot.png" width="420" alt="Live X2D cloud AMS snapshot showing A1 PLA Basic Black at 28 percent and A2 PETG Basic Black at 36 percent remaining" />
+<img src="docs/images/ams-cloud-preview.png" width="420" alt="Spoolstamp v0.3.0 My AMS panel with a sample printer, Spools ready status and loaded PLA choices" />
+
+Current interface shown with synthetic sample spools. Dated real-printer evidence and qualification limits are documented in [My AMS](docs/ams-integration.md).
 
 Sign in with your global-region Bambu account—no invitation or account approval is needed. Your printer must be cloud-connected. The manual filament picker is also available without signing in.
 
