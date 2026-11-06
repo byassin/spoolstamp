@@ -14,9 +14,10 @@ Design meshes and generated Noto Sans lettering are combined in the browser. The
 
 - **Hinged label:** retains the supplied card and hook, with the R2 moving-link clearance adjustment.
 - **Clip-on label:** fills the supplied clip's label recess and adds material/color lettering.
+- **Flat adhesive label:** builds an original 60 × 25 mm backing and raised product/color/SKU lettering for user-supplied adhesive.
 - **Text:** defaults to black or white for contrast, with six optional text colors and a short same-material profile list. A low-contrast override shows an advisory suggestion. Long clip names are fitted or shortened, with full names retained in metadata.
 
-See [hinged design](supplied-drybox.md) and [clip design](clip-label.md).
+See [hinged design](supplied-drybox.md), [clip design](clip-label.md), and [flat design](adhesive-label.md).
 
 ## Preview and export
 
@@ -27,6 +28,8 @@ Single-label exports contain separate structural/text parts, two filament profil
 ## Saved workspace
 
 The browser can optionally remember the builder setup and store favorites and label drafts using a versioned, catalog-validated local-storage record. This contains no Bambu credentials or printer identifiers. Drafts are catalog configurations, not live inventory, and can be exported without an AMS session. Saving from AMS still requires a fresh resolved snapshot. See [saved workspace and plates](saved-workspace.md).
+
+Configuration history supports undo/redo/reset. Catalog-only fragment links restore shared setups, and validated JSON backups merge favorites/drafts with an explicit imported-setup action. Cross-tab storage events and revision checks protect ordinary concurrent editing. See [editing and workspace transfer](label-editing.md) for limits.
 
 ## Cloud AMS preview
 

@@ -1,9 +1,14 @@
 'use client';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { Button } from './ui/button';
-import { FILAMENTS, PRINTERS } from '@/lib/catalog';
+import { DESIGNS, FILAMENTS, PRINTERS } from '@/lib/catalog';
 import type { BuilderConfiguration } from '@/lib/builder-configuration';
-import { draftKey, restoreLabel } from '@/lib/saved-workspace';
+import {
+  draftKey,
+  restoreLabel,
+  MAX_WORKSPACE_BACKUP_BYTES,
+  serializeWorkspaceBackup,
+} from '@/lib/saved-workspace';
 import type { useSavedWorkspace } from '@/hooks/use-saved-workspace';
 import { MAX_BATCH_LABELS } from '@/lib/generate-label-batch';
 
@@ -20,6 +25,9 @@ export function SavedWorkspacePanel({
   const [layout, setLayout] = useState('plates');
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState('');
+  const [transferBusy, setTransferBusy] = useState(false);
+  const [importedSetup, setImportedSetup] =
+    useState<BuilderConfiguration | null>(null);
   const current = useRef({
     configuration,
     workspace: saved.workspace,
@@ -42,6 +50,49 @@ export function SavedWorkspacePanel({
   const selectedDrafts = saved.workspace.drafts.filter((row) =>
     selected.includes(draftKey(row)),
   );
+  async function exportBackup() {
+    try {
+      const contents = serializeWorkspaceBackup(saved.workspace, configuration);
+      const { downloadBlob } = await import('@/lib/generate-3mf');
+      downloadBlob(
+        new Blob([contents], { type: 'application/json' }),
+        'spoolstamp-workspace.json',
+      );
+      setFeedback(
+        'Backup downloaded. It contains only catalog choices, not Bambu sign-in data.',
+      );
+    } catch {
+      setFeedback(
+        'Could not prepare the backup. Your saved items are unchanged.',
+      );
+    }
+  }
+  async function importBackup(file: File) {
+    setTransferBusy(true);
+    setImportedSetup(null);
+    try {
+      if (file.size > MAX_WORKSPACE_BACKUP_BYTES)
+        throw new Error(
+          'Choose a Spoolstamp backup smaller than 32 KB. Nothing was imported.',
+        );
+      const raw = await file.text();
+      if (!current.current.mounted) return;
+      const result = saved.importBackup(raw);
+      setImportedSetup(result.setup);
+      setFeedback(
+        `Imported ${result.addedFavorites} favorites and ${result.addedDrafts} drafts. Existing items and your current setup are unchanged.`,
+      );
+    } catch (cause) {
+      if (current.current.mounted)
+        setFeedback(
+          cause instanceof Error
+            ? cause.message
+            : 'Could not read this backup. Nothing was imported.',
+        );
+    } finally {
+      if (current.current.mounted) setTransferBusy(false);
+    }
+  }
   async function exportDrafts() {
     if (busy || !selectedDrafts.length) return;
     const capture = JSON.stringify({
@@ -162,6 +213,53 @@ export function SavedWorkspacePanel({
           printer identifiers. Drafts are not live inventory; confirm your
           physical spools in Studio.
         </p>
+        <details className="workspace-transfer">
+          <summary>Backup &amp; restore</summary>
+          <p className="field-note">
+            Move your saved choices to another browser. Import adds items
+            without replacing your existing workspace.
+          </p>
+          <div className="saved-actions">
+            <Button
+              size="sm"
+              variant="outline"
+              disabled={!saved.ready || busy || transferBusy}
+              onClick={() => void exportBackup()}
+            >
+              Download backup
+            </Button>
+          </div>
+          <label className="workspace-backup-file">
+            Import a Spoolstamp backup
+            <input
+              type="file"
+              accept=".json,application/json"
+              disabled={!saved.ready || busy || transferBusy}
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                event.target.value = '';
+                if (file) void importBackup(file);
+              }}
+            />
+          </label>
+          {transferBusy && <p className="field-note">Checking backup…</p>}
+          {importedSetup && (
+            <Button
+              size="sm"
+              variant="outline"
+              disabled={busy || transferBusy}
+              onClick={() => {
+                onSelect(importedSetup);
+                setImportedSetup(null);
+                setFeedback(
+                  'Imported setup selected. Save it as a draft to keep it.',
+                );
+              }}
+            >
+              Use imported setup
+            </Button>
+          )}
+        </details>
         {!!saved.workspace.favorites.length && (
           <label>
             Favorite filament
@@ -196,9 +294,8 @@ export function SavedWorkspacePanel({
               <div className="saved-draft" key={key}>
                 <strong>{name}</strong>
                 <small>
-                  {row.design === 'drybox-tab'
-                    ? 'Hinged label'
-                    : 'Clip-on label'}{' '}
+                  {DESIGNS.find((item) => item.id === row.design)?.name ??
+                    'Label'}{' '}
                   · {row.textColor ?? 'Automatic'} text ·{' '}
                   {row.textFilamentProduct ?? 'Default text profile'}
                 </small>

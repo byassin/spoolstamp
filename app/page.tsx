@@ -6,6 +6,7 @@ import {
   Cable,
   Tag,
   Link2,
+  RectangleHorizontal,
   X,
   Check,
   ChevronDown,
@@ -39,6 +40,7 @@ import { useSavedWorkspace } from '@/hooks/use-saved-workspace';
 import { SavedWorkspacePanel } from '@/components/saved-workspace-panel';
 import type { BuilderConfiguration } from '@/lib/builder-configuration';
 import { APP_VERSION_LABEL } from '@/lib/app-version';
+import { BuilderActions } from '@/components/builder-actions';
 
 export default function Home() {
   const [autoAmsText, setAutoAmsText] = useState(true);
@@ -65,6 +67,11 @@ export default function Home() {
     generateAndDownload,
     retryStudio,
     allowStudioOpen,
+    canUndo,
+    canRedo,
+    undo,
+    redo,
+    reset,
   } = useLabelBuilder();
   const restoreSaved = useCallback(
     (value: BuilderConfiguration) => {
@@ -81,6 +88,13 @@ export default function Home() {
     textColor: textColorChoice,
   };
   const saved = useSavedWorkspace(configuration, restoreSaved);
+  const selectShared = useCallback(
+    (value: BuilderConfiguration) => {
+      setAutoAmsText(false);
+      updateConfiguration(value);
+    },
+    [updateConfiguration],
+  );
   const printer =
     PRINTERS.find((item) => item.id === printerId) ?? DEFAULT_PRINTER;
   const selectedDesign = DESIGNS.find((item) => item.id === design)!;
@@ -155,21 +169,15 @@ export default function Home() {
                   <span className="design-icon" aria-hidden="true">
                     {item.id === 'drybox-tab' ? (
                       <Tag size={25} />
-                    ) : (
+                    ) : item.id === 'clip-label' ? (
                       <Link2 size={25} />
+                    ) : (
+                      <RectangleHorizontal size={25} />
                     )}
                   </span>
                   <span>
-                    <strong>
-                      {item.id === 'drybox-tab'
-                        ? 'Hinged label'
-                        : 'Clip-on label'}
-                    </strong>
-                    <small>
-                      {item.id === 'drybox-tab'
-                        ? '60 × 88 mm · Dry box'
-                        : '51.4 × 15 mm · Two lines'}
-                    </small>
+                    <strong>{item.displayName}</strong>
+                    <small>{item.summary}</small>
                   </span>
                   <RadioGroupItem
                     id={`design-${item.id}`}
@@ -180,6 +188,12 @@ export default function Home() {
               ))}
             </RadioGroup>
           </fieldset>
+          {design === 'adhesive-label' && (
+            <p className="field-note design-note">
+              Add your own double-sided adhesive. Check the surface before
+              mounting.
+            </p>
+          )}
           <div className="panel-section-heading">
             <span className="step-number">02</span>
             <h2>Choose your filament</h2>
@@ -227,6 +241,25 @@ export default function Home() {
               <Printer size={14} /> {printer.name}
             </span>
           </div>
+          <BuilderActions
+            configuration={configuration}
+            ready={saved.ready}
+            canUndo={canUndo}
+            canRedo={canRedo}
+            onUndo={() => {
+              setAutoAmsText(false);
+              undo();
+            }}
+            onRedo={() => {
+              setAutoAmsText(false);
+              redo();
+            }}
+            onReset={() => {
+              setAutoAmsText(false);
+              reset();
+            }}
+            onSelect={selectShared}
+          />
           <div className="preview-stage">
             <LabelPreview
               filament={filament}
@@ -425,14 +458,14 @@ export default function Home() {
               <span className="error-message">
                 {error || presetError || studioError}
               </span>
+            ) : download ? (
+              <span className="success-message">
+                <Check size={15} /> Downloaded {download.filename}
+              </span>
             ) : studioTransfer ? (
               <span>
                 Ready to open · Confirm AMS slots in Studio, then slice and
                 print.
-              </span>
-            ) : download ? (
-              <span className="success-message">
-                <Check size={15} /> Downloaded {download.filename}
               </span>
             ) : localStudio ? (
               <span>Preparing your current selection…</span>

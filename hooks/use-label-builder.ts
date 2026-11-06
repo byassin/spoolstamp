@@ -20,10 +20,22 @@ import {
   sameConfiguration,
   type BuilderConfiguration,
 } from '@/lib/builder-configuration';
+import {
+  initialHistory,
+  recordConfiguration,
+  undoConfiguration,
+  redoConfiguration,
+  type ConfigurationHistory,
+} from '@/lib/configuration-history';
 
 export function useLabelBuilder() {
   const [configuration, setConfiguration] = useState(INITIAL_CONFIGURATION);
   const current = useRef(configuration);
+  const history = useRef(initialHistory(INITIAL_CONFIGURATION));
+  const [historyState, setHistoryState] = useState({
+    canUndo: false,
+    canRedo: false,
+  });
   const activeOperation = useRef<AbortController | null>(null);
   const mounted = useRef(true);
   const [busyAction, setBusyAction] = useState<'download' | null>(null);
@@ -119,6 +131,33 @@ export function useLabelBuilder() {
       document.removeEventListener('visibilitychange', refresh);
     };
   }, [localStudio]);
+  const applyHistory = useCallback((next: ConfigurationHistory) => {
+    if (next === history.current) return;
+    history.current = next;
+    current.current = next.present;
+    setConfiguration(next.present);
+    setHistoryState({
+      canUndo: next.past.length > 0,
+      canRedo: next.future.length > 0,
+    });
+    activeOperation.current?.abort();
+    studio.current?.select(next.present);
+    setDownload(null);
+    setError(null);
+  }, []);
+  const undo = useCallback(
+    () => applyHistory(undoConfiguration(history.current)),
+    [applyHistory],
+  );
+  const redo = useCallback(
+    () => applyHistory(redoConfiguration(history.current)),
+    [applyHistory],
+  );
+  const reset = useCallback(
+    () =>
+      applyHistory(recordConfiguration(history.current, INITIAL_CONFIGURATION)),
+    [applyHistory],
+  );
   const updateConfiguration = useCallback(
     (next: Partial<BuilderConfiguration>) => {
       const merged = { ...current.current, ...next };
@@ -129,14 +168,9 @@ export function useLabelBuilder() {
       )
         merged.textFilamentProduct = undefined;
       if (sameConfiguration(current.current, merged)) return;
-      current.current = merged;
-      setConfiguration(current.current);
-      activeOperation.current?.abort();
-      studio.current?.select(merged);
-      setDownload(null);
-      setError(null);
+      applyHistory(recordConfiguration(history.current, merged));
     },
-    [],
+    [applyHistory],
   );
   const generateAndDownload = useCallback(async () => {
     if (activeOperation.current)
@@ -290,6 +324,10 @@ export function useLabelBuilder() {
     return () => lifecycle.abort();
   }, [generateAndDownload, updateConfiguration]);
   return {
+    ...historyState,
+    undo,
+    redo,
+    reset,
     ...configuration,
     generating: busyAction !== null,
     busyAction,

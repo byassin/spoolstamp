@@ -124,13 +124,24 @@ export const CATALOG_META = {
 export const DESIGNS = [
   {
     id: 'drybox-tab',
+    displayName: 'Hinged label',
+    summary: '60 × 88 mm · Dry box',
     name: 'Hinged dry-box card',
     note: '60 × 88 mm · fine-clearance hinge',
   },
   {
     id: 'clip-label',
+    displayName: 'Clip-on label',
+    summary: '51.4 × 15 mm · Two lines',
     name: 'Flat-front filament clip',
     note: '51.4 × 15 mm · two-line clip-on',
+  },
+  {
+    id: 'adhesive-label',
+    displayName: 'Flat label',
+    summary: '60 × 25 mm · Adhesive-backed',
+    name: 'Flat adhesive label',
+    note: 'Original flat label · add your own double-sided adhesive',
   },
 ] as const;
 

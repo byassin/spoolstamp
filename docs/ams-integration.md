@@ -19,7 +19,7 @@ No local helper, printer IP, LAN access code, or account password is requested.
 The backend holds your email/token temporarily encrypted; the token is never
 saved in the browser and verification codes are not persisted. **Privacy details**
 in the sign-in form explains this handling. Sign out deletes the session. Sessions
-expire after 30 minutes; expired encrypted records can remain for days until
+last up to 30 minutes from Connect; expired encrypted records can remain for days until
 cleanup. Restarting the hosted backend does not sign you out. The separate local
 development preview keeps sessions in memory and clears them on restart.
 
@@ -33,6 +33,12 @@ The freshness requirement applies to live-slot actions. Reusable label choices a
 One state-aware status card replaces repeated connection messages. Timing details are under **How it works**. If the account has only one printer it is selected automatically, without making a printer-read request. Selecting a different printer never presents the previous printer’s snapshot as live for the new selection.
 
 ## Live X2D browser test
+
+### Current interface — v0.3.0
+
+<img src="images/ams-cloud-preview.png" width="420" alt="Current My AMS interface with a sample X2D printer and synthetic loaded-spool data" />
+
+This screenshot uses the local synthetic fixture. It illustrates the current interface and does not add real-device qualification. For the repeatable local test recipe, see [Contributing](../CONTRIBUTING.md#local-browser-checks-without-bambu-traffic).
 
 ### UI regression checks — November 4, 2026
 
@@ -54,7 +60,7 @@ and use with the development computer off still need separate real-device checks
 
 ## Text and batches
 
-**Use compatible loaded black/white text automatically** suggests a contrasting
+**Match text to a loaded black/white spool** suggests a contrasting
 spool from the same material family. In **Print setup**, choose **Customize text
 color** to override it with white, black, gray, red, blue or yellow and a short list
 of common same-material profiles. This turns off automatic AMS text selection;

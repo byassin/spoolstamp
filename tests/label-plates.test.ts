@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import JSZip from 'jszip';
-import { DEFAULT_FILAMENT, FILAMENTS, PRINTERS } from '../lib/catalog';
+import { DEFAULT_FILAMENT, DESIGNS, FILAMENTS, PRINTERS } from '../lib/catalog';
 import {
   generateLabelPlates,
   MAX_PLATE_FILAMENTS,
@@ -40,7 +40,7 @@ describe('multi-label plates', () => {
       placeAssembliesOnBed([[{ vertices: [0, 0, 0, 180, 180, 2] }]], bed),
     ).toThrow('fit safely');
   });
-  it.each(['drybox-tab', 'clip-label'] as const)(
+  it.each(DESIGNS.map((design) => design.id))(
     'packs %s within every supported printer common-nozzle bed',
     async (design) => {
       const meshes = await buildConfiguredMeshes(DEFAULT_FILAMENT, design);

@@ -54,7 +54,7 @@ describe('cloud-only AMS feature', () => {
     const source = readFileSync(
       new URL('../components/cloud-ams-connection.tsx', import.meta.url),
       'utf8',
-    );
+    ).replace(/\s+/g, ' ');
     expect(source).toContain(
       'I agree to let Spoolstamp use my Bambu sign-in to read my AMS.',
     );
@@ -62,7 +62,7 @@ describe('cloud-only AMS feature', () => {
     expect(source).toContain('temporarily encrypted on our server');
     expect(source).toContain('Verification codes aren’t stored');
     expect(source).toContain('remain for days until cleanup');
-    expect(source).toContain('Sign-in expires after 30 minutes');
+    expect(source).toContain('Connection lasts up to 30 minutes');
     expect(source).toContain('disabled={busy || !consent || !state}');
     expect(source).not.toMatch(/AWS|unofficial/i);
     expect(source).not.toContain('restarting the backend also signs you out');
