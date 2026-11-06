@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.0 — unreleased
+## 0.3.0 — 2026-11-06
 
 - Add an original 60 × 25 mm flat label for user-supplied adhesive, with raised text, catalog-wide readability checks, and single/batch/plate export support.
 - Add bounded undo/redo and reset for label configuration changes.

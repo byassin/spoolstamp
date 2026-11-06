@@ -6,8 +6,8 @@ Use semantic versions: patch for fixes, minor for compatible features, major for
 
 ## Prepare and push a candidate
 
-1. Run `npm run release:patch`, `npm run release:minor`, or `npm run release:major` once on a release branch. These update package and lock versions without creating a tag or commit. The current `0.3.0` candidate is already bumped; do not bump it again just to push documentation or screenshots.
-2. Add the same version to `CHANGELOG.md` as **unreleased**, describing the final changes and their validation limits. A branch push or successful local build is not a release. Keep `0.3.0` unreleased while merge/deployment approval is pending.
+1. Run `npm run release:patch`, `npm run release:minor`, or `npm run release:major` once on a release branch. These update package and lock versions without creating a tag or commit. Do not bump again just to push documentation or screenshots for the same release.
+2. Add the same version to `CHANGELOG.md` as **unreleased**, describing the final changes and their validation limits. A branch push or successful local build is not a release. Keep the candidate unreleased while merge/deployment approval is pending.
 3. Run the checks below, refresh affected instructions/screenshots, and include version, lock, changelog, implementation and tests in the candidate. Preserve unrelated working-tree edits and exclude secrets or generated build output.
 4. Push only the approved scope to its feature branch and open a PR when authorized. Pushing a feature branch does not merge it, publish a GitHub release or deploy the production site. The repository CI runs on pull requests and `main` pushes; a feature-branch push without a PR does not itself run this workflow.
 
