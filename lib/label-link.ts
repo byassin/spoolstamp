@@ -7,6 +7,7 @@ const allowed = [
   'design',
   'textColor',
   'textFilamentProduct',
+  'labelLayout',
 ];
 /** Fragment-only, catalog-only sharing: no login/session data, and no data sent in the HTTP request. */
 export function labelLink(configuration: BuilderConfiguration, base: string) {

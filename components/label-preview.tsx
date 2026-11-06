@@ -7,6 +7,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import type { DesignId, Filament } from '@/lib/catalog';
 import type { TextColorId } from '@/lib/text-color';
+import type { LabelLayout } from '@/lib/label-layout';
 import { buildConfiguredMeshes, type LabelMesh } from '@/lib/generate-3mf';
 import { createPreviewBed, previewModelPosition } from '@/lib/preview-bed';
 import { studioPrinterFor } from '@/lib/studio-project';
@@ -40,11 +41,13 @@ export function LabelPreview({
   design,
   printerName,
   textColor,
+  labelLayout,
 }: {
   filament: Filament;
   design: DesignId;
   printerName: string;
   textColor?: TextColorId;
+  labelLayout?: LabelLayout;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<Viewer | null>(null);
@@ -111,7 +114,7 @@ export function LabelPreview({
     });
     // Coalesce rapid keyboard selections before starting expensive CAD work.
     const timer = setTimeout(() => {
-      void buildConfiguredMeshes(filament, design, textColor)
+      void buildConfiguredMeshes(filament, design, textColor, labelLayout)
         .then((parts) => {
           if (!active) return;
           viewerRef.current?.update(parts, filament, design);
@@ -131,7 +134,7 @@ export function LabelPreview({
       active = false;
       clearTimeout(timer);
     };
-  }, [filament, design, textColor, retry]);
+  }, [filament, design, textColor, labelLayout, retry]);
 
   return (
     <>

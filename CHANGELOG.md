@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.0 — unreleased
+
+- Preview batch plate bounds, project splits and filament assignments before downloading the same prepared layout; choose per-label copies within the eight-label limit.
+- Organize saved labels into named local collections, search them and select a collection for reprinting. Include collections in validated workspace backups.
+- Add an original rounded-corner flat adhesive label, preserving the 60 × 25 mm face and text-safe area.
+- Choose Simple or Detailed lettering on hinged and flat labels; clip labels retain their compact two-line layout. Keep layout choices in drafts, shared links and exports.
+- Add a short Bambu Studio printing guide and a clickable version badge with release highlights.
+- Refresh feature instructions and screenshots. Physical print, adhesive and native slicing qualification remain separate from digital checks.
+
 ## 0.3.0 — 2026-11-06
 
 - Add an original 60 × 25 mm flat label for user-supplied adhesive, with raised text, catalog-wide readability checks, and single/batch/plate export support.

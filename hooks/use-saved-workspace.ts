@@ -6,12 +6,18 @@ import {
   MAX_SAVED_ITEMS,
   emptyWorkspace,
   parseWorkspace,
+  loadStoredWorkspace,
   restoreLabel,
   saveLabel,
   draftKey,
   mergeWorkspaceBackup,
   workspaceRevisionChanged,
   WORKSPACE_CHANGED_NOTICE,
+  createCollection as createSavedCollection,
+  renameCollection as renameSavedCollection,
+  removeCollection as removeSavedCollection,
+  addCollectionLabels as addSavedCollectionLabels,
+  removeCollectionLabel as removeSavedCollectionLabel,
   type SavedWorkspace,
 } from '@/lib/saved-workspace';
 
@@ -56,7 +62,7 @@ export function useSavedWorkspace(
         setNotice('');
       } catch {
         setNotice(
-          'Browser storage is unavailable. Your favorites and drafts will only last for this visit.',
+          'Browser storage is unavailable. Your saved choices will only last for this visit.',
         );
       }
       current.current = safe;
@@ -70,12 +76,16 @@ export function useSavedWorkspace(
     const timer = setTimeout(() => {
       let saved = emptyWorkspace();
       try {
-        const raw = window.localStorage.getItem(WORKSPACE_KEY);
-        storageRevision.current = raw;
-        saved = parseWorkspace(raw);
+        const loaded = loadStoredWorkspace(window.localStorage);
+        storageRevision.current = loaded.revision;
+        saved = loaded.workspace;
+        if (!loaded.persistent)
+          setNotice(
+            'Browser storage is unavailable. Your saved choices will only last for this visit.',
+          );
       } catch {
         setNotice(
-          'Browser storage is unavailable. Your favorites and drafts will only last for this visit.',
+          'Browser storage is unavailable. Your saved choices will only last for this visit.',
         );
       }
       current.current = saved;
@@ -96,7 +106,7 @@ export function useSavedWorkspace(
           loadLatest(raw, 'Saved workspace updated from another tab.');
       } catch {
         setNotice(
-          'Browser storage is unavailable. Your favorites and drafts will only last for this visit.',
+          'Browser storage is unavailable. Your saved choices will only last for this visit.',
         );
       }
     }
@@ -110,7 +120,10 @@ export function useSavedWorkspace(
     previousConfiguration.current = configurationKey;
     if (!workspace.remember) return;
     const setup = saveLabel(configuration);
-    if (draftKey(setup) !== JSON.stringify(current.current.setup))
+    if (
+      !current.current.setup ||
+      draftKey(setup) !== draftKey(current.current.setup)
+    )
       persist({ ...current.current, setup });
   }, [configuration, configurationKey, ready, workspace.remember, persist]);
   const saveDraft = useCallback(
@@ -130,11 +143,63 @@ export function useSavedWorkspace(
     },
     [persist, ensureLatest],
   );
+  const updateCollection = useCallback(
+    (change: (value: SavedWorkspace) => SavedWorkspace) => {
+      if (!ready || !ensureLatest()) return false;
+      try {
+        return persist(change(current.current));
+      } catch (cause) {
+        setNotice(
+          cause instanceof Error
+            ? cause.message
+            : 'Could not update this collection. Try again.',
+        );
+        return false;
+      }
+    },
+    [ready, ensureLatest, persist],
+  );
   return {
     workspace,
     notice,
     ready,
     saveDraft,
+    createCollection(name: string, values: BuilderConfiguration[] = []) {
+      if (!ready || !ensureLatest()) return null;
+      try {
+        const result = createSavedCollection(
+          current.current,
+          name,
+          values.map(saveLabel),
+        );
+        return persist(result.workspace) ? result.collection.id : null;
+      } catch (cause) {
+        setNotice(
+          cause instanceof Error
+            ? cause.message
+            : 'Could not create this collection. Try again.',
+        );
+        return null;
+      }
+    },
+    renameCollection(id: string, name: string) {
+      return updateCollection((value) =>
+        renameSavedCollection(value, id, name),
+      );
+    },
+    removeCollection(id: string) {
+      return updateCollection((value) => removeSavedCollection(value, id));
+    },
+    addCollectionLabels(id: string, values: BuilderConfiguration[]) {
+      return updateCollection((value) =>
+        addSavedCollectionLabels(value, id, values.map(saveLabel)),
+      );
+    },
+    removeCollectionLabel(id: string, key: string) {
+      return updateCollection((value) =>
+        removeSavedCollectionLabel(value, id, key),
+      );
+    },
     importBackup(raw: string) {
       if (!ready)
         throw new Error(

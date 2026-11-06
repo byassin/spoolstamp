@@ -2,6 +2,7 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { APP_VERSION, APP_VERSION_LABEL } from '../lib/app-version';
+import { RELEASE_NOTES } from '../lib/release-notes';
 import pkg from '../package.json';
 import lock from '../package-lock.json';
 import { connectionStatus, formatReadWait } from '../lib/ams-freshness';
@@ -142,5 +143,9 @@ describe('release version', () => {
     expect(lock.packages[''].version).toBe(APP_VERSION);
     expect(APP_VERSION_LABEL).toBe(`v${APP_VERSION}`);
     expect(APP_VERSION).toMatch(/^\d+\.\d+\.\d+$/);
+    expect(
+      RELEASE_NOTES.find((release) => release.version === APP_VERSION)?.changes
+        .length,
+    ).toBeGreaterThan(0);
   });
 });

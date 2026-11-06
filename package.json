@@ -1,6 +1,6 @@
 {
   "name": "spoolstamp",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "engines": {
     "node": ">=22.13.0"
@@ -19,7 +19,7 @@
     "sync:catalog:store:refresh": "node scripts/sync-catalog.mjs --with-store --refresh-handles",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "lint": "oxlint app components/label-preview.tsx components/filament-selectors.tsx components/color-swatch.tsx components/ams-panel.tsx components/cloud-ams-connection.tsx components/text-filament-control.tsx components/saved-workspace-panel.tsx components/ams-label-choices.tsx components/ams-connection-status.tsx components/builder-actions.tsx hooks lib scripts tests types",
+    "lint": "oxlint app components/label-preview.tsx components/filament-selectors.tsx components/color-swatch.tsx components/ams-panel.tsx components/cloud-ams-connection.tsx components/text-filament-control.tsx components/saved-workspace-panel.tsx components/ams-label-choices.tsx components/ams-connection-status.tsx components/builder-actions.tsx components/batch-preview.tsx components/info-dialog.tsx components/print-guide.tsx components/whats-new.tsx components/label-layout-control.tsx hooks lib scripts tests types",
     "format": "oxfmt",
     "release:patch": "npm version patch --no-git-tag-version",
     "release:minor": "npm version minor --no-git-tag-version",

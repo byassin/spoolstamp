@@ -8,7 +8,13 @@ import {
   objectXml,
   type LabelMesh,
 } from './generate-3mf';
-import { placeAssembliesOnBed } from './build-plate';
+import {
+  placeAssembliesOnBed,
+  placeAssemblyOnBed,
+  printBedLayout,
+} from './build-plate';
+import { effectiveLabelLayout, type LabelLayout } from './label-layout';
+import { ADHESIVE_LABEL, ROUNDED_ADHESIVE_LABEL } from './adhesive-label';
 import { resolveTextFilament } from './text-filament';
 import { resolveTextColor } from './text-color';
 import {
@@ -32,12 +38,58 @@ type PreparedLabel = {
   group: string;
   body: Spool;
   text: Spool;
+  index: number;
 };
 type Plate = {
   rows: PreparedLabel[];
   placements: ReturnType<typeof placeAssembliesOnBed>;
   spools: Spool[];
 };
+export type BatchExportLayout = 'plates' | 'separate';
+type PreviewRectangle = Readonly<ReturnType<typeof printBedLayout>['bounds']>;
+type PreviewPoint = readonly [number, number, number];
+export type PreviewPlacement = {
+  readonly translation: PreviewPoint;
+  readonly bounds: { readonly min: PreviewPoint; readonly max: PreviewPoint };
+  readonly clearance: number;
+};
+export type PreparedPlatePreview = {
+  readonly bed: {
+    readonly bounds: PreviewRectangle;
+    readonly common: PreviewRectangle;
+    readonly restricted: readonly Readonly<
+      ReturnType<typeof printBedLayout>['restricted'][number]
+    >[];
+  };
+  readonly filaments: readonly Readonly<Spool>[];
+  readonly labels: readonly {
+    readonly index: number;
+    readonly name: string;
+    readonly product: string;
+    readonly colorName: string;
+    readonly bodyColor: string;
+    readonly textColor: string;
+    readonly placement: PreviewPlacement;
+  }[];
+};
+export type PreparedLabelPlates = {
+  readonly printer: string;
+  readonly design: DesignId;
+  readonly layout: BatchExportLayout;
+  readonly labelCount: number;
+  readonly plateCount: number;
+  readonly plates: readonly PreparedPlatePreview[];
+};
+type PlanInternals = {
+  plates: Plate[];
+  printer: string;
+  design: DesignId;
+  layout: BatchExportLayout;
+  labelCount: number;
+};
+// Meshes stay private and are reused from the bounded geometry cache. A forged or
+// deserialized preview is not an export plan, and React can release obsolete plans.
+const preparedPlans = new WeakMap<PreparedLabelPlates, PlanInternals>();
 const spoolKey = (spool: Spool) => JSON.stringify([spool.preset, spool.color]);
 function plateSpools(rows: PreparedLabel[]) {
   const spools: Spool[] = [];
@@ -75,7 +127,12 @@ function projectSettings(plate: Plate, printer: string) {
     different_settings_to_system: Array(n + 2).fill(''),
   };
 }
-async function exportPlate(plate: Plate, printer: string, design: DesignId) {
+async function exportPlate(
+  plate: Plate,
+  printer: string,
+  design: DesignId,
+  check: () => void,
+) {
   const colors = [
     ...new Set(
       plate.rows.flatMap((row) => row.meshes.map((part) => part.color)),
@@ -88,6 +145,7 @@ async function exportPlate(plate: Plate, printer: string, design: DesignId) {
   const manifest: unknown[] = [];
   let nextId = 2;
   for (const [index, row] of plate.rows.entries()) {
+    check();
     const ids = row.meshes.map(() => nextId++);
     const assembly = nextId++;
     const body =
@@ -98,7 +156,7 @@ async function exportPlate(plate: Plate, printer: string, design: DesignId) {
       plate.spools.findIndex(
         (spool) => spoolKey(spool) === spoolKey(row.text),
       ) + 1;
-    const name = `${index + 1}. ${row.label.filament.product} · ${row.label.filament.colorName}`;
+    const name = `${row.index}. ${row.label.filament.product} · ${row.label.filament.colorName}`;
     const faceCount = row.meshes.reduce(
       (total, part) => total + part.triangles.length / 3,
       0,
@@ -120,11 +178,13 @@ async function exportPlate(plate: Plate, printer: string, design: DesignId) {
     );
     manifest.push({
       name,
+      previewIndex: row.index,
       filamentId: row.label.filament.id,
       bodyPalette: row.label.filament.colors,
       bodyColorType: row.label.filament.colorType,
       textProduct: row.text.product,
       textColor: row.text.color,
+      labelLayout: row.label.labelLayout,
       bodyFilament: body,
       textFilament: text,
       placement: plate.placements[index],
@@ -162,6 +222,18 @@ async function exportPlate(plate: Plate, printer: string, design: DesignId) {
         generatorVersion: APP_VERSION,
         printer,
         design,
+        ...(['adhesive-label', 'rounded-adhesive-label'].includes(design)
+          ? {
+              template: {
+                origin: 'Spoolstamp original',
+                dimensions:
+                  design === 'rounded-adhesive-label'
+                    ? ROUNDED_ADHESIVE_LABEL
+                    : ADHESIVE_LABEL,
+                userSuppliedAdhesive: true,
+              },
+            }
+          : {}),
         labels: manifest,
         spools: plate.spools,
         slicingRequired: true,
@@ -173,6 +245,7 @@ async function exportPlate(plate: Plate, printer: string, design: DesignId) {
       2,
     ),
   );
+  check();
   return zip.generateAsync({
     type: 'blob',
     compression: 'DEFLATE',
@@ -181,13 +254,19 @@ async function exportPlate(plate: Plate, printer: string, design: DesignId) {
 }
 
 /** Separate exact body/text product pairs; split again for bed space and four project filaments. */
-export async function generateLabelPlates(options: {
+export type PrepareLabelPlatesOptions = {
   labels: BatchLabel[];
   printer: string;
   design: DesignId;
+  labelLayout?: LabelLayout;
+  layout?: BatchExportLayout;
   isCurrent(): boolean;
   onProgress(done: number, total: number): void;
-}) {
+};
+
+export async function prepareLabelPlates(
+  options: PrepareLabelPlatesOptions,
+): Promise<PreparedLabelPlates> {
   if (!options.labels.length || options.labels.length > MAX_BATCH_LABELS)
     throw new Error(`Select between 1 and ${MAX_BATCH_LABELS} labels.`);
   const check = () => {
@@ -198,8 +277,20 @@ export async function generateLabelPlates(options: {
   };
   check();
   const plates: Plate[] = [];
-  for (const [index, label] of options.labels.entries()) {
+  const layout = options.layout ?? 'plates';
+  if (!['plates', 'separate'].includes(layout))
+    throw new Error('Choose a supported batch layout.');
+  for (const [index, input] of options.labels.entries()) {
     check();
+    // Capture the user's catalog choice, not references to mutable caller input.
+    const label: BatchLabel = {
+      ...input,
+      filament: structuredClone(input.filament),
+      labelLayout: effectiveLabelLayout(
+        options.design,
+        input.labelLayout ?? options.labelLayout,
+      ),
+    };
     const { printer, preset } = studioPresetFor(
       label.filament,
       options.printer,
@@ -209,7 +300,10 @@ export async function generateLabelPlates(options: {
       label.textFilamentProduct,
     );
     const textPreset = studioPresetFor(textFilament, options.printer).preset;
-    if (preset.isSupport === '1' || textPreset.isSupport === '1')
+    if (
+      layout === 'plates' &&
+      (preset.isSupport === '1' || textPreset.isSupport === '1')
+    )
       throw new Error(
         'Support filaments are not supported for combined label plates. Export separate projects instead.',
       );
@@ -217,9 +311,11 @@ export async function generateLabelPlates(options: {
       label.filament,
       options.design,
       label.textColor,
+      label.labelLayout,
     );
     check();
     const row: PreparedLabel = {
+      index: index + 1,
       label,
       meshes,
       group: JSON.stringify([label.filament.product, textFilament.product]),
@@ -241,6 +337,15 @@ export async function generateLabelPlates(options: {
       },
     };
     let fitted = false;
+    if (layout === 'separate') {
+      plates.push({
+        rows: [row],
+        placements: [placeAssemblyOnBed(meshes, printer)],
+        spools: plateSpools([row]),
+      });
+      options.onProgress(index + 1, options.labels.length);
+      continue;
+    }
     for (const plate of plates) {
       if (plate.rows[0].group !== row.group) continue;
       const rows = [...plate.rows, row];
@@ -269,21 +374,120 @@ export async function generateLabelPlates(options: {
       });
     options.onProgress(index + 1, options.labels.length);
   }
+  check();
+  const preview = plates.map((plate) => {
+    const bed = printBedLayout(
+      studioPresetFor(plate.rows[0].label.filament, options.printer).printer,
+    );
+    return Object.freeze({
+      bed: Object.freeze({
+        bounds: Object.freeze(bed.bounds),
+        common: Object.freeze(bed.common),
+        restricted: Object.freeze(
+          bed.restricted.map((rect) => Object.freeze(rect)),
+        ),
+      }),
+      filaments: Object.freeze(
+        plate.spools.map((spool) => Object.freeze({ ...spool })),
+      ),
+      labels: Object.freeze(
+        plate.rows.map((row, index) => {
+          const placement = plate.placements[index];
+          // JSON/3MF serialize -0 as 0; keep preview metadata canonical too.
+          placement.translation = placement.translation.map((value) =>
+            value === 0 ? 0 : value,
+          ) as typeof placement.translation;
+          Object.freeze(placement.translation);
+          Object.freeze(placement.bounds.min);
+          Object.freeze(placement.bounds.max);
+          Object.freeze(placement.bounds);
+          Object.freeze(placement);
+          return Object.freeze({
+            index: row.index,
+            name: `${row.label.filament.product} · ${row.label.filament.colorName}`,
+            product: row.label.filament.product,
+            colorName: row.label.filament.colorName,
+            bodyColor: row.body.color,
+            textColor: row.text.color,
+            placement,
+          });
+        }),
+      ),
+    });
+  });
+  const plan: PreparedLabelPlates = Object.freeze({
+    printer: options.printer,
+    design: options.design,
+    layout,
+    labelCount: options.labels.length,
+    plateCount: plates.length,
+    plates: Object.freeze(preview),
+  });
+  preparedPlans.set(plan, {
+    plates,
+    printer: options.printer,
+    design: options.design,
+    layout,
+    labelCount: options.labels.length,
+  });
+  return plan;
+}
+
+/** Export the exact captured placements/meshes shown in the preview, never repack. */
+export async function generatePreparedLabelPlates(
+  plan: PreparedLabelPlates,
+  options: {
+    isCurrent(): boolean;
+    onProgress?(done: number, total: number): void;
+  },
+) {
+  const prepared = preparedPlans.get(plan);
+  if (!prepared)
+    throw new Error('Prepare the batch preview again before downloading.');
+  const check = () => {
+    if (!options.isCurrent())
+      throw new Error(
+        'Label selection changed. Review the labels and try again.',
+      );
+  };
+  check();
   const zip = new JSZip();
-  for (const [index, plate] of plates.entries()) {
+  for (const [index, plate] of prepared.plates.entries()) {
     check();
-    const blob = await exportPlate(plate, options.printer, options.design);
+    const blob = await exportPlate(
+      plate,
+      prepared.printer,
+      prepared.design,
+      check,
+    );
     check();
+    const choice = plate.rows[0].label;
+    const name = [choice.filament.product, choice.filament.colorName]
+      .join('-')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
     zip.file(
-      `plate-${index + 1}-${plate.rows[0].label.filament.material.toLowerCase()}.3mf`,
+      prepared.layout === 'plates'
+        ? `plate-${index + 1}-${choice.filament.material.toLowerCase()}.3mf`
+        : `label-${index + 1}-${name}-${prepared.design}-${choice.labelLayout}.3mf`,
       await blob.arrayBuffer(),
     );
+    options.onProgress?.(index + 1, prepared.plates.length);
   }
   zip.file(
     'READ-ME.txt',
-    `${plates.length} plate project(s), ${options.labels.length} labels.\nGrouped conservatively by exact body/text product pairs, printable area and a four-filament limit. No mechanics scaled or rotated.\nOpen each 3MF as a project in Bambu Studio. Confirm all physical AMS spool assignments, inspect placement and purge tower/brim clearance, then slice. Remaining bed space is not a guarantee that a purge tower fits; Studio collision checks are still required. Physical multi-label printing has not yet been qualified.\n`,
+    `${prepared.plates.length} plate project(s), ${prepared.labelCount} labels.\nGrouped conservatively by exact body/text product pairs, printable area and a four-filament limit. No mechanics scaled or rotated.\nOpen each 3MF as a project in Bambu Studio. Confirm all physical AMS spool assignments, inspect placement and purge tower/brim clearance, then slice. Remaining bed space is not a guarantee that a purge tower fits; Studio collision checks are still required. Physical multi-label printing has not yet been qualified.\n`,
   );
   const blob = await zip.generateAsync({ type: 'blob', compression: 'STORE' });
   check();
-  return { blob, plates: plates.length, labels: options.labels.length };
+  return { blob, plates: prepared.plates.length, labels: prepared.labelCount };
+}
+
+/** Compatibility API for callers that do not render a preview. */
+export async function generateLabelPlates(options: PrepareLabelPlatesOptions) {
+  const plan = await prepareLabelPlates(options);
+  return generatePreparedLabelPlates(plan, {
+    isCurrent: () => options.isCurrent(),
+  });
 }

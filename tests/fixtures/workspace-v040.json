@@ -1,0 +1,57 @@
+{
+  "format": "spoolstamp-workspace",
+  "version": 1,
+  "setup": {
+    "filamentId": "10501",
+    "printerId": "bambulabx2d",
+    "design": "rounded-adhesive-label",
+    "labelLayout": "simple"
+  },
+  "favorites": ["10501", "10101", "10100"],
+  "drafts": [
+    {
+      "filamentId": "10501",
+      "printerId": "bambulabx2d",
+      "design": "rounded-adhesive-label",
+      "labelLayout": "simple"
+    },
+    {
+      "filamentId": "10101",
+      "printerId": "bambulabx2d",
+      "design": "rounded-adhesive-label",
+      "labelLayout": "simple"
+    },
+    {
+      "filamentId": "10100",
+      "printerId": "bambulabx2d",
+      "design": "rounded-adhesive-label",
+      "labelLayout": "simple"
+    }
+  ],
+  "collections": [
+    {
+      "id": "collection-pla-drawer",
+      "name": "PLA drawer",
+      "labels": [
+        {
+          "filamentId": "10501",
+          "printerId": "bambulabx2d",
+          "design": "rounded-adhesive-label",
+          "labelLayout": "simple"
+        },
+        {
+          "filamentId": "10101",
+          "printerId": "bambulabx2d",
+          "design": "rounded-adhesive-label",
+          "labelLayout": "simple"
+        },
+        {
+          "filamentId": "10100",
+          "printerId": "bambulabx2d",
+          "design": "rounded-adhesive-label",
+          "labelLayout": "simple"
+        }
+      ]
+    }
+  ]
+}

@@ -10,7 +10,7 @@ Create 3D-printable filament labels in a few clicks. Pick a design, choose your 
 
 ## Features
 
-- **Three label designs** — a hinged dry-box label, a flat-front clip-on label, and an original flat adhesive label.
+- **Four label designs** — a hinged dry-box label, a flat-front clip-on label, and original flat adhesive labels with square or rounded corners.
 - **Bambu Lab filament catalog** — 314 colors with searchable material types, color names, and codes.
 - **Live 3D preview** — rotate, zoom, and switch between a label close-up and your printer's build plate.
 - **Automatic lettering** — filament details filled in for you, with contrasting black or white text.
@@ -26,7 +26,11 @@ Create 3D-printable filament labels in a few clicks. Pick a design, choose your 
 - **Helpful checks** — advisory low-contrast warnings, AMS snapshot-age/cooldown guidance, cloud-outage fallback, and larger mobile controls with quick download access.
 - **Flat adhesive label** — an original 60 × 25 mm design with raised product/color lettering. Supply your own adhesive; physical printing and mounting still need testing.
 - **Editing and sharing** — undo/redo, reset, and catalog-only label links; links never include Bambu login data or printer serials.
-- **Workspace backup** — export favorites and drafts to a local JSON file, then merge them into another browser without replacing existing saved items.
+- **Workspace backup** — export favorites, drafts and named collections to a local JSON file, then merge them into another browser without replacing existing saved items.
+- **Batch preview and copies** — choose quantities and inspect the actual planned plate bounds, project splits and filament assignments before downloading.
+- **Named collections** — group saved catalog labels, search them, and select a collection to reprint. Collection names and choices stay on this browser unless you export a backup.
+- **Simple or Detailed** — choose prominent material/color lettering or additional label details; the narrow clip stays two-line.
+- **Printing help and updates** — open **How to print** beside export, or click the version badge for **What's new**.
 
 ## Clip-on labels
 
@@ -38,13 +42,21 @@ A flat face with two lines: material type and color.
 
 Choose **Flat label** for an original 60 × 25 mm backing with raised product, color and catalog-code lettering. Add your own suitable adhesive after printing. See [design details and print guidance](docs/adhesive-label.md); physical printing and mounting still need testing.
 
-![Flat adhesive label and editing toolbar in Spoolstamp v0.3.0](docs/images/flat-label.png)
+**Rounded flat label** uses the same face size with softened corners. Under **Label detail**, choose **Simple** for prominent material/color text, or **Detailed** for the catalog code when it fits. Hinged labels offer the same choice; their detailed layout includes print information.
+
+![Flat adhesive label and editing toolbar in Spoolstamp v0.4.0](docs/images/flat-label.png)
+
+![Rounded flat label with Simple lettering](docs/images/rounded-flat-label.png)
 
 ## Edit, share and keep your labels
 
 Use the toolbar above the preview to **Undo**, **Redo**, **Reset**, or **Share label**. Share links restore catalog choices without including Bambu account data or live inventory.
 
 Save favorites and drafts under **My saved filaments**. Open **Backup & restore** to download a JSON backup or import it into another browser. After importing, choose **Use imported setup** if you want to apply the backed-up label. See the [step-by-step guide](docs/label-editing.md).
+
+Organize saved labels into named collections, then choose a collection and select it for a batch. Set the copies you need, choose arranged plates or separate projects, and click **Preview batch**. Review the preview and download that prepared layout. Editing the choices invalidates the old preview. See [batch previews](docs/batch-preview.md).
+
+New to Studio? Open **How to print** beside the download controls, or read the [printing guide](docs/printing.md). Click the version beside the logo to see [release highlights](docs/whats-new.md).
 
 ## My AMS
 
@@ -55,7 +67,7 @@ Read your loaded spools directly through Bambu Cloud, then create labels without
 3. Sign in with the code, select your cloud-connected printer, and click **Read AMS**.
 4. Confirm your loaded spools, then use a label or select spools for a batch ZIP export.
 
-<img src="docs/images/ams-cloud-preview.png" width="420" alt="Spoolstamp v0.3.0 My AMS panel with a sample printer, Spools ready status and loaded PLA choices" />
+<img src="docs/images/ams-cloud-preview.png" width="420" alt="Spoolstamp v0.4.0 My AMS panel with a sample printer, Spools ready status and loaded PLA choices" />
 
 Current interface shown with synthetic sample spools. Dated real-printer evidence and qualification limits are documented in [My AMS](docs/ams-integration.md).
 
@@ -69,7 +81,7 @@ Save an AMS label draft while the read is fresh to edit or export it later from 
 
 The version beside the logo comes from `package.json`. See the [changelog](CHANGELOG.md) and [release workflow](docs/releases.md).
 
-See [editing, sharing and workspace transfer](docs/label-editing.md), [flat label details](docs/adhesive-label.md), and the [v0.3.0 review](docs/review-v030.md) for validation scope and remaining limitations.
+See [editing, sharing and workspace transfer](docs/label-editing.md), [flat label details](docs/adhesive-label.md), and the [v0.4.0 review](docs/review-v040.md) for validation scope and remaining limitations.
 
 Requires Node.js 22.13 or newer.
 

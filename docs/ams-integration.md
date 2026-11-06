@@ -34,7 +34,7 @@ One state-aware status card replaces repeated connection messages. Timing detail
 
 ## Live X2D browser test
 
-### Current interface — v0.3.0
+### Current interface — v0.4.0
 
 <img src="images/ams-cloud-preview.png" width="420" alt="Current My AMS interface with a sample X2D printer and synthetic loaded-spool data" />
 
@@ -66,12 +66,15 @@ color** to override it with white, black, gray, red, blue or yellow and a short 
 of common same-material profiles. This turns off automatic AMS text selection;
 **Use automatic text** restores it. The preview, single 3MF, Studio settings and
 batch exports use your chosen color. Confirm that it matches the physical spool.
-Select up to eight spools and choose separate 3MF projects or arranged plate
-projects in the ZIP, using the current design and printer profile. Plate export
+Select spools and set their copy counts, up to eight labels including copies.
+Choose separate 3MF projects or arranged plates, then click **Preview batch**.
+Review the prepared layout and download its ZIP while the live read remains fresh,
+using the current design, label detail and printer profile. Plate export
 groups exact body/text product pairs, splits for bed space and at most four
 project filaments, and never combines support profiles. Save a resolved label
 draft while the snapshot is fresh to edit or export later; drafts are catalog
 choices, not live AMS inventory. See [Saved workspace and plates](saved-workspace.md).
+For numbered bounds, project splits and preparation limits, see [Batch previews](batch-preview.md).
 Bambu Studio assigns final AMS
 slots when printing. Ambiguous products require confirmation, not guessing.
 

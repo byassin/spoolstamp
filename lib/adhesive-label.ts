@@ -6,6 +6,7 @@ import {
 } from '@/lib/filament-appearance';
 import { addVectorTextLine } from '@/lib/vector-text';
 import { TEXT_PRINT_SPEC } from '@/lib/text-printability';
+import type { LabelLayout } from './label-layout';
 
 /** Original flat design; attachment/adhesive is supplied by the user. */
 export const ADHESIVE_LABEL = {
@@ -16,6 +17,67 @@ export const ADHESIVE_LABEL = {
   textMargin: 2,
   physicalQualification: 'pending',
 } as const;
+
+export const ROUNDED_ADHESIVE_LABEL = {
+  ...ADHESIVE_LABEL,
+  cornerRadius: 2,
+  cornerSegments: 8,
+} as const;
+
+function roundedBodyMesh(color: string): LabelMesh {
+  const {
+    width: w,
+    height: h,
+    bodyThickness: z,
+    cornerRadius: r,
+    cornerSegments: segments,
+  } = ROUNDED_ADHESIVE_LABEL;
+  const points: [number, number][] = [];
+  for (const [centerX, centerY, start] of [
+    [w - r, r, -90],
+    [w - r, h - r, 0],
+    [r, h - r, 90],
+    [r, r, 180],
+  ]) {
+    for (let step = 0; step <= segments; step++) {
+      const angle = ((start + (90 * step) / segments) * Math.PI) / 180;
+      points.push([
+        centerX + r * Math.cos(angle),
+        centerY + r * Math.sin(angle),
+      ]);
+    }
+  }
+  const vertices = [w / 2, h / 2, 0, w / 2, h / 2, z];
+  for (const [x, y] of points) vertices.push(x, y, 0, x, y, z);
+  const triangles: number[] = [];
+  for (let at = 0; at < points.length; at++) {
+    const bottom = 2 + at * 2,
+      top = bottom + 1,
+      nextBottom = 2 + ((at + 1) % points.length) * 2,
+      nextTop = nextBottom + 1;
+    triangles.push(
+      0,
+      nextBottom,
+      bottom,
+      1,
+      top,
+      nextTop,
+      bottom,
+      nextBottom,
+      nextTop,
+      bottom,
+      nextTop,
+      top,
+    );
+  }
+  return {
+    name: 'rounded-adhesive-label-body',
+    color: normalizeColor(color),
+    materialRole: 'structure',
+    vertices,
+    triangles,
+  };
+}
 
 function bodyMesh(color: string): LabelMesh {
   const { width: w, height: h, bodyThickness: z } = ADHESIVE_LABEL;
@@ -77,8 +139,12 @@ function wrapColor(value: string) {
 
 export async function buildAdhesiveLabelMeshes(
   filament: Filament,
+  options: { rounded?: boolean; labelLayout?: LabelLayout } = {},
 ): Promise<LabelMesh[]> {
-  const body = bodyMesh(filament.colors[0]);
+  const body = options.rounded
+    ? roundedBodyMesh(filament.colors[0])
+    : bodyMesh(filament.colors[0]);
+  const simple = options.labelLayout === 'simple';
   const text: LabelMesh = {
     name: 'raised-text',
     color: textColorForFilament(filament.colors),
@@ -124,9 +190,9 @@ export async function buildAdhesiveLabelMeshes(
       centerY,
     });
   }
-  await addRow(filament.product, 19.8, 6);
+  await addRow(filament.product, simple ? 18.6 : 19.8, simple ? 7.8 : 6);
   try {
-    await addRow(filament.colorName, 10.8, 7.4);
+    await addRow(filament.colorName, simple ? 8.7 : 10.8, simple ? 10.4 : 7.4);
   } catch (error) {
     if (
       !(error instanceof Error) ||
@@ -135,10 +201,10 @@ export async function buildAdhesiveLabelMeshes(
       throw error;
     const lines = wrapColor(filament.colorName);
     if (lines.length !== 2) throw error;
-    await addRow(lines[0], 11.8, 5.6, filament.colorName);
-    await addRow(lines[1], 5.2, 5.6, filament.colorName);
+    await addRow(lines[0], simple ? 10.9 : 11.8, 5.6, filament.colorName);
+    await addRow(lines[1], simple ? 4.9 : 5.2, 5.6, filament.colorName);
     return [body, text];
   }
-  await addRow(`SKU: ${filament.colorCode}`, 3.4, 3.8);
+  if (!simple) await addRow(`SKU: ${filament.colorCode}`, 3.4, 3.8);
   return [body, text];
 }

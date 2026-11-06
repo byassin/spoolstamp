@@ -143,6 +143,13 @@ export const DESIGNS = [
     name: 'Flat adhesive label',
     note: 'Original flat label · add your own double-sided adhesive',
   },
+  {
+    id: 'rounded-adhesive-label',
+    displayName: 'Rounded flat label',
+    summary: '60 × 25 mm · Rounded corners',
+    name: 'Rounded adhesive label',
+    note: 'Original 2 mm corner radius · add your own adhesive',
+  },
 ] as const;
 
 export type DesignId = (typeof DESIGNS)[number]['id'];

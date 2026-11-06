@@ -1,17 +1,20 @@
 import JSZip from 'jszip';
 import type { Filament, DesignId } from './catalog';
 import type { TextColorId } from './text-color';
+import type { LabelLayout } from './label-layout';
 
 export const MAX_BATCH_LABELS = 8;
 export type BatchLabel = {
   filament: Filament;
   textFilamentProduct?: string;
   textColor?: TextColorId;
+  labelLayout?: LabelLayout;
 };
 export async function generateLabelBatch(options: {
   labels: BatchLabel[];
   printer: string;
   design: DesignId;
+  labelLayout?: LabelLayout;
   isCurrent(): boolean;
   onProgress(done: number, total: number): void;
 }) {
@@ -28,6 +31,7 @@ export async function generateLabelBatch(options: {
       ...label,
       printer: options.printer,
       design: options.design,
+      labelLayout: label.labelLayout ?? options.labelLayout,
     });
     if (!options.isCurrent())
       throw new Error(

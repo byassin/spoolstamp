@@ -6,7 +6,7 @@ import {
   type PrintBed,
 } from '../lib/build-plate';
 import { buildConfiguredMeshes } from '../lib/generate-3mf';
-import { DEFAULT_FILAMENT, PRINTERS, type DesignId } from '../lib/catalog';
+import { DEFAULT_FILAMENT, DESIGNS, PRINTERS } from '../lib/catalog';
 import { studioPresetFor } from '../lib/studio-project';
 
 const testBed: PrintBed = {
@@ -27,7 +27,7 @@ describe('export placement', () => {
     expect(cuboid).toEqual(before);
   });
 
-  it.each<DesignId>(['drybox-tab', 'clip-label', 'adhesive-label'])(
+  it.each(DESIGNS.map((design) => design.id))(
     'places %s safely for every offered printer',
     async (design) => {
       const meshes = await buildConfiguredMeshes(DEFAULT_FILAMENT, design);

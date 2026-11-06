@@ -27,6 +27,7 @@ import {
   redoConfiguration,
   type ConfigurationHistory,
 } from '@/lib/configuration-history';
+import { effectiveLabelLayout } from '@/lib/label-layout';
 
 export function useLabelBuilder() {
   const [configuration, setConfiguration] = useState(INITIAL_CONFIGURATION);
@@ -103,6 +104,7 @@ export function useLabelBuilder() {
           printer: printer.fullName,
           textFilamentProduct: selected.textFilamentProduct,
           textColor: selected.textColor,
+          labelLayout: selected.labelLayout,
         });
         signal.throwIfAborted();
         const transfer = await prepareStudioTransfer(
@@ -196,6 +198,7 @@ export function useLabelBuilder() {
         printer: printer.fullName,
         textFilamentProduct: selected.textFilamentProduct,
         textColor: selected.textColor,
+        labelLayout: selected.labelLayout,
       });
       if (!isCurrent()) {
         throw new Error(
@@ -275,6 +278,12 @@ export function useLabelBuilder() {
                   'Optional text color override. Automatic restores contrasting black/white.',
               },
               design: { type: 'string', enum: DESIGNS.map((item) => item.id) },
+              labelLayout: {
+                type: 'string',
+                enum: ['simple', 'detailed'],
+                description:
+                  'Printed label detail. Clip labels always use their compact two-line layout.',
+              },
             },
             additionalProperties: false,
           },
@@ -292,6 +301,10 @@ export function useLabelBuilder() {
               printerId: printer.id,
               printer: printer.fullName,
               design: selected.design,
+              labelLayout: effectiveLabelLayout(
+                selected.design,
+                selected.labelLayout,
+              ),
               textFilamentProduct: selected.textFilamentProduct,
               textColor: selected.textColor ?? 'automatic',
             };

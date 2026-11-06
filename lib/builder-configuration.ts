@@ -10,6 +10,7 @@ import {
 } from '@/lib/catalog';
 import { resolveTextFilament } from '@/lib/text-filament';
 import { resolveTextColor, type TextColorId } from './text-color';
+import { isLabelLayout, type LabelLayout } from './label-layout';
 
 export type BuilderConfiguration = {
   filament: Filament;
@@ -17,6 +18,7 @@ export type BuilderConfiguration = {
   design: DesignId;
   textFilamentProduct?: string;
   textColor?: TextColorId;
+  labelLayout?: LabelLayout;
 };
 export const INITIAL_CONFIGURATION: BuilderConfiguration = {
   filament: DEFAULT_FILAMENT,
@@ -33,7 +35,8 @@ export function sameConfiguration(
     a.printerId === b.printerId &&
     a.design === b.design &&
     a.textColor === b.textColor &&
-    a.textFilamentProduct === b.textFilamentProduct
+    a.textFilamentProduct === b.textFilamentProduct &&
+    (a.labelLayout ?? 'detailed') === (b.labelLayout ?? 'detailed')
   );
 }
 
@@ -63,6 +66,7 @@ export function resolveConfiguration(
         'design',
         'textFilamentProduct',
         'textColor',
+        'labelLayout',
       ].includes(key) ||
       typeof field !== 'string' ||
       !field
@@ -89,6 +93,9 @@ export function resolveConfiguration(
     throw new Error('Unknown printer.');
   if (!DESIGNS.some((item) => item.id === design))
     throw new Error('Unknown design.');
+  const labelLayout = value.labelLayout ?? current.labelLayout;
+  if (labelLayout !== undefined && !isLabelLayout(labelLayout))
+    throw new Error('Unknown label layout.');
   const textFilamentProduct = (value.textFilamentProduct ??
     (filament.material === current.filament.material
       ? current.textFilamentProduct
@@ -105,5 +112,6 @@ export function resolveConfiguration(
     design,
     ...(textFilamentProduct ? { textFilamentProduct } : {}),
     textColor,
+    ...(labelLayout ? { labelLayout } : {}),
   };
 }

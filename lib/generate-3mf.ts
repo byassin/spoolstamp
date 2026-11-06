@@ -1,6 +1,11 @@
 'use client';
 import { APP_VERSION } from './app-version';
-import { buildAdhesiveLabelMeshes, ADHESIVE_LABEL } from './adhesive-label';
+import {
+  buildAdhesiveLabelMeshes,
+  ADHESIVE_LABEL,
+  ROUNDED_ADHESIVE_LABEL,
+} from './adhesive-label';
+import { effectiveLabelLayout, type LabelLayout } from './label-layout';
 
 import {
   normalizeColor as rgb,
@@ -48,6 +53,7 @@ type GenerateOptions = {
   printer: string;
   textFilamentProduct?: string;
   textColor?: TextColorId;
+  labelLayout?: LabelLayout;
 };
 
 function mesh(
@@ -96,10 +102,18 @@ function validateMesh(value: LabelMesh) {
   }
 }
 
-async function buildLabelMeshes(filament: Filament, design: DesignId) {
-  if (design === 'drybox-tab') return buildDryBoxLabelMeshes(filament);
-  if (design === 'adhesive-label') {
-    const output = await buildAdhesiveLabelMeshes(filament);
+async function buildLabelMeshes(
+  filament: Filament,
+  design: DesignId,
+  labelLayout: LabelLayout,
+) {
+  if (design === 'drybox-tab')
+    return buildDryBoxLabelMeshes(filament, labelLayout);
+  if (design === 'adhesive-label' || design === 'rounded-adhesive-label') {
+    const output = await buildAdhesiveLabelMeshes(filament, {
+      rounded: design === 'rounded-adhesive-label',
+      labelLayout,
+    });
     output.forEach(validateMesh);
     return output;
   }
@@ -130,7 +144,10 @@ function wrapLabelLine(value: string, maxCharacters: number) {
   return [lines[0], lines.slice(1).join(' ')];
 }
 
-async function buildDryBoxLabelMeshes(filament: Filament) {
+async function buildDryBoxLabelMeshes(
+  filament: Filament,
+  labelLayout: LabelLayout,
+) {
   const structuralParts = await buildSuppliedDryBoxMeshes(filament.colors[0]);
   const lettering = mesh(
     'raised-text',
@@ -146,25 +163,33 @@ async function buildDryBoxLabelMeshes(filament: Filament) {
 
   const productLines = wrapLabelLine(filament.product, 16);
   const colorLines = wrapLabelLine(filament.colorName, 18);
+  const simple = labelLayout === 'simple';
   const rows = [
     ...productLines.map((value) => ({
       value,
-      height: productLines.length === 1 ? 8.6 : 5.7,
+      height:
+        productLines.length === 1 ? (simple ? 17 : 8.6) : simple ? 10 : 5.7,
       consistentFontSize: false,
+      sourceValue: filament.product,
     })),
     ...colorLines.map((value) => ({
       value,
       // Make the color the visual headline; long names still wrap and fit.
-      height: colorLines.length === 1 ? 11 : 6.4,
+      height: colorLines.length === 1 ? (simple ? 23 : 11) : simple ? 12 : 6.4,
       consistentFontSize: true,
+      sourceValue: filament.colorName,
     })),
-    { value: 'Bambu Lab', height: 5.2 },
-    { value: `SKU: ${filament.colorCode}`, height: 5.2 },
-    { value: `HEX: ${hex}`, height: 5.2 },
-    { value: nozzle, height: 5.2 },
+    ...(!simple
+      ? [
+          { value: 'Bambu Lab', height: 5.2 },
+          { value: `SKU: ${filament.colorCode}`, height: 5.2 },
+          { value: `HEX: ${hex}`, height: 5.2 },
+          { value: nozzle, height: 5.2 },
+        ]
+      : []),
   ];
   const desiredHeight = rows.reduce((sum, row) => sum + row.height, 0);
-  const minimumGap = 1.4;
+  const minimumGap = simple ? 2.4 : 1.4;
   const scale = Math.min(
     1,
     usableHeight / (desiredHeight + minimumGap * (rows.length - 1)),
@@ -180,7 +205,9 @@ async function buildDryBoxLabelMeshes(filament: Filament) {
             (usableHeight - scaledHeight) / (rows.length - 1),
           ),
         );
-  let cursorY = top;
+  let cursorY = simple
+    ? top - (usableHeight - (scaledHeight + gap * (rows.length - 1))) / 2
+    : top;
   const baseZ = SUPPLIED_DRYBOX.textFaceZ - TEXT_PRINT_SPEC.attachmentOverlap;
   const textDepth = TEXT_PRINT_SPEC.relief + TEXT_PRINT_SPEC.attachmentOverlap;
   lettering.textRows = [];
@@ -201,12 +228,18 @@ async function buildDryBoxLabelMeshes(filament: Filament) {
       {
         consistentFontSize:
           'consistentFontSize' in row && row.consistentFontSize,
+        ...(simple
+          ? { minimumAspectRatio: 0.65, contourTolerance: 0.0001 }
+          : {}),
       },
     );
     if (placement)
       lettering.textRows.push({
         ...placement,
         value: row.value,
+        ...('sourceValue' in row
+          ? { sourceValue: row.sourceValue as string }
+          : {}),
         centerX: 30,
         centerY,
       });
@@ -224,7 +257,9 @@ export function buildConfiguredMeshes(
   filament: Filament,
   design: DesignId,
   textColor?: TextColorId,
+  labelLayout?: LabelLayout,
 ) {
+  const layout = effectiveLabelLayout(design, labelLayout);
   const color = resolveTextColor(filament, textColor);
   const recolor = (parts: LabelMesh[]) =>
     textColor === undefined
@@ -234,6 +269,7 @@ export function buildConfiguredMeshes(
         );
   const key = JSON.stringify([
     design,
+    layout,
     filament.product,
     filament.colorName,
     filament.material,
@@ -247,10 +283,12 @@ export function buildConfiguredMeshes(
     meshCache.set(key, existing);
     return textColor === undefined ? existing : existing.then(recolor);
   }
-  const pending = buildLabelMeshes(filament, design).catch((error: unknown) => {
-    if (meshCache.get(key) === pending) meshCache.delete(key);
-    throw error;
-  });
+  const pending = buildLabelMeshes(filament, design, layout).catch(
+    (error: unknown) => {
+      if (meshCache.get(key) === pending) meshCache.delete(key);
+      throw error;
+    },
+  );
   meshCache.set(key, pending);
   if (meshCache.size > 3) meshCache.delete(meshCache.keys().next().value!);
   return textColor === undefined ? pending : pending.then(recolor);
@@ -320,6 +358,7 @@ function modelXml(
   <metadata name="fll:compatibility">Application is an importer compatibility identifier; the actual generator is Filament Label Lab, not Bambu Studio.</metadata>
   <metadata name="fll:target_printer">${escapeXml(options.printer)}</metadata>
   <metadata name="fll:design">${escapeXml(options.design)}</metadata>
+  <metadata name="fll:label_layout">${effectiveLabelLayout(options.design, options.labelLayout)}</metadata>
   <metadata name="fll:filament_color_code">${escapeXml(options.filament.colorCode)}</metadata>
   <metadata name="fll:ams_filament_id">${escapeXml(options.filament.amsId)}</metadata>
   <metadata name="fll:profile_colors">${escapeXml(options.filament.colors.join(','))}</metadata>
@@ -391,6 +430,7 @@ function generatorMetadata(
       schemaVersion: 1,
       generator: { name: 'Filament Label Lab', version: APP_VERSION },
       design: options.design,
+      labelLayout: effectiveLabelLayout(options.design, options.labelLayout),
       targetPrinter: options.printer,
       slicingRequired: true,
       buildPlatePlacement: placement,
@@ -409,13 +449,19 @@ function generatorMetadata(
             textRows: meshes.find((part) => part.materialRole === 'raised-text')
               ?.textRows,
           }
-        : options.design === 'adhesive-label'
+        : options.design === 'adhesive-label' ||
+            options.design === 'rounded-adhesive-label'
           ? {
               template: {
                 origin: 'Spoolstamp original',
-                dimensions: ADHESIVE_LABEL,
+                dimensions:
+                  options.design === 'rounded-adhesive-label'
+                    ? ROUNDED_ADHESIVE_LABEL
+                    : ADHESIVE_LABEL,
                 mechanicalGeometry:
-                  'Original rectangular backing; user-supplied adhesive. Not based on a supplied clip or hinge.',
+                  options.design === 'rounded-adhesive-label'
+                    ? 'Original rounded backing with 2 mm corner radius; user-supplied adhesive. Not based on a supplied clip or hinge.'
+                    : 'Original rectangular backing; user-supplied adhesive. Not based on a supplied clip or hinge.',
               },
               textPrintSettings: TEXT_PRINT_SPEC,
               textRows: meshes.find(
@@ -465,7 +511,8 @@ function generatorMetadata(
         digitalGeometry:
           options.design === 'drybox-tab'
             ? `source card and hook preserved; ${HINGE_CLEARANCE.radialReliefMm} mm link bearing relief; generated text validated`
-            : options.design === 'adhesive-label'
+            : options.design === 'adhesive-label' ||
+                options.design === 'rounded-adhesive-label'
               ? 'original flat backing; generated text validated; adhesive and physical printing unqualified'
               : 'source clip preserved; pocket capped; generated text validated',
         physicalFitAndCycle: 'pending',
@@ -485,6 +532,11 @@ function slug(value: string) {
 }
 
 export async function generate3mf(options: GenerateOptions) {
+  const layoutSuffix =
+    options.design !== 'clip-label' &&
+    effectiveLabelLayout(options.design, options.labelLayout) === 'simple'
+      ? '-simple'
+      : '';
   const projectSettings = studioProjectSettings(
     options.filament,
     options.printer,
@@ -496,6 +548,7 @@ export async function generate3mf(options: GenerateOptions) {
     options.filament,
     options.design,
     options.textColor,
+    options.labelLayout,
   );
   const placement = placeAssemblyOnBed(
     meshes,
@@ -529,7 +582,7 @@ export async function generate3mf(options: GenerateOptions) {
     .folder('docProps')
     ?.file(
       'core.xml',
-      `<?xml version="1.0" encoding="UTF-8"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/"><dc:title>${escapeXml(`${options.filament.product} ${options.filament.colorName} label`)}</dc:title><dc:creator>Filament Label Lab</dc:creator><dc:description>${options.design === 'drybox-tab' ? `User-supplied dry-box STL with unchanged card and hook, ${HINGE_CLEARANCE.radialReliefMm} mm moving-link bearing relief, and separately generated lettering.` : options.design === 'adhesive-label' ? 'Original Spoolstamp flat backing with raised lettering. User supplies adhesive; physical mounting and printing are unqualified.' : 'User-supplied filament clip STL with a filled label recess and two lines of generated lettering.'} Slicing is required.</dc:description></cp:coreProperties>`,
+      `<?xml version="1.0" encoding="UTF-8"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/"><dc:title>${escapeXml(`${options.filament.product} ${options.filament.colorName} label`)}</dc:title><dc:creator>Filament Label Lab</dc:creator><dc:description>${options.design === 'drybox-tab' ? `User-supplied dry-box STL with unchanged card and hook, ${HINGE_CLEARANCE.radialReliefMm} mm moving-link bearing relief, and separately generated lettering.` : options.design === 'adhesive-label' || options.design === 'rounded-adhesive-label' ? 'Original Spoolstamp flat backing with raised lettering. User supplies adhesive; physical mounting and printing are unqualified.' : 'User-supplied filament clip STL with a filled label recess and two lines of generated lettering.'} Slicing is required.</dc:description></cp:coreProperties>`,
     );
   const blob = await zip.generateAsync({
     type: 'blob',
@@ -538,7 +591,7 @@ export async function generate3mf(options: GenerateOptions) {
   });
   return {
     blob,
-    filename: `${slug(`${options.filament.product}-${options.filament.colorName}-${options.design}`)}${options.design === 'drybox-tab' ? `-${HINGE_CLEARANCE.filenameSuffix}` : ''}.3mf`,
+    filename: `${slug(`${options.filament.product}-${options.filament.colorName}-${options.design}`)}${layoutSuffix}${options.design === 'drybox-tab' ? `-${HINGE_CLEARANCE.filenameSuffix}` : ''}.3mf`,
     parts: meshes.length,
     triangles: meshes.reduce(
       (sum, value) => sum + value.triangles.length / 3,
