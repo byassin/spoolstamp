@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.4.0 — unreleased
+## 0.4.0 — 2026-11-06
 
 - Preview batch plate bounds, project splits and filament assignments before downloading the same prepared layout; choose per-label copies within the eight-label limit.
 - Organize saved labels into named local collections, search them and select a collection for reprinting. Include collections in validated workspace backups.

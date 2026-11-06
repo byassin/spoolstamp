@@ -1,6 +1,6 @@
 # v0.4.0 implementation and validation
 
-Prepared locally November 6, 2026, based on the released v0.3.0 tree. This is an unreleased frontend candidate, with no hosting or backend policy changes.
+Prepared locally November 6, 2026, based on the released v0.3.0 tree. This record covers the v0.4.0 frontend changes, with no hosting or backend policy changes.
 
 ## Features
 
