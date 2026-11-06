@@ -11,10 +11,11 @@ import {
 import { buildConfiguredMeshes } from '../lib/generate-3mf';
 
 describe('generated Bambu catalog', () => {
-  it('offers only the two supplied mechanical designs', () => {
+  it('preserves both supplied designs and offers an original flat label', () => {
     expect(DESIGNS.map((design) => design.id)).toEqual([
       'drybox-tab',
       'clip-label',
+      'adhesive-label',
     ]);
   });
 

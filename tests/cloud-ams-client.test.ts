@@ -9,8 +9,27 @@ const API = 'https://ams.spoolstamp.bourhan.org';
 const state = (csrf = 'a'.repeat(64)) => ({
   csrf,
   authenticated: false,
-  printers: [],
-  inventory: { slots: [] },
+  codeRequested: false,
+  expiresAt: Date.now() + 1_800_000,
+  pending: false,
+  refreshAfter: 0,
+  selectedSerial: null as string | null,
+  printers: [] as Array<{
+    serial: string;
+    name: string;
+    model: string;
+    online: boolean;
+  }>,
+  inventory: {
+    available: true,
+    connected: false,
+    printerName: null,
+    firmware: null,
+    updatedAt: null,
+    stale: true,
+    message: 'Sign in to read your AMS.',
+    slots: [] as unknown[],
+  },
 });
 afterEach(() => vi.unstubAllGlobals());
 describe('browser cloud client', () => {
@@ -92,6 +111,133 @@ describe('browser cloud client', () => {
     const client = createHostedAmsClient(API);
     await expect(client.read()).rejects.toThrow(
       'Cloud service is temporarily unavailable.',
+    );
+  });
+  it('rejects malformed nested public data before it reaches UI consumers', async () => {
+    const valid = state();
+    const printer = {
+      serial: 'TESTPRINTER123',
+      name: 'Test printer',
+      model: 'X2D',
+      online: true,
+    };
+    const slot = {
+      key: '0:0',
+      unit: '0',
+      slot: '0',
+      label: 'A1',
+      present: true,
+      reading: false,
+      material: 'PLA',
+      productId: 'GFA00',
+      color: '#000000FF',
+      colors: ['#000000FF'],
+      remaining: 28,
+    };
+    const malformed: unknown[] = [
+      { ...valid, printers: [null] },
+      { ...valid, printers: [{ ...printer, online: 'yes' }] },
+      { ...valid, printers: [{ ...printer, serial: 'bad' }] },
+      { ...valid, printers: [printer, printer] },
+      { ...valid, printers: Array(201).fill(printer) },
+      { ...valid, authenticated: true, selectedSerial: 'TESTPRINTER123' },
+      { ...valid, pending: 'false' },
+      { ...valid, codeRequested: 0 },
+      { ...valid, expiresAt: -1 },
+      { ...valid, refreshAfter: 1.25 },
+      { ...valid, expiresAt: Number.MAX_SAFE_INTEGER },
+      { ...valid, inventory: { ...valid.inventory, slots: [null] } },
+      ...[
+        { ...slot, key: 'wrong' },
+        { ...slot, unit: '1000' },
+        { ...slot, present: 'true' },
+        { ...slot, reading: 0 },
+        { ...slot, color: '#123456' },
+        { ...slot, colors: ['bad'] },
+        { ...slot, colors: Array(9).fill('#000000FF') },
+        { ...slot, remaining: 101 },
+        { ...slot, remaining: -1 },
+        { ...slot, label: 'PRIVATE\nVALUE' },
+      ].map((row) => ({
+        ...valid,
+        inventory: { ...valid.inventory, slots: [row] },
+      })),
+      { ...valid, inventory: { ...valid.inventory, slots: [slot, slot] } },
+      {
+        ...valid,
+        inventory: { ...valid.inventory, slots: Array(129).fill(slot) },
+      },
+      { ...valid, inventory: { ...valid.inventory, updatedAt: -1 } },
+      { ...valid, inventory: { ...valid.inventory, connected: 'false' } },
+      {
+        ...valid,
+        inventory: { ...valid.inventory, message: 'PRIVATE'.repeat(100) },
+      },
+    ];
+    for (const value of malformed) {
+      vi.stubGlobal(
+        'fetch',
+        vi.fn().mockResolvedValue(new Response(JSON.stringify(value))),
+      );
+      await expect(createHostedAmsClient(API).read()).rejects.toThrow(
+        'Unexpected cloud service response.',
+      );
+    }
+  });
+  it('retains only the validated public fields, including unknown presence and empty palettes', async () => {
+    const value = {
+      ...state(),
+      accessToken: 'PRIVATE-TOKEN',
+      accountEmail: 'PRIVATE-EMAIL',
+      authenticated: true,
+      printers: [
+        {
+          serial: 'TESTPRINTER123',
+          name: 'Test printer',
+          model: 'X2D',
+          online: true,
+          password: 'PRIVATE',
+        },
+      ],
+      selectedSerial: 'TESTPRINTER123',
+      inventory: {
+        ...state().inventory,
+        slots: [
+          {
+            key: '128:0',
+            unit: '128',
+            slot: '0',
+            label: 'HT 1',
+            present: null,
+            reading: false,
+            material: '',
+            productId: '',
+            color: null,
+            colors: [],
+            remaining: null,
+            tagUid: 'PRIVATE-TAG',
+          },
+        ],
+      },
+    };
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(new Response(JSON.stringify(value))),
+    );
+    const parsed = await createHostedAmsClient(API).read();
+    expect(parsed.printers[0].serial).toBe('TESTPRINTER123');
+    expect(parsed.inventory.slots[0].present).toBeNull();
+    expect(JSON.stringify(parsed)).not.toMatch(
+      /PRIVATE|accessToken|accountEmail|password|tagUid/,
+    );
+  });
+  it('bounds response bytes and reports only its own fixed error', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(new Response('PRIVATE'.repeat(100_000))),
+    );
+    await expect(createHostedAmsClient(API).read()).rejects.toThrow(
+      'Unexpected cloud service response.',
     );
   });
   it('does not automatically resend emails, sign-ins or printer reads during outages', async () => {

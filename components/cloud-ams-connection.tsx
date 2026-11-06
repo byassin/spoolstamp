@@ -279,17 +279,18 @@ export function CloudAmsConnection({
             </>
           )}
           <p className="field-note">
-            No password needed. Sign-in expires after 30 minutes; sign out to
+            No password needed. Connection lasts up to 30 minutes; sign out to
             end it sooner.
           </p>
           <details className="field-note">
             <summary>Privacy details</summary>
             <p>
-              Spoolstamp handles your email and verification code. Your email
-              and connection token are temporarily encrypted on our server,
-              never saved in browser storage. Verification codes aren’t stored.
-              Signing out deletes the session. Expired encrypted records may
-              remain for days until cleanup.
+              The session starts when you connect. Spoolstamp handles your email
+              and verification code. Your email and connection token are
+              temporarily encrypted on our server, never saved in browser
+              storage. Verification codes aren’t stored. Signing out deletes the
+              session. Expired encrypted records may remain for days until
+              cleanup.
             </p>
           </details>
         </form>

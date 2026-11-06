@@ -7,6 +7,17 @@ import {
 
 export const WORKSPACE_KEY = 'spoolstamp.workspace.v1';
 export const MAX_SAVED_ITEMS = 16;
+export const MAX_WORKSPACE_BACKUP_BYTES = 32_000;
+export const WORKSPACE_CHANGED_NOTICE =
+  'Your saved workspace changed in another tab. The latest items are loaded; try your action again.';
+
+/** Compare the last actual storage value, not a reserialized/sanitized workspace. */
+export function workspaceRevisionChanged(
+  expected: string | null | undefined,
+  actual: string | null,
+) {
+  return expected === undefined ? actual !== null : expected !== actual;
+}
 export type SavedLabel = {
   filamentId: string;
   printerId: string;
@@ -110,4 +121,141 @@ export function parseWorkspace(raw: string | null): SavedWorkspace {
   } catch {
     return empty;
   }
+}
+
+export type WorkspaceBackup = {
+  format: 'spoolstamp-workspace';
+  version: 1;
+  setup: SavedLabel | null;
+  favorites: string[];
+  drafts: SavedLabel[];
+};
+
+function exactKeys(
+  value: unknown,
+  allowed: string[],
+): value is Record<string, unknown> {
+  return (
+    !!value &&
+    typeof value === 'object' &&
+    !Array.isArray(value) &&
+    Object.keys(value).every((key) => allowed.includes(key))
+  );
+}
+
+function backupLabel(value: unknown): SavedLabel {
+  if (
+    !exactKeys(value, [
+      'filamentId',
+      'printerId',
+      'design',
+      'textColor',
+      'textFilamentProduct',
+    ])
+  )
+    throw new Error(
+      'This backup contains unsupported label fields. Nothing was imported.',
+    );
+  const restored = restoreLabel(value);
+  if (!restored)
+    throw new Error(
+      'This backup contains a label that is not in the current catalog. Nothing was imported.',
+    );
+  return saveLabel(restored);
+}
+
+/** Strict file transfer validation: unlike storage recovery, never silently drop invalid records. */
+export function parseWorkspaceBackup(raw: string): WorkspaceBackup {
+  if (
+    raw.length > MAX_WORKSPACE_BACKUP_BYTES ||
+    new TextEncoder().encode(raw).byteLength > MAX_WORKSPACE_BACKUP_BYTES
+  )
+    throw new Error(
+      'Choose a Spoolstamp backup smaller than 32 KB. Nothing was imported.',
+    );
+  let value: unknown;
+  try {
+    value = JSON.parse(raw);
+  } catch {
+    throw new Error(
+      'This is not a valid Spoolstamp backup. Nothing was imported.',
+    );
+  }
+  if (
+    !exactKeys(value, ['format', 'version', 'setup', 'favorites', 'drafts']) ||
+    value.format !== 'spoolstamp-workspace' ||
+    value.version !== 1 ||
+    !Array.isArray(value.favorites) ||
+    !Array.isArray(value.drafts) ||
+    !Object.hasOwn(value, 'setup')
+  )
+    throw new Error(
+      'This backup format is not supported. Nothing was imported.',
+    );
+  if (
+    value.favorites.length > MAX_SAVED_ITEMS ||
+    value.drafts.length > MAX_SAVED_ITEMS
+  )
+    throw new Error(
+      `A backup can contain up to ${MAX_SAVED_ITEMS} favorites and ${MAX_SAVED_ITEMS} drafts. Nothing was imported.`,
+    );
+  const favorites: string[] = [];
+  for (const id of value.favorites) {
+    if (typeof id !== 'string' || !FILAMENTS.some((row) => row.id === id))
+      throw new Error(
+        'This backup contains a favorite that is not in the current catalog. Nothing was imported.',
+      );
+    if (!favorites.includes(id)) favorites.push(id);
+  }
+  const drafts: SavedLabel[] = [];
+  for (const input of value.drafts) {
+    const row = backupLabel(input);
+    if (!drafts.some((item) => draftKey(item) === draftKey(row)))
+      drafts.push(row);
+  }
+  return {
+    format: 'spoolstamp-workspace',
+    version: 1,
+    setup: value.setup === null ? null : backupLabel(value.setup),
+    favorites,
+    drafts,
+  };
+}
+
+/** Only allowlisted catalog selections are exported, never session or inventory objects. */
+export function serializeWorkspaceBackup(
+  workspace: SavedWorkspace,
+  configuration?: BuilderConfiguration,
+): string {
+  const safe = parseWorkspace(JSON.stringify(workspace));
+  const backup: WorkspaceBackup = {
+    format: 'spoolstamp-workspace',
+    version: 1,
+    setup: configuration ? saveLabel(configuration) : safe.setup,
+    favorites: safe.favorites,
+    drafts: safe.drafts,
+  };
+  return JSON.stringify(parseWorkspaceBackup(JSON.stringify(backup)), null, 2);
+}
+
+/** Merge atomically. Setup/Remember never change implicitly; setup can be restored explicitly. */
+export function mergeWorkspaceBackup(current: SavedWorkspace, raw: string) {
+  const imported = parseWorkspaceBackup(raw);
+  const favorites = [...current.favorites];
+  for (const id of imported.favorites)
+    if (!favorites.includes(id)) favorites.push(id);
+  const drafts = [...current.drafts];
+  for (const row of imported.drafts)
+    if (!drafts.some((item) => draftKey(item) === draftKey(row)))
+      drafts.push(row);
+  if (favorites.length > MAX_SAVED_ITEMS || drafts.length > MAX_SAVED_ITEMS)
+    throw new Error(
+      `There isn’t room for this backup. Keep at most ${MAX_SAVED_ITEMS} favorites and ${MAX_SAVED_ITEMS} drafts; remove some saved items and try again. Nothing was imported.`,
+    );
+  return {
+    workspace: { ...current, favorites, drafts },
+    setup: imported.setup ? restoreLabel(imported.setup) : null,
+    addedFavorites: favorites.length - current.favorites.length,
+    addedDrafts: drafts.length - current.drafts.length,
+  };
 }

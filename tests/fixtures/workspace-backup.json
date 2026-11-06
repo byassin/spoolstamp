@@ -1,0 +1,19 @@
+{
+  "format": "spoolstamp-workspace",
+  "version": 1,
+  "setup": {
+    "filamentId": "10501",
+    "printerId": "bambulabx2d",
+    "design": "adhesive-label",
+    "textColor": "red"
+  },
+  "favorites": ["10501"],
+  "drafts": [
+    {
+      "filamentId": "10501",
+      "printerId": "bambulabx2d",
+      "design": "adhesive-label",
+      "textColor": "red"
+    }
+  ]
+}

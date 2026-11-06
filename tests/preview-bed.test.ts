@@ -128,7 +128,7 @@ describe('printer-profile bed preview', () => {
     ).toEqual([]);
   });
 
-  it.each<DesignId>(['drybox-tab', 'clip-label'])(
+  it.each<DesignId>(['drybox-tab', 'clip-label', 'adhesive-label'])(
     'matches exported placement and source orientation for %s on every printer',
     async (design) => {
       const parts = await buildConfiguredMeshes(DEFAULT_FILAMENT, design);

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0 — unreleased
+
+- Add an original 60 × 25 mm flat label for user-supplied adhesive, with raised text, catalog-wide readability checks, and single/batch/plate export support.
+- Add bounded undo/redo and reset for label configuration changes.
+- Share catalog-only label configurations through URL fragments; no Bambu login or physical printer identifiers are included.
+- Back up and merge saved favorites/drafts with strict local JSON validation and an explicit imported-setup restore action.
+- Reject malformed nested cloud responses and protect saved work from stale-tab overwrites.
+- Keep Bambu-only catalog support, existing source mechanics, privacy boundaries, and live-inventory freshness/read limits unchanged.
+
 ## 0.2.0 — 2026-11-04
 
 - Simplified My AMS into one clear status card; fixed wrapped, overlapping status borders.

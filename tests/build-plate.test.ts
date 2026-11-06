@@ -27,7 +27,7 @@ describe('export placement', () => {
     expect(cuboid).toEqual(before);
   });
 
-  it.each<DesignId>(['drybox-tab', 'clip-label'])(
+  it.each<DesignId>(['drybox-tab', 'clip-label', 'adhesive-label'])(
     'places %s safely for every offered printer',
     async (design) => {
       const meshes = await buildConfiguredMeshes(DEFAULT_FILAMENT, design);

@@ -85,13 +85,13 @@ createServer((req, res) => {
       expiresAt: Date.now() + 1_800_000,
       printers: [
         {
-          serial: 'LOCAL-FIXTURE-ONLY',
+          serial: 'LOCALFIXTURE123',
           name: 'Sample printer',
           model: 'X2D',
           online: scenario !== 'offline',
         },
       ],
-      selectedSerial: scenario === 'ready' ? null : 'LOCAL-FIXTURE-ONLY',
+      selectedSerial: scenario === 'ready' ? null : 'LOCALFIXTURE123',
       pending: scenario === 'reading',
       refreshAfter: capturedAt ? capturedAt + 300_000 : 0,
       inventory: {

@@ -10,7 +10,7 @@ Create 3D-printable filament labels in a few clicks. Pick a design, choose your 
 
 ## Features
 
-- **Two label designs** — a hinged dry-box label and a flat-front clip-on label.
+- **Three label designs** — a hinged dry-box label, a flat-front clip-on label, and an original flat adhesive label.
 - **Bambu Lab filament catalog** — 314 colors with searchable material types, color names, and codes.
 - **Live 3D preview** — rotate, zoom, and switch between a label close-up and your printer's build plate.
 - **Automatic lettering** — filament details filled in for you, with contrasting black or white text.
@@ -24,6 +24,9 @@ Create 3D-printable filament labels in a few clicks. Pick a design, choose your 
 - **Saved workspace** — optionally remember your setup, favorite Bambu filaments, and save label drafts on this browser. No account required; Bambu login data is never saved with them.
 - **Multi-label plates** — arrange selected AMS labels or saved drafts into plate projects, conservatively grouped by body/text product pair and split for bed space or a four-filament limit. Separate-project ZIP export is still available.
 - **Helpful checks** — advisory low-contrast warnings, AMS snapshot-age/cooldown guidance, cloud-outage fallback, and larger mobile controls with quick download access.
+- **Flat adhesive label** — an original 60 × 25 mm design with raised product/color lettering. Supply your own adhesive; physical printing and mounting still need testing.
+- **Editing and sharing** — undo/redo, reset, and catalog-only label links; links never include Bambu login data or printer serials.
+- **Workspace backup** — export favorites and drafts to a local JSON file, then merge them into another browser without replacing existing saved items.
 
 ## Clip-on labels
 
@@ -44,13 +47,15 @@ Read your loaded spools directly through Bambu Cloud, then create labels without
 
 Sign in with your global-region Bambu account—no invitation or account approval is needed. Your printer must be cloud-connected. The manual filament picker is also available without signing in.
 
-Sign-in expires after 30 minutes. Credentials stay server-side, temporarily encrypted; verification codes are not stored. Reads are on demand with a five-minute cooldown, and live-slot actions require a snapshot less than 45 seconds old. Resolved catalog label choices remain reusable for this visit, so returning for another label does not require another read. Remaining filament is the printer's estimate. See [My AMS](docs/ams-integration.md) for privacy details and current validation limits.
+The connection lasts up to 30 minutes, starting when you connect. Credentials stay server-side, temporarily encrypted; verification codes are not stored. Reads are on demand with a five-minute cooldown, and live-slot actions require a snapshot less than 45 seconds old. Resolved catalog label choices remain reusable for this visit, so returning for another label does not require another read. Remaining filament is the printer's estimate. See [My AMS](docs/ams-integration.md) for privacy details and current validation limits.
 
 Save an AMS label draft while the read is fresh to edit or export it later from **My saved filaments**. A saved draft is a catalog configuration, not current inventory. Confirm your physical spools, all filament assignments, label spacing, brim and purge-tower clearance in Studio before slicing. Multi-label placement is digitally checked; real multi-label printing is not yet qualified. See [Saved workspace and plates](docs/saved-workspace.md).
 
 ## Run locally
 
 The version beside the logo comes from `package.json`. See the [changelog](CHANGELOG.md) and [release workflow](docs/releases.md).
+
+See [editing, sharing and workspace transfer](docs/label-editing.md), [flat label details](docs/adhesive-label.md), and the [v0.3.0 review](docs/review-v030.md) for validation scope and remaining limitations.
 
 Requires Node.js 22.13 or newer.
 

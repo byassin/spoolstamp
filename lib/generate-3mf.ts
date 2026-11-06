@@ -1,5 +1,6 @@
 'use client';
 import { APP_VERSION } from './app-version';
+import { buildAdhesiveLabelMeshes, ADHESIVE_LABEL } from './adhesive-label';
 
 import {
   normalizeColor as rgb,
@@ -97,6 +98,11 @@ function validateMesh(value: LabelMesh) {
 
 async function buildLabelMeshes(filament: Filament, design: DesignId) {
   if (design === 'drybox-tab') return buildDryBoxLabelMeshes(filament);
+  if (design === 'adhesive-label') {
+    const output = await buildAdhesiveLabelMeshes(filament);
+    output.forEach(validateMesh);
+    return output;
+  }
   if (design === 'clip-label') {
     const output = await buildClipLabelMeshes(filament);
     output.forEach(validateMesh);
@@ -396,28 +402,42 @@ function generatorMetadata(
               retainedMechanicalTriangles:
                 SUPPLIED_DRYBOX.retainedTriangleCount,
               sourceExtraction: SUPPLIED_DRYBOX.operation,
-              mechanicalGeometry:
-                'Source card and hook unchanged; moving link sockets enlarged and pins reduced radially by 0.05 mm.',
+              mechanicalGeometry: `Source card and hook unchanged; moving link sockets enlarged and pins reduced radially by ${HINGE_CLEARANCE.radialReliefMm} mm.`,
               hingeClearance: HINGE_CLEARANCE,
             },
             textPrintSettings: TEXT_PRINT_SPEC,
             textRows: meshes.find((part) => part.materialRole === 'raised-text')
               ?.textRows,
           }
-        : {
-            template: {
-              sourceFilename: CLIP_LABEL.sourceFilename,
-              sourceSha256: CLIP_LABEL.sourceSha256,
-              mechanicalGeometry: CLIP_LABEL.operation,
-            },
-            textPrintSettings: TEXT_PRINT_SPEC,
-            textRows: meshes.find((part) => part.materialRole === 'raised-text')
-              ?.textRows,
-            textFace: {
-              normal: CLIP_LABEL.faceNormal,
-              y: CLIP_LABEL.textFaceY,
-            },
-          }),
+        : options.design === 'adhesive-label'
+          ? {
+              template: {
+                origin: 'Spoolstamp original',
+                dimensions: ADHESIVE_LABEL,
+                mechanicalGeometry:
+                  'Original rectangular backing; user-supplied adhesive. Not based on a supplied clip or hinge.',
+              },
+              textPrintSettings: TEXT_PRINT_SPEC,
+              textRows: meshes.find(
+                (part) => part.materialRole === 'raised-text',
+              )?.textRows,
+              textFace: { normal: [0, 0, 1], z: ADHESIVE_LABEL.bodyThickness },
+            }
+          : {
+              template: {
+                sourceFilename: CLIP_LABEL.sourceFilename,
+                sourceSha256: CLIP_LABEL.sourceSha256,
+                mechanicalGeometry: CLIP_LABEL.operation,
+              },
+              textPrintSettings: TEXT_PRINT_SPEC,
+              textRows: meshes.find(
+                (part) => part.materialRole === 'raised-text',
+              )?.textRows,
+              textFace: {
+                normal: CLIP_LABEL.faceNormal,
+                y: CLIP_LABEL.textFaceY,
+              },
+            }),
       filament: {
         product: options.filament.product,
         material: options.filament.material,
@@ -445,7 +465,9 @@ function generatorMetadata(
         digitalGeometry:
           options.design === 'drybox-tab'
             ? `source card and hook preserved; ${HINGE_CLEARANCE.radialReliefMm} mm link bearing relief; generated text validated`
-            : 'source clip preserved; pocket capped; generated text validated',
+            : options.design === 'adhesive-label'
+              ? 'original flat backing; generated text validated; adhesive and physical printing unqualified'
+              : 'source clip preserved; pocket capped; generated text validated',
         physicalFitAndCycle: 'pending',
       },
     },
@@ -507,7 +529,7 @@ export async function generate3mf(options: GenerateOptions) {
     .folder('docProps')
     ?.file(
       'core.xml',
-      `<?xml version="1.0" encoding="UTF-8"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/"><dc:title>${escapeXml(`${options.filament.product} ${options.filament.colorName} label`)}</dc:title><dc:creator>Filament Label Lab</dc:creator><dc:description>${options.design === 'drybox-tab' ? `User-supplied dry-box STL with unchanged card and hook, ${HINGE_CLEARANCE.radialReliefMm} mm moving-link bearing relief, and separately generated lettering.` : 'User-supplied filament clip STL with a filled label recess and two lines of generated lettering.'} Slicing is required.</dc:description></cp:coreProperties>`,
+      `<?xml version="1.0" encoding="UTF-8"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/"><dc:title>${escapeXml(`${options.filament.product} ${options.filament.colorName} label`)}</dc:title><dc:creator>Filament Label Lab</dc:creator><dc:description>${options.design === 'drybox-tab' ? `User-supplied dry-box STL with unchanged card and hook, ${HINGE_CLEARANCE.radialReliefMm} mm moving-link bearing relief, and separately generated lettering.` : options.design === 'adhesive-label' ? 'Original Spoolstamp flat backing with raised lettering. User supplies adhesive; physical mounting and printing are unqualified.' : 'User-supplied filament clip STL with a filled label recess and two lines of generated lettering.'} Slicing is required.</dc:description></cp:coreProperties>`,
     );
   const blob = await zip.generateAsync({
     type: 'blob',

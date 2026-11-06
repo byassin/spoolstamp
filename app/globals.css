@@ -735,6 +735,31 @@ html:has(.ams-drawer[open]) {
   min-height: 0;
   flex: none;
 }
+.builder-actions {
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.builder-actions-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.builder-actions button {
+  min-height: 40px;
+}
+.builder-actions output {
+  display: block;
+  margin-top: 8px;
+}
+.builder-actions input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow-wrap: anywhere;
+}
 .preview-caption {
   padding: 10px 22px 16px;
   font-size: 0.75rem;
@@ -1160,6 +1185,31 @@ html:has(.ams-drawer[open]) {
   border-top: 1px solid var(--border);
   padding-top: 16px;
   font-size: 0.8rem;
+}
+.workspace-transfer {
+  margin-top: 12px;
+}
+.workspace-backup-file {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.workspace-backup-file input {
+  width: 100%;
+  max-width: 100%;
+  font: inherit;
+  font-size: 0.75rem;
+}
+.design-note {
+  margin-top: 10px;
+}
+@media (max-width: 699px) {
+  .design-option:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+  .builder-actions button {
+    min-height: 44px;
+  }
 }
 .remember-setup {
   display: flex;
