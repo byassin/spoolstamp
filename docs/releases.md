@@ -39,3 +39,5 @@ Use the [contributor browser recipe](../CONTRIBUTING.md#local-browser-checks-wit
 4. If a Git tag/GitHub release is wanted, create `vX.Y.Z` at the merged commit only after approval and successful deployment. Bump commands never publish, push, merge, deploy or tag automatically.
 
 Browser storage schema versions and the pinned Bambu Studio importer identifier are independent of the app’s release number; do not bump or migrate them just to release UI changes.
+
+Keep the current entry in `lib/release-notes.ts` aligned with the release version and user-visible changes. The badge beside the logo opens these short highlights; detailed implementation and qualification history stays in the changelog and feature guides. Check old workspace/backups/shared links when extending saved configuration, and refresh the batch, collection, printing-guide and version-panel screenshots when their behavior changes.

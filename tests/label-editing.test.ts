@@ -40,6 +40,39 @@ describe('label editing history', () => {
   });
 });
 describe('catalog-only label links', () => {
+  it('restores the rounded design and printed layout and rejects an invalid layout', () => {
+    const configuration = {
+      ...INITIAL_CONFIGURATION,
+      design: 'rounded-adhesive-label' as const,
+      labelLayout: 'simple' as const,
+    };
+    const shared = new URL(
+      labelLink(configuration, 'https://spoolstamp.bourhan.org/'),
+    );
+    expect(configurationFromLink(shared.hash)).toEqual(configuration);
+    const malformed =
+      '#label=' +
+      encodeURIComponent(
+        JSON.stringify({
+          version: 1,
+          label: {
+            filamentId: configuration.filament.id,
+            printerId: configuration.printerId,
+            design: configuration.design,
+            labelLayout: 'other',
+          },
+        }),
+      );
+    expect(() => configurationFromLink(malformed)).toThrow('invalid');
+    const history = recordConfiguration(
+      initialHistory(INITIAL_CONFIGURATION),
+      configuration,
+    );
+    expect(undoConfiguration(history).present.labelLayout).toBeUndefined();
+    expect(
+      redoConfiguration(undoConfiguration(history)).present.labelLayout,
+    ).toBe('simple');
+  });
   it('round-trips all catalog IDs and does not put data in the server query', () => {
     for (const filament of FILAMENTS) {
       const config = {

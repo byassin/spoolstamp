@@ -103,10 +103,10 @@ describe('saved workspace backup transfer', () => {
     );
     expect(() =>
       parseWorkspaceBackup(' '.repeat(MAX_WORKSPACE_BACKUP_BYTES + 1)),
-    ).toThrow('32 KB');
+    ).toThrow('96 KB');
     expect(() =>
       parseWorkspaceBackup('é'.repeat(MAX_WORKSPACE_BACKUP_BYTES / 2 + 1)),
-    ).toThrow('32 KB');
+    ).toThrow('96 KB');
   });
   it('deduplicates repeated choices and preserves existing drafts, setup and remember setting', () => {
     const next = saveLabel({

@@ -1350,3 +1350,264 @@ html:has(.ams-drawer[open]) {
     min-height: 44px;
   }
 }
+
+.version-launcher {
+  cursor: pointer;
+  min-height: 30px;
+  padding: 4px 7px;
+  touch-action: manipulation;
+}
+.design-options {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.design-option {
+  position: relative;
+  display: block;
+  min-width: 0;
+  padding: 12px 10px;
+}
+.design-option .design-icon {
+  display: none;
+}
+.design-option strong {
+  font-size: 0.8rem;
+  line-height: 1.35;
+  padding-right: 18px;
+}
+.design-option small {
+  font-size: 0.6875rem;
+  line-height: 1.45;
+}
+.design-option > [data-slot='radio-group-item'] {
+  position: absolute;
+  top: 12px;
+  right: 9px;
+  margin: 0;
+}
+.version-launcher:hover {
+  background: #b7f36b20;
+}
+.version-launcher:focus-visible,
+.label-layout-control button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+.info-dialog {
+  width: min(560px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  margin: auto;
+  padding: 24px;
+  color: var(--foreground);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 24px 100px #0009;
+  overflow-y: auto;
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+.info-dialog::backdrop {
+  background: #030708b3;
+  backdrop-filter: blur(4px);
+}
+.info-dialog-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.info-dialog-heading h2 {
+  font-size: 1.25rem;
+  font-weight: 650;
+  margin: 0;
+}
+.info-dialog-heading button {
+  flex-shrink: 0;
+  min-width: 44px;
+  min-height: 44px;
+}
+.release-version {
+  color: var(--primary);
+  font-weight: 600;
+}
+.release-highlights,
+.earlier-releases ul {
+  padding-left: 22px;
+  list-style: disc;
+}
+.release-highlights li {
+  margin: 10px 0;
+}
+.earlier-releases {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.earlier-releases summary {
+  cursor: pointer;
+  color: var(--muted-foreground);
+}
+.earlier-releases h3 {
+  font-size: 0.875rem;
+  margin-top: 16px;
+}
+.print-guide-steps {
+  padding-left: 24px;
+  list-style: decimal;
+}
+.print-guide-steps li {
+  padding-left: 6px;
+  margin: 18px 0;
+}
+.print-guide-steps li::marker {
+  color: var(--primary);
+  font-weight: 700;
+}
+.print-guide-steps p {
+  margin-top: 5px;
+  color: var(--muted-foreground);
+}
+.print-guide-launcher {
+  align-self: flex-start;
+  margin-top: 6px;
+}
+.label-layout-control {
+  border: 0;
+  padding: 0;
+  margin: 16px 0 0;
+}
+.label-layout-control legend {
+  font-weight: 600;
+  font-size: 0.8rem;
+  margin-bottom: 8px;
+}
+.label-layout-control > div {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  overflow: hidden;
+}
+.label-layout-control button {
+  flex: 1;
+  min-height: 40px;
+  border: 0;
+  color: var(--muted-foreground);
+  background: var(--card);
+  cursor: pointer;
+}
+.label-layout-control button[aria-pressed='true'] {
+  color: var(--primary);
+  background: #b7f36b16;
+  font-weight: 600;
+}
+.label-layout-control .field-note {
+  font-size: 0.75rem;
+  margin-top: 8px;
+}
+.saved-library-controls,
+.saved-collection-add {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0;
+}
+.saved-library-controls label,
+.saved-collection-tools label,
+.saved-collection-add label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.saved-library-controls input,
+.saved-collection-tools input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: var(--card);
+  color: inherit;
+  font: inherit;
+}
+.saved-label-quantity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.saved-label-quantity input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+}
+.batch-copies {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+}
+.batch-copies select,
+.saved-label-quantity select {
+  width: 66px;
+  min-height: 40px;
+  margin: 4px 0;
+}
+.batch-preview {
+  margin-top: 16px;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+.batch-preview h3 {
+  font-size: 0.875rem;
+  font-weight: 650;
+}
+.batch-preview-plate {
+  margin: 14px 0;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.batch-preview-plate svg {
+  display: block;
+  width: 100%;
+  max-height: 240px;
+  margin-bottom: 10px;
+}
+.batch-preview-plate figcaption {
+  font-weight: 600;
+}
+.batch-preview-labels {
+  list-style: decimal;
+  padding-left: 20px;
+  font-size: 0.75rem;
+  margin-top: 8px;
+}
+.batch-preview-color {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 1px solid #ffffff50;
+  border-radius: 3px;
+  margin: 0 5px;
+  vertical-align: middle;
+}
+.batch-preview-filaments ul {
+  padding-left: 0;
+  list-style: none;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 699px) {
+  .info-dialog {
+    padding: 18px;
+  }
+  .label-layout-control button,
+  .saved-library-controls input,
+  .saved-collection-tools input,
+  .batch-copies select,
+  .saved-label-quantity select,
+  .print-guide-launcher {
+    min-height: 44px;
+  }
+}

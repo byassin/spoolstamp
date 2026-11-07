@@ -39,8 +39,10 @@ import { formatNozzleRange } from '@/lib/print-temperature';
 import { useSavedWorkspace } from '@/hooks/use-saved-workspace';
 import { SavedWorkspacePanel } from '@/components/saved-workspace-panel';
 import type { BuilderConfiguration } from '@/lib/builder-configuration';
-import { APP_VERSION_LABEL } from '@/lib/app-version';
 import { BuilderActions } from '@/components/builder-actions';
+import { WhatsNew } from '@/components/whats-new';
+import { PrintGuide } from '@/components/print-guide';
+import { LabelLayoutControl } from '@/components/label-layout-control';
 
 export default function Home() {
   const [autoAmsText, setAutoAmsText] = useState(true);
@@ -54,6 +56,7 @@ export default function Home() {
     filament,
     design,
     printerId,
+    labelLayout,
     textFilamentProduct,
     textColor: textColorChoice,
     generating,
@@ -84,6 +87,7 @@ export default function Home() {
     filament,
     design,
     printerId,
+    labelLayout,
     textFilamentProduct,
     textColor: textColorChoice,
   };
@@ -125,12 +129,7 @@ export default function Home() {
         <div className="brand-name">
           <div className="brand-title">
             <h1>Spoolstamp</h1>
-            <span
-              className="app-version"
-              aria-label={`Version ${APP_VERSION_LABEL.slice(1)}`}
-            >
-              {APP_VERSION_LABEL}
-            </span>
+            <WhatsNew />
           </div>
           <span>Filament label studio</span>
         </div>
@@ -188,7 +187,13 @@ export default function Home() {
               ))}
             </RadioGroup>
           </fieldset>
-          {design === 'adhesive-label' && (
+          <LabelLayoutControl
+            design={design}
+            value={labelLayout}
+            onChange={(value) => updateConfiguration({ labelLayout: value })}
+          />
+          {(design === 'adhesive-label' ||
+            design === 'rounded-adhesive-label') && (
             <p className="field-note design-note">
               Add your own double-sided adhesive. Check the surface before
               mounting.
@@ -266,6 +271,7 @@ export default function Home() {
               design={design}
               printerName={printer.fullName}
               textColor={textColorChoice}
+              labelLayout={labelLayout}
             />
           </div>
           <p className="preview-caption">
@@ -362,8 +368,8 @@ export default function Home() {
                   >
                     Bambu recommended range
                   </a>{' '}
-                  · printed on the hinged label. Profile nozzle is the catalog
-                  preset value, not a range.
+                  · included on detailed hinged labels. Profile nozzle is the
+                  catalog preset value, not a range.
                 </>
               ) : (
                 <>
@@ -476,6 +482,7 @@ export default function Home() {
               </span>
             )}
           </output>
+          <PrintGuide />
         </section>
       </div>
       <div className="mobile-export-bar" aria-label="Quick label export">
@@ -523,6 +530,7 @@ export default function Home() {
           filament={filament}
           printerName={printer.fullName}
           design={design}
+          labelLayout={labelLayout}
           textFilamentProduct={textFilamentProduct}
           textColor={textColorChoice}
           autoText={autoAmsText && textColorChoice === undefined}
@@ -538,6 +546,7 @@ export default function Home() {
             return saved.saveDraft({
               filament,
               design,
+              labelLayout,
               printerId: target.id,
               textFilamentProduct,
               textColor: textColorChoice,

@@ -15,6 +15,8 @@ Design meshes and generated Noto Sans lettering are combined in the browser. The
 - **Hinged label:** retains the supplied card and hook, with the R2 moving-link clearance adjustment.
 - **Clip-on label:** fills the supplied clip's label recess and adds material/color lettering.
 - **Flat adhesive label:** builds an original 60 × 25 mm backing and raised product/color/SKU lettering for user-supplied adhesive.
+- **Rounded flat label:** uses the same face and backing thickness with a 2 mm corner radius inside the unused edge margin.
+- **Printed layout:** Simple emphasizes product/color; Detailed keeps additional information where it fits. The narrow clip remains two-line. One validated layout choice drives preview, generation, saved choices, links and export metadata.
 - **Text:** defaults to black or white for contrast, with six optional text colors and a short same-material profile list. A low-contrast override shows an advisory suggestion. Long clip names are fitted or shortened, with full names retained in metadata.
 
 See [hinged design](supplied-drybox.md), [clip design](clip-label.md), and [flat design](adhesive-label.md).
@@ -25,11 +27,17 @@ The preview provides a label close-up, full printer bed, top view, orbit, and zo
 
 Single-label exports contain separate structural/text parts, two filament profiles, the printer/process presets, and color metadata. The complete assembly is centered within the printer's common printable area. Arranged batch exports use independent multipart assemblies, whole-assembly translations, and up to four unique profile/color combinations per plate. Exact body/text product pairs are grouped conservatively; additional colors or bed limits split the export into more projects. Studio still checks brim and purge-tower clearance. See [3MF settings](studio-project.md).
 
+Per-label copy counts expand to at most eight instances before planning. A prepared plan exposes frozen bounds, restrictions and filament metadata for the accessible SVG batch preview, while retaining mesh data privately. The ZIP consumes that same plan and captured placements. Caller revision/freshness fences invalidate obsolete plans; forged/deserialized previews cannot be exported. See [batch previews](batch-preview.md).
+
 ## Saved workspace
 
 The browser can optionally remember the builder setup and store favorites and label drafts using a versioned, catalog-validated local-storage record. This contains no Bambu credentials or printer identifiers. Drafts are catalog configurations, not live inventory, and can be exported without an AMS session. Saving from AMS still requires a fresh resolved snapshot. See [saved workspace and plates](saved-workspace.md).
 
+Named collections group up to eight catalog configurations for selection and reprinting. Collection IDs/names and label configurations are bounded and validated. The upgraded workspace uses `spoolstamp.workspace.v2` so older open tabs writing `spoolstamp.workspace.v1` cannot erase collection or layout fields. When the new key is absent, sanitized legacy choices are copied forward once; an existing new record wins. The old key is preserved and later old-tab edits are not automatically merged. Record and backup format versions remain v1, with optional collection fields on older input. Backups include collection names as well as catalog choices, with a 96 KB transfer bound. Names are user-authored local preferences, never derived from Bambu account or inventory data.
+
 Configuration history supports undo/redo/reset. Catalog-only fragment links restore shared setups, and validated JSON backups merge favorites/drafts with an explicit imported-setup action. Cross-tab storage events and revision checks protect ordinary concurrent editing. See [editing and workspace transfer](label-editing.md) for limits.
+
+The version badge opens short release highlights from `lib/release-notes.ts`; the export area opens the three-step Studio printing guide. Both use native modal dialogs with labelled close controls and Escape handling.
 
 ## Cloud AMS preview
 

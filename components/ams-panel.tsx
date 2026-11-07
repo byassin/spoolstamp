@@ -25,6 +25,13 @@ import { validateCloudApiOrigin } from '@/lib/cloud-ams-client';
 import { snapshotStatus } from '@/lib/ams-freshness';
 import { captureLabelChoices } from '@/lib/ams-label-choices';
 import { AmsLabelChoices } from './ams-label-choices';
+import { BatchPreview } from './batch-preview';
+import {
+  batchQuantityTotal,
+  expandBatchQuantities,
+} from '@/lib/batch-quantity';
+import type { PreparedLabelPlates } from '@/lib/generate-label-plates';
+import type { LabelLayout } from '@/lib/label-layout';
 const subscribeOrigin = () => () => {};
 const browserOrigin = () => window.location.origin;
 const serverOrigin = () => '';
@@ -33,6 +40,7 @@ export function AmsPanel({
   filament,
   printerName,
   design,
+  labelLayout,
   textFilamentProduct,
   textColor,
   autoText,
@@ -44,6 +52,7 @@ export function AmsPanel({
   filament: Filament;
   printerName: string;
   design: DesignId;
+  labelLayout?: LabelLayout;
   textFilamentProduct?: string;
   textColor?: TextColorId;
   autoText: boolean;
@@ -85,15 +94,22 @@ export function AmsPanel({
   const [error, setError] = useState('');
   const [confirmed, setConfirmed] = useState<Record<string, string>>({});
   const [selected, setSelected] = useState<string[]>([]);
+  const [copies, setCopies] = useState<Record<string, number>>({});
+  const [prepared, setPrepared] = useState<{
+    signature: string;
+    plan: PreparedLabelPlates;
+  } | null>(null);
   const [batchBusy, setBatchBusy] = useState(false);
   const [progress, setProgress] = useState('');
-  const [layout, setLayout] = useState('separate');
+  const [layout, setLayout] = useState<'separate' | 'plates'>('separate');
   const [clock, setClock] = useState(() => Date.now());
   const live = useRef({
     inventory,
     printerName,
     design,
+    labelLayout,
     selected,
+    copies,
     confirmed,
     textFilamentProduct,
     textColor,
@@ -105,7 +121,9 @@ export function AmsPanel({
       inventory,
       printerName,
       design,
+      labelLayout,
       selected,
+      copies,
       confirmed,
       textFilamentProduct,
       textColor,
@@ -116,7 +134,9 @@ export function AmsPanel({
     inventory,
     printerName,
     design,
+    labelLayout,
     selected,
+    copies,
     confirmed,
     textFilamentProduct,
     textColor,
@@ -143,6 +163,8 @@ export function AmsPanel({
       previousIdentity.current = identity;
       setConfirmed({});
       setSelected([]);
+      setCopies({});
+      setPrepared(null);
     }
   }, [identity]);
   const freshness = snapshotStatus(inventory, clock);
@@ -177,50 +199,67 @@ export function AmsPanel({
         ? textFilamentProduct
         : undefined;
   }
-  async function downloadBatch() {
+  const batchSignature = JSON.stringify({
+    identity,
+    printerName,
+    design,
+    labelLayout,
+    selected,
+    copies,
+    confirmed,
+    autoText,
+    textFilamentProduct,
+    textColor,
+    layout,
+  });
+  const preparedPlan =
+    prepared?.signature === batchSignature ? prepared.plan : null;
+  let quantityError = '';
+  let totalCopies = 0;
+  try {
+    totalCopies = batchQuantityTotal(
+      selected.map((key) => ({ copies: copies[key] ?? 1 })),
+    );
+  } catch (cause) {
+    quantityError =
+      cause instanceof Error ? cause.message : 'Review the label copies.';
+  }
+  function isBatchCurrent(signature: string) {
+    const current = live.current;
+    if (
+      !mounted.current ||
+      !current.inventory ||
+      !freshInventory(current.inventory)
+    )
+      return false;
+    const currentIdentity = JSON.stringify(
+      current.inventory.slots.map(({ remaining: _remaining, ...slot }) => slot),
+    );
+    return (
+      signature ===
+      JSON.stringify({
+        identity: currentIdentity,
+        printerName: current.printerName,
+        design: current.design,
+        labelLayout: current.labelLayout,
+        selected: current.selected,
+        copies: current.copies,
+        confirmed: current.confirmed,
+        autoText: current.autoText,
+        textFilamentProduct: current.textFilamentProduct,
+        textColor: current.textColor,
+        layout: current.layout,
+      })
+    );
+  }
+  async function prepareBatch() {
     if (!fresh || !inventory || batchBusy) return;
     const labels = selected.map((key) => resolveLabel(key));
     if (labels.some((item) => !item)) return;
-    const captured = JSON.stringify({
-      identity,
-      printerName,
-      design,
-      selected,
-      confirmed,
-      autoText,
-      textFilamentProduct,
-      textColor,
-      layout,
-    });
-    const isCurrent = () => {
-      const current = live.current;
-      if (
-        !mounted.current ||
-        !current.inventory ||
-        !freshInventory(current.inventory)
-      )
-        return false;
-      const currentIdentity = JSON.stringify(
-        current.inventory.slots.map(
-          ({ remaining: _remaining, ...slot }) => slot,
-        ),
-      );
-      return (
-        captured ===
-        JSON.stringify({
-          identity: currentIdentity,
-          printerName: current.printerName,
-          design: current.design,
-          selected: current.selected,
-          confirmed: current.confirmed,
-          autoText: current.autoText,
-          textFilamentProduct: current.textFilamentProduct,
-          textColor: current.textColor,
-          layout: current.layout,
-        })
-      );
-    };
+    const captured = batchSignature;
+    const isCurrent = () => isBatchCurrent(captured);
     setBatchBusy(true);
+    setPrepared(null);
     setError('');
     setProgress('Preparing labels…');
     try {
@@ -231,41 +270,75 @@ export function AmsPanel({
         throw new Error(
           'A selected label has no confirmed compatible black/white spool. Export it individually and choose its text filament.',
         );
-      const { downloadBlob } = await import('@/lib/generate-3mf');
+      const { prepareLabelPlates } =
+        await import('@/lib/generate-label-plates');
       const options = {
-        labels: (labels as Filament[]).map((body) => ({
-          filament: body,
-          textFilamentProduct: textProductFor(body),
-          textColor: autoText ? undefined : textColor,
-        })),
+        labels: expandBatchQuantities(
+          (labels as Filament[]).map((body, index) => ({
+            label: {
+              filament: body,
+              textFilamentProduct: textProductFor(body),
+              textColor: autoText ? undefined : textColor,
+            },
+            copies: copies[selected[index]] ?? 1,
+          })),
+        ),
         printer: printerName,
         design,
+        labelLayout,
+        layout,
         isCurrent,
         onProgress: (done: number, total: number) => {
           if (mounted.current) setProgress(`Prepared ${done} of ${total}`);
         },
       };
-      if (layout === 'plates') {
-        const { generateLabelPlates } =
-          await import('@/lib/generate-label-plates');
-        const result = await generateLabelPlates(options);
-        if (!isCurrent())
-          throw new Error('AMS selection changed. Read and try again.');
-        downloadBlob(result.blob, 'AMS-filament-plates.zip');
-        setProgress(
-          `Downloaded ${result.plates} plate project(s). Confirm all AMS assignments and placement in Studio.`,
+      const plan = await prepareLabelPlates(options);
+      if (!isCurrent())
+        throw new Error(
+          'AMS choices changed or expired. Read again before preparing a live batch.',
         );
-      } else {
-        const { generateLabelBatch } =
-          await import('@/lib/generate-label-batch');
-        const blob = await generateLabelBatch(options);
-        if (!isCurrent())
-          throw new Error('AMS selection changed. Read and try again.');
-        downloadBlob(blob, 'AMS-filament-labels.zip');
-        setProgress(
-          `Downloaded ${labels.length} separate 3MF projects. Confirm each project’s AMS assignments in Studio.`,
+      setPrepared({ signature: captured, plan });
+      setProgress(
+        'Preview ready. Confirm your label choices before downloading.',
+      );
+    } catch (cause) {
+      if (mounted.current) {
+        setError(
+          cause instanceof Error ? cause.message : 'Batch export failed.',
         );
+        setProgress('');
       }
+    } finally {
+      if (mounted.current) setBatchBusy(false);
+    }
+  }
+  async function downloadBatch() {
+    if (!preparedPlan || batchBusy || !isBatchCurrent(batchSignature)) return;
+    const captured = batchSignature;
+    const isCurrent = () => isBatchCurrent(captured);
+    setBatchBusy(true);
+    setError('');
+    setProgress('Preparing ZIP…');
+    try {
+      const { generatePreparedLabelPlates } =
+        await import('@/lib/generate-label-plates');
+      const { downloadBlob } = await import('@/lib/generate-3mf');
+      const result = await generatePreparedLabelPlates(preparedPlan, {
+        isCurrent,
+      });
+      if (!isCurrent())
+        throw new Error(
+          'AMS choices changed or expired. Prepare the batch again.',
+        );
+      downloadBlob(
+        result.blob,
+        preparedPlan.layout === 'plates'
+          ? 'AMS-filament-plates.zip'
+          : 'AMS-filament-labels.zip',
+      );
+      setProgress(
+        `Downloaded ${result.labels} labels in ${result.plates} projects. Confirm physical spools and placement in Studio.`,
+      );
     } catch (cause) {
       if (mounted.current) {
         setError(
@@ -497,7 +570,7 @@ export function AmsPanel({
                             disabled={
                               disabled ||
                               (!selected.includes(slot.key) &&
-                                selected.length >= MAX_BATCH_LABELS)
+                                totalCopies >= MAX_BATCH_LABELS)
                             }
                             onChange={(event) =>
                               setSelected(
@@ -509,6 +582,46 @@ export function AmsPanel({
                           />{' '}
                           Batch
                         </label>
+                        {selected.includes(slot.key) && (
+                          <label className="batch-copies">
+                            Copies
+                            <select
+                              aria-label={`Copies of ${slot.label}`}
+                              value={copies[slot.key] ?? 1}
+                              disabled={disabled || batchBusy}
+                              onChange={(event) =>
+                                setCopies((value) => ({
+                                  ...value,
+                                  [slot.key]: Number(event.target.value),
+                                }))
+                              }
+                            >
+                              {Array.from(
+                                { length: MAX_BATCH_LABELS },
+                                (_, index) => (
+                                  <option
+                                    key={index + 1}
+                                    value={index + 1}
+                                    disabled={
+                                      index +
+                                        1 +
+                                        selected
+                                          .filter((key) => key !== slot.key)
+                                          .reduce(
+                                            (total, key) =>
+                                              total + (copies[key] ?? 1),
+                                            0,
+                                          ) >
+                                      MAX_BATCH_LABELS
+                                    }
+                                  >
+                                    {index + 1}
+                                  </option>
+                                ),
+                              )}
+                            </select>
+                          </label>
+                        )}
                       </div>
                     </>
                   )}
@@ -524,7 +637,9 @@ export function AmsPanel({
                   aria-label="AMS batch layout"
                   value={layout}
                   disabled={batchBusy}
-                  onChange={(event) => setLayout(event.target.value)}
+                  onChange={(event) =>
+                    setLayout(event.target.value as 'separate' | 'plates')
+                  }
                 >
                   <option value="separate">Separate 3MF projects</option>
                   <option value="plates">
@@ -532,15 +647,35 @@ export function AmsPanel({
                   </option>
                 </select>
               </label>
+              <p className="field-note">
+                {quantityError ||
+                  `${totalCopies} of ${MAX_BATCH_LABELS} labels, including copies`}
+              </p>
               <Button
-                disabled={batchBusy || !fresh}
-                onClick={() => void downloadBatch()}
+                disabled={batchBusy || !fresh || !!quantityError}
+                onClick={() => void prepareBatch()}
               >
-                {batchBusy && (
-                  <LoaderCircle size={16} className="animate-spin" />
-                )}
-                Download {selected.length} labels
+                {batchBusy && !preparedPlan
+                  ? 'Preparing preview…'
+                  : preparedPlan
+                    ? 'Update preview'
+                    : 'Preview batch'}
               </Button>
+              <BatchPreview
+                plan={preparedPlan}
+                busy={batchBusy && !preparedPlan}
+              />
+              {preparedPlan && (
+                <Button
+                  disabled={batchBusy || !fresh}
+                  onClick={() => void downloadBatch()}
+                >
+                  {batchBusy && (
+                    <LoaderCircle size={16} className="animate-spin" />
+                  )}
+                  Download {preparedPlan.labelCount} labels
+                </Button>
+              )}
               <small>
                 ZIP · current design and printer · up to {MAX_BATCH_LABELS}{' '}
                 labels.
@@ -550,7 +685,13 @@ export function AmsPanel({
               </small>
             </div>
           )}
-          {progress && <output className="field-note">{progress}</output>}
+          {progress && (
+            <output className="field-note">
+              {progress.startsWith('Preview ready.') && !preparedPlan
+                ? 'Choices changed. Preview the batch again.'
+                : progress}
+            </output>
+          )}
         </>
       )}
       {error && (

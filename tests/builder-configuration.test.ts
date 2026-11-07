@@ -8,6 +8,26 @@ import {
 } from '../lib/builder-configuration';
 
 describe('builder configuration', () => {
+  it('preserves the printed layout through configuration changes and distinguishes edits', () => {
+    const simple = resolveConfiguration(
+      { design: 'rounded-adhesive-label', labelLayout: 'simple' },
+      INITIAL_CONFIGURATION,
+    );
+    expect(simple.labelLayout).toBe('simple');
+    expect(simple.design).toBe('rounded-adhesive-label');
+    expect(
+      sameConfiguration(simple, { ...simple, labelLayout: 'detailed' }),
+    ).toBe(false);
+    expect(
+      resolveConfiguration({ printerId: PRINTERS[0].id }, simple).labelLayout,
+    ).toBe('simple');
+    expect(
+      sameConfiguration(INITIAL_CONFIGURATION, {
+        ...INITIAL_CONFIGURATION,
+        labelLayout: 'detailed',
+      }),
+    ).toBe(true);
+  });
   it('tracks text profile changes and resets them across material families', () => {
     const selected = resolveConfiguration(
       { textFilamentProduct: 'PLA Matte' },
@@ -111,6 +131,8 @@ describe('builder configuration', () => {
     { unexpected: 'value' },
     { textFilamentProduct: 'missing' },
     { textFilamentProduct: 1 },
+    { labelLayout: 'unknown' },
+    { labelLayout: 1 },
   ])('rejects malformed or unknown input: %j', (input) => {
     expect(() => resolveConfiguration(input, INITIAL_CONFIGURATION)).toThrow();
   });

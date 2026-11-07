@@ -7,7 +7,7 @@ import {
 } from '../lib/build-plate';
 import { createPreviewBed, previewModelPosition } from '../lib/preview-bed';
 import { studioPrinterFor } from '../lib/studio-project';
-import { DEFAULT_FILAMENT, PRINTERS, type DesignId } from '../lib/catalog';
+import { DEFAULT_FILAMENT, DESIGNS, PRINTERS } from '../lib/catalog';
 import { buildConfiguredMeshes } from '../lib/generate-3mf';
 import {
   fitPreviewCamera,
@@ -128,7 +128,7 @@ describe('printer-profile bed preview', () => {
     ).toEqual([]);
   });
 
-  it.each<DesignId>(['drybox-tab', 'clip-label', 'adhesive-label'])(
+  it.each(DESIGNS.map((design) => design.id))(
     'matches exported placement and source orientation for %s on every printer',
     async (design) => {
       const parts = await buildConfiguredMeshes(DEFAULT_FILAMENT, design);
