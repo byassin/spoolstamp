@@ -2,6 +2,7 @@ import {
   DEFAULT_FILAMENT,
   DEFAULT_PRINTER,
   DESIGNS,
+  normalizeDesignId,
   FILAMENTS,
   FILAMENTS_BY_PRODUCT,
   PRINTERS,
@@ -88,7 +89,9 @@ export function resolveConfiguration(
     filament = match;
   }
   const printerId = (value.printerId ?? current.printerId) as string;
-  const design = (value.design ?? current.design) as DesignId;
+  const design = normalizeDesignId(
+    (value.design ?? current.design) as string,
+  ) as DesignId;
   if (!PRINTERS.some((item) => item.id === printerId))
     throw new Error('Unknown printer.');
   if (!DESIGNS.some((item) => item.id === design))

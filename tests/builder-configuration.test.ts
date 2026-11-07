@@ -8,6 +8,18 @@ import {
 } from '../lib/builder-configuration';
 
 describe('builder configuration', () => {
+  it('normalizes the removed square design while preserving layout and color', () => {
+    expect(
+      resolveConfiguration(
+        { design: 'adhesive-label', labelLayout: 'simple', textColor: 'red' },
+        INITIAL_CONFIGURATION,
+      ),
+    ).toMatchObject({
+      design: 'rounded-adhesive-label',
+      labelLayout: 'simple',
+      textColor: 'red',
+    });
+  });
   it('preserves the printed layout through configuration changes and distinguishes edits', () => {
     const simple = resolveConfiguration(
       { design: 'rounded-adhesive-label', labelLayout: 'simple' },

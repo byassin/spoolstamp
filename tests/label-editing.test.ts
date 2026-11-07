@@ -40,6 +40,21 @@ describe('label editing history', () => {
   });
 });
 describe('catalog-only label links', () => {
+  it('migrates old square-flat links to the retained Flat label', () => {
+    const hash =
+      '#label=' +
+      encodeURIComponent(
+        JSON.stringify({
+          version: 1,
+          label: {
+            filamentId: INITIAL_CONFIGURATION.filament.id,
+            printerId: INITIAL_CONFIGURATION.printerId,
+            design: 'adhesive-label',
+          },
+        }),
+      );
+    expect(configurationFromLink(hash)?.design).toBe('rounded-adhesive-label');
+  });
   it('restores the rounded design and printed layout and rejects an invalid layout', () => {
     const configuration = {
       ...INITIAL_CONFIGURATION,

@@ -1,13 +1,13 @@
 # Documentation screenshots
 
-Current interface captures were refreshed locally on November 6, 2026 for the **v0.4.0 candidate**, before publication. Desktop captures use the browser's 1280 × 720 default viewport. The mobile guide uses 320 × 740; responsive checks also covered 390 px width.
+The workspace and Flat Label captures were refreshed locally on November 6, 2026 for **v0.4.1**, before publication. Other interface captures show v0.4.0 flows. Desktop captures use the browser's 1280 × 720 default viewport. The mobile guide uses 320 × 740; responsive checks also covered 390 px width.
 
 | File                     | View                                                                                   |
 | ------------------------ | -------------------------------------------------------------------------------------- |
-| `workspace.png`          | Hinged label, compact four-design chooser and layout control                           |
+| `workspace.png`          | Hinged label, three-design chooser and layout control                                  |
 | `clip-label.png`         | Clip-on label in the same workspace                                                    |
-| `flat-label.png`         | Original flat adhesive label                                                           |
-| `rounded-flat-label.png` | Rounded flat label with Simple lettering                                               |
+| `flat-label.png`         | Flat Label with rounded corners and Simple lettering                                   |
+| `rounded-flat-label.png` | Historical v0.4.0 capture before the design was renamed Flat Label                     |
 | `collections.png`        | Named collection, search, selection and copies                                         |
 | `batch-preview.png`      | Four saved label instances arranged on one plate                                       |
 | `print-guide.png`        | Three-step Studio printing guide                                                       |

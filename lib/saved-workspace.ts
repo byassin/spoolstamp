@@ -1,4 +1,4 @@
-import { FILAMENTS, type DesignId } from './catalog';
+import { FILAMENTS, normalizeDesignId, type DesignId } from './catalog';
 import { effectiveLabelLayout } from './label-layout';
 import {
   INITIAL_CONFIGURATION,
@@ -58,7 +58,7 @@ export function saveLabel(value: BuilderConfiguration): SavedLabel {
   return {
     filamentId: value.filament.id,
     printerId: value.printerId,
-    design: value.design,
+    design: normalizeDesignId(value.design) as DesignId,
     ...(value.textColor ? { textColor: value.textColor } : {}),
     ...(value.labelLayout ? { labelLayout: value.labelLayout } : {}),
     ...(value.textFilamentProduct
@@ -105,7 +105,7 @@ export function draftKey(row: SavedLabel) {
   return JSON.stringify({
     filamentId: row.filamentId,
     printerId: row.printerId,
-    design: row.design,
+    design: normalizeDesignId(row.design),
     textColor: row.textColor,
     textFilamentProduct: row.textFilamentProduct,
     labelLayout: effectiveLabelLayout(row.design, row.labelLayout),
@@ -124,7 +124,7 @@ export function restoreLabelForBatch(
   return restored
     ? {
         ...restored,
-        design,
+        design: normalizeDesignId(design) as DesignId,
         labelLayout: effectiveLabelLayout(design, row.labelLayout),
       }
     : null;

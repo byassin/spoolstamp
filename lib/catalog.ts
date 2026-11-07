@@ -137,19 +137,17 @@ export const DESIGNS = [
     note: '51.4 × 15 mm · two-line clip-on',
   },
   {
-    id: 'adhesive-label',
-    displayName: 'Flat label',
-    summary: '60 × 25 mm · Adhesive-backed',
-    name: 'Flat adhesive label',
-    note: 'Original flat label · add your own double-sided adhesive',
-  },
-  {
     id: 'rounded-adhesive-label',
-    displayName: 'Rounded flat label',
+    displayName: 'Flat Label',
     summary: '60 × 25 mm · Rounded corners',
-    name: 'Rounded adhesive label',
+    name: 'Flat Label',
     note: 'Original 2 mm corner radius · add your own adhesive',
   },
 ] as const;
 
-export type DesignId = (typeof DESIGNS)[number]['id'];
+/** The old square design ID remains readable for legacy saved/export data only. */
+export type DesignId = (typeof DESIGNS)[number]['id'] | 'adhesive-label';
+
+export function normalizeDesignId(value: string): string {
+  return value === 'adhesive-label' ? 'rounded-adhesive-label' : value;
+}

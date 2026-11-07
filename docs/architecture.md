@@ -14,8 +14,7 @@ Design meshes and generated Noto Sans lettering are combined in the browser. The
 
 - **Hinged label:** retains the supplied card and hook, with the R2 moving-link clearance adjustment.
 - **Clip-on label:** fills the supplied clip's label recess and adds material/color lettering.
-- **Flat adhesive label:** builds an original 60 × 25 mm backing and raised product/color/SKU lettering for user-supplied adhesive.
-- **Rounded flat label:** uses the same face and backing thickness with a 2 mm corner radius inside the unused edge margin.
+- **Flat Label:** builds an original 60 × 25 mm adhesive backing with a 2 mm corner radius and raised product/color lettering. The square-corner option is removed; older saved design IDs normalize to the retained rounded design.
 - **Printed layout:** Simple emphasizes product/color; Detailed keeps additional information where it fits. The narrow clip remains two-line. One validated layout choice drives preview, generation, saved choices, links and export metadata.
 - **Text:** defaults to black or white for contrast, with six optional text colors and a short same-material profile list. A low-contrast override shows an advisory suggestion. Long clip names are fitted or shortened, with full names retained in metadata.
 
