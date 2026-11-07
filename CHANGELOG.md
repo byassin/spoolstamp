@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.1 — unreleased
+
+- Remove the square-corner Flat Label from the picker and rename the rounded design to Flat Label.
+- Restore older square-design setups, drafts, collections and shared links using the retained rounded design.
+
 ## 0.4.0 — 2026-11-06
 
 - Preview batch plate bounds, project splits and filament assignments before downloading the same prepared layout; choose per-label copies within the eight-label limit.

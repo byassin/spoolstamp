@@ -1,6 +1,13 @@
 /** Short user-facing highlights; full engineering details remain in CHANGELOG.md. */
 export const RELEASE_NOTES = [
   {
+    version: '0.4.1',
+    changes: [
+      'One Flat label option, with rounded corners.',
+      'Older flat-label drafts and links open the retained design.',
+    ],
+  },
+  {
     version: '0.4.0',
     changes: [
       'Preview batch plates and choose copies before downloading.',

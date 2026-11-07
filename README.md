@@ -10,7 +10,7 @@ Create 3D-printable filament labels in a few clicks. Pick a design, choose your 
 
 ## Features
 
-- **Four label designs** — a hinged dry-box label, a flat-front clip-on label, and original flat adhesive labels with square or rounded corners.
+- **Three label designs** — a hinged dry-box label, a flat-front clip-on label, and an original Flat Label with rounded corners.
 - **Bambu Lab filament catalog** — 314 colors with searchable material types, color names, and codes.
 - **Live 3D preview** — rotate, zoom, and switch between a label close-up and your printer's build plate.
 - **Automatic lettering** — filament details filled in for you, with contrasting black or white text.
@@ -42,11 +42,9 @@ A flat face with two lines: material type and color.
 
 Choose **Flat label** for an original 60 × 25 mm backing with raised product, color and catalog-code lettering. Add your own suitable adhesive after printing. See [design details and print guidance](docs/adhesive-label.md); physical printing and mounting still need testing.
 
-**Rounded flat label** uses the same face size with softened corners. Under **Label detail**, choose **Simple** for prominent material/color text, or **Detailed** for the catalog code when it fits. Hinged labels offer the same choice; their detailed layout includes print information.
+**Flat Label** has softened corners. Under **Label detail**, choose **Simple** for prominent material/color text, or **Detailed** for the catalog code when it fits. Hinged labels offer the same choice; their detailed layout includes print information. Older flat-design drafts, collections and links open this retained design.
 
-![Flat adhesive label and editing toolbar in Spoolstamp v0.4.0](docs/images/flat-label.png)
-
-![Rounded flat label with Simple lettering](docs/images/rounded-flat-label.png)
+![Flat Label with rounded corners and Simple lettering](docs/images/flat-label.png)
 
 ## Edit, share and keep your labels
 

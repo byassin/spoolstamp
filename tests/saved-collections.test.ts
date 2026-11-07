@@ -113,7 +113,7 @@ describe('local named label collections', () => {
         ?.labelLayout,
     ).toBe('simple');
     const oldSaved = restoreLabelForBatch(draft, 'adhesive-label')!;
-    expect(oldSaved.design).toBe('adhesive-label');
+    expect(oldSaved.design).toBe('rounded-adhesive-label');
     expect(
       { ...INITIAL_CONFIGURATION, labelLayout: 'simple', ...oldSaved }
         .labelLayout,
